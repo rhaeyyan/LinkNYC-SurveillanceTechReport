@@ -5,7 +5,7 @@ LinkNYC, the NYPD Domain Awareness System, and the regulatory gap that lets
 private surveillance infrastructure operate outside municipal oversight law.
 
 Prepared as a portfolio piece for the
-[Data School (UK) admissions application](https://www.thedataschool.co.uk/apply/).
+[Data School admissions application](https://www.thedataschool.co.uk/apply/).
 
 ## Files
 
