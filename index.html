@@ -41,6 +41,8 @@
   --badge-red-txt: #fb7185;
   --badge-yel-txt: #fcd34d;
   --badge-cyn-txt: #6ee7b7;
+  --glass-bg:      rgba(255,255,255,.04);
+  --glass-border:  rgba(255,255,255,.09);
   color-scheme: dark;
 }
 html.light-mode {
@@ -64,6 +66,8 @@ html.light-mode {
   --badge-red-txt: #be123c;
   --badge-yel-txt: #b45309;
   --badge-cyn-txt: #1e40af;
+  --glass-bg:      rgba(255,255,255,.72);
+  --glass-border:  rgba(0,0,0,.08);
   color-scheme: light;
 }
 html { scroll-behavior: smooth; }
@@ -147,7 +151,7 @@ section { padding: 5.5rem 0; border-top: 1px solid var(--border); }
 .body-p em { font-style: italic; }
 
 /* ── Comparison table ── */
-.card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 1.8rem; margin: 2rem 0; }
+.card { background: var(--glass-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--glass-border); border-radius: 12px; padding: 1.8rem; margin: 2rem 0; box-shadow: 0 8px 32px rgba(0,0,0,.2), inset 0 1px 0 rgba(255,255,255,.05); }
 .table-wrap { overflow-x: auto; }
 table { width: 100%; border-collapse: collapse; font-size: .88rem; }
 thead tr { border-bottom: 1px solid var(--border); }
@@ -162,7 +166,7 @@ td strong { color: var(--text); }
 .badge-cyan { background: rgba(var(--cyan-rgb),.18); color: var(--badge-cyn-txt); }
 
 /* ── Callout ── */
-.callout { border: 1px dashed var(--mag); border-radius: 10px; padding: 1.8rem; margin: 2.2rem 0; background: rgba(var(--mag-rgb),.04); }
+.callout { background: var(--glass-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(var(--mag-rgb),.28); border-radius: 12px; padding: 1.8rem; margin: 2.2rem 0; box-shadow: 0 8px 32px rgba(0,0,0,.15), inset 0 1px 0 rgba(255,255,255,.04); }
 .callout-title { font-family: var(--font-h); font-size: 1.2rem; font-weight: 900; color: var(--mag); margin-bottom: .6rem; }
 .callout p { font-size: .93rem; color: var(--muted); line-height: 1.78; }
 .callout p strong { color: var(--text); }
@@ -215,22 +219,45 @@ blockquote footer { font-size: .8rem; color: var(--muted); }
 .chart-wrap { position: relative; width: 100%; height: 280px; margin: 1.2rem 0; }
 .chart-wrap.md { height: 320px; }
 
-/* ── KPMG findings ── */
-.finding-banner {
-  background: var(--bg-mid);
-  border-left: 4px solid var(--mag);
-  border-radius: 0 10px 10px 0;
-  padding: 1.6rem 1.8rem;
+/* ── KPMG findings — bento ── */
+.audit-bento {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 1rem;
   margin: 2rem 0;
+}
+.audit-bento .finding-banner { grid-row: 1 / span 2; }
+.audit-bento .pf04 { grid-column: 1 / -1; }
+@media (max-width: 700px) {
+  .audit-bento { grid-template-columns: 1fr; }
+  .audit-bento .finding-banner { grid-row: auto; }
+  .audit-bento .pf04 { grid-column: auto; }
+}
+.finding-banner {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  border-left: 4px solid var(--mag);
+  border-radius: 0 12px 12px 0;
+  padding: 1.8rem 2rem;
+  box-shadow: 0 8px 32px rgba(0,0,0,.2), inset 0 1px 0 rgba(255,255,255,.04);
 }
 .finding-banner .tag { font-family: var(--font-h); font-size: .68rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--mag); margin-bottom: .4rem; }
 .finding-banner h3 { font-family: var(--font-h); font-size: 1.25rem; font-weight: 900; margin-bottom: .6rem; }
 .finding-banner p { font-size: .9rem; color: var(--muted); line-height: 1.75; }
 .finding-banner p strong { color: var(--text); }
-.finding-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: .8rem; margin: 1.5rem 0; }
-.finding-chip { background: var(--bg-hi); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.2rem; }
-.finding-chip .id { font-family: var(--font-h); font-size: .75rem; font-weight: 900; margin-bottom: .3rem; }
-.finding-chip p { font-size: .82rem; color: var(--muted); line-height: 1.55; }
+.finding-chip {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  padding: 1.4rem 1.6rem;
+  box-shadow: 0 4px 16px rgba(0,0,0,.15), inset 0 1px 0 rgba(255,255,255,.04);
+}
+.finding-chip .id { font-family: var(--font-h); font-size: .75rem; font-weight: 900; margin-bottom: .4rem; }
+.finding-chip p { font-size: .85rem; color: var(--muted); line-height: 1.6; }
 
 /* ── Timeline (compact) ── */
 .tl { position: relative; padding-left: 1.6rem; }
@@ -462,6 +489,7 @@ html.light-mode blockquote { border-left-color: var(--mag); }
         <span class="unit">Unique points to re-identify any user</span>
       </div>
     </div>
+    <p style="margin-top:2.5rem;font-size:.72rem;color:var(--faint);letter-spacing:.05em;">Compiled by Rayan Khan</p>
   </div>
 </section>
 
@@ -766,23 +794,20 @@ html.light-mode blockquote { border-left-color: var(--mag); }
       </div>
     </div>
 
-    <div class="finding-banner reveal">
-      <div class="tag">PF-01 &mdash; Critical Finding</div>
-      <h3>For years, CityBridge stored your device's fingerprint in plaintext.</h3>
-      <p>
-        A MAC address is a unique, hardcoded identifier your phone broadcasts constantly —
-        it's effectively a fingerprint for your device. CityBridge was contractually required
-        to anonymize these before they were ever stored. <strong>They didn't.</strong> For over
-        half a decade, every device that came within range of a kiosk was uniquely identified
-        and logged, in direct violation of the franchise agreement and the company's own
-        privacy policy. The fix — a one-way hash applied to stored addresses — wasn't
-        deployed until December 2022. Years into the network's operation.
-      </p>
-    </div>
-
-    <p class="body-p reveal">The three remaining findings rounded out a picture of systematic negligence:</p>
-
-    <div class="finding-row reveal">
+    <div class="audit-bento reveal">
+      <div class="finding-banner">
+        <div class="tag">PF-01 &mdash; Critical Finding</div>
+        <h3>For years, CityBridge stored your device's fingerprint in plaintext.</h3>
+        <p>
+          A MAC address is a unique, hardcoded identifier your phone broadcasts constantly —
+          it's effectively a fingerprint for your device. CityBridge was contractually required
+          to anonymize these before they were ever stored. <strong>They didn't.</strong> For over
+          half a decade, every device that came within range of a kiosk was uniquely identified
+          and logged, in direct violation of the franchise agreement and the company's own
+          privacy policy. The fix — a one-way hash applied to stored addresses — wasn't
+          deployed until December 2022. Years into the network's operation.
+        </p>
+      </div>
       <div class="finding-chip">
         <div class="id" style="color:var(--yel)">PF-02</div>
         <p>The Wi-Fi sign-on page showed <strong>Intersection's privacy policy</strong> — the ad company's — instead of LinkNYC's. Users were legally misled about who governed their data.</p>
@@ -791,7 +816,7 @@ html.light-mode blockquote { border-left-color: var(--mag); }
         <div class="id" style="color:var(--cyan)">PF-03</div>
         <p>Welcome emails lacked the legally required <strong>unsubscribe link</strong>, trapping users in marketing communications in violation of anti-spam law.</p>
       </div>
-      <div class="finding-chip">
+      <div class="finding-chip pf04">
         <div class="id" style="color:var(--cyan)">PF-04</div>
         <p>The Wi-Fi splash page <strong>failed to reference</strong> the correct Terms of Use and Privacy Policy — leaving users without clear notice of what they were accepting.</p>
       </div>
@@ -1016,8 +1041,9 @@ Respectfully,
       </ul>
     </div>
   </div>
-  <div style="max-width:var(--max-wide);margin:2rem auto 0;padding-top:1.5rem;border-top:1px solid var(--border);font-size:.72rem;color:var(--muted);">
-    Broadband figures: ACS 5-year (2018–2022). Kiosk counts are live from NYC Open Data and will differ from static references. Digital Fairness Act status current as of May 2026 — verify at nysenate.gov before publishing.
+  <div style="max-width:var(--max-wide);margin:2rem auto 0;padding-top:1.5rem;border-top:1px solid var(--border);font-size:.72rem;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem;">
+    <span>Broadband figures: ACS 5-year (2018–2022). Kiosk counts are live from NYC Open Data and will differ from static references. Digital Fairness Act status current as of May 2026 — verify at nysenate.gov before publishing.</span>
+    <span>Get in touch: <a href="mailto:khanrayan.hire@pm.me">khanrayan.hire@pm.me</a></span>
   </div>
 </footer>
 
