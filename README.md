@@ -1,159 +1,102 @@
-# NYC Surveillance Tech — Data School Application Project
+# The Big Apple's Big Brother Problem
 
-An interactive single-page infographic and accompanying deep-dive report on
-LinkNYC, the NYPD Domain Awareness System, and the regulatory gap that lets
-private surveillance infrastructure operate outside municipal oversight law.
+A civic journalism and advocacy webpage about LinkNYC — the city-franchised
+surveillance network operating across the five boroughs — and the pending
+New York State legislation that would address it.
 
-Prepared as a portfolio piece for the
-[Data School admissions application](https://www.thedataschool.co.uk/apply/).
+**Primary goal:** Inform New Yorkers about how LinkNYC works, what the KPMG
+audit found, and why the Digital Fairness Act (S4276 / A3308) matters.
+Make it easy for readers to contact their representatives and support the bill.
 
-## Files
+---
 
-| File | Purpose |
+## The story in brief
+
+LinkNYC was sold to New York City as a digital equity programme — free gigabit
+Wi-Fi for the boroughs that needed it most. What it built instead was the
+largest warrantless surveillance network in the five boroughs, concentrated
+in the neighbourhoods least positioned to push back.
+
+Every kiosk passively logs the MAC address of every phone that passes within
+range — no Wi-Fi connection required, no consent asked. A KPMG audit
+commissioned by the city's Office of Technology and Innovation found that
+these device fingerprints were stored in plaintext for years, in direct
+violation of CityBridge's own privacy policy. Because CityBridge is a
+private contractor, not the NYPD, the entire network operates outside the
+POST Act oversight regime that governs the city's other surveillance tools.
+
+The Digital Fairness Act (NY Senate S4276 / Assembly A3308) would close
+that loophole. It is in committee. It can still pass this session.
+
+---
+
+## The bill
+
+| | |
 |---|---|
-| `infographic.html` | Single-file interactive infographic (Tailwind + Chart.js + Leaflet via CDN). |
-| `NYC Surveillance Tech Deep Dive.md` | Source research report &mdash; the long-form material the infographic distils. |
-| `README.md` | This file. |
+| **Senate Bill** | S4276 |
+| **Assembly Bill** | A3308 |
+| **Short title** | Digital Fairness Act |
+| **Status** | In Committee on Internet & Technology (introduced Feb 2025) |
+| **What it does** | Requires affirmative consent before personal data is collected; closes the private-contractor exemption the POST Act left open; bans discriminatory targeted advertising |
+| **Supporter** | NYCLU (formal legislative memo on record) |
 
-## How to view the infographic
+---
 
-The page fetches live data from NYC Open Data (LinkNYC kiosk locations) and
-loads tiles from CARTO. Opening `infographic.html` directly via `file://`
-will work for static content, but **the live map, broadband-vs-deployment chart,
-cumulative activations chart, and live kiosk counts may fail** because browsers
-restrict `fetch()` for `file://` origins.
+## How to view
 
-The cleanest way to view it is to serve the directory over HTTP. Any of the
-following will work:
+The page is a single self-contained file — no build step, no dependencies
+to install. Open `index.html` in any modern browser.
 
-### Option A &mdash; Python (no install needed on most systems)
+The live kiosk map and broadband chart fetch external data, so they require
+an internet connection. Opening via `file://` works for most content;
+if the map tiles or NYC Open Data fetch fail, serve the directory over HTTP:
 
 ```bash
-cd /path/to/SurveillanceTechInNYC
 python3 -m http.server 8765
+# then open http://localhost:8765
 ```
 
-Then open <http://localhost:8765/infographic.html> in any modern browser.
+---
 
-### Option B &mdash; Node
+## What's in the page
 
-```bash
-npx serve .
-```
-
-### Option C &mdash; VS Code
-
-Install the **Live Server** extension, right-click `infographic.html`, choose
-*Open with Live Server*.
-
-### Requirements
-
-- A modern browser (Chrome, Firefox, Safari, Edge).
-- Internet access &mdash; the page pulls from `data.cityofnewyork.us` and a
-  handful of CDNs (Tailwind, Chart.js, Leaflet, CARTO tiles).
-- No build step, no dependencies, no API keys.
-
-## What's in the infographic
-
-| Section | What it shows |
+| Section | Contents |
 |---|---|
-| **The Trojan Horse** | LinkNYC's pitched utility vs. its actual function as an ad/sensor network; the CityBridge consortium ownership chain (Intersection &times; Qualcomm &times; Boldyn Networks). |
-| **Geography of Surveillance** | Live Leaflet map of every approved kiosk colored by generation; broadband-deficit vs. kiosk-share comparison; deployment progress against the 7,500-kiosk mandate; the 13 mandated Link5G community districts. |
-| **The Privacy Disaster** | Re-identification stat trio (3 location points &middot; live kiosk count &middot; 7,500 mandated); sourced surveillance-modality matrix. |
-| **A Decade of Quiet Concessions** | Cumulative kiosk activations computed live from NYC Open Data; 13-step annotated chronology spanning 2014&ndash;Feb 2026. |
-| **The KPMG Audit** | The four POST Act audit findings (PF-01&ndash;04) with severity badges and remediation status, plus the audit-timeline strip. |
-| **NYPD Domain Awareness System** | The "WiFi Geolocation Tracking Devices" smoking-gun callout linking LinkNYC's MAC harvesting to NYPD's own POST Act disclosures; a sourced double-standard comparison; six KPI tiles; log-scale database composition chart; LinkNYC&rarr;DAS flow diagram. |
-| **The Surveillance Divide** | Inverted-equity logic chart; paired civic-agency disparity cards; London/Tower Hamlets parallel; the Smart Kiosk Regulatory Gap callout; legislative status (POST Act enacted, Digital Fairness Act pending). |
+| **Hero** | Headline, three live BANs (active kiosks, mandated target, re-identification threshold) |
+| **The Finding** | NYPD vs. LinkNYC double-standard comparison — same Wi-Fi geolocation capability, completely different legal thresholds |
+| **The Machine** | How each kiosk works as a sensor hub; the advertising business model that requires it |
+| **The Map** | Live Leaflet map of every kiosk coloured by generation, with detection-range halos and scrollytelling panels (Manhattan → all boroughs → Bronx) |
+| **The Audit** | KPMG findings PF-01 through PF-04 — the plaintext MAC storage violation, the misattributed privacy policy, the missing unsubscribe link |
+| **Who Pays** | The inverted-equity pattern: wealthier districts stalled Link5G installations; mandated outer-borough districts had no equivalent civic mechanism to push back |
+| **The Fix** | Digital Fairness Act details, bill status, and what it would actually change |
+| **Act Now** | Copyable campaign letter + links to find your State Senator, Assembly Member, and the Governor |
 
-## Data sources
+---
 
-All data is either pulled live or cited inline:
+## Tech stack
 
-- **NYC Open Data** &mdash; [LinkNYC Kiosk Locations (`s4kf-3yrf`)](https://data.cityofnewyork.us/Social-Services/LinkNYC-Kiosk-Locations/s4kf-3yrf) (fetched on page load).
-- **NYC OTI Internet Master Plan / Truth in Broadband Report** &mdash; borough-level broadband-deficit estimates (ACS 5-year, 2018&ndash;2022).
-- **OTI KPMG Privacy Audit (Jan 2023 publication)** + **CityBridge remediation letter (Dec 2022)** + **NYCLU testimony (Jun 2023)**.
-- **NYPD POST Act Impact &amp; Use Policies** &mdash; [nyc.gov/site/nypd/about/about-nypd/policy/post-act.page](https://www.nyc.gov/site/nypd/about/about-nypd/policy/post-act.page) (DAS, Facial Recognition, WiFi Geolocation Tracking Devices IUPs cited).
-- **City &amp; State NY (2019)** &mdash; NYPD DAS scale figures.
-- **EPIC** &mdash; "digital frisking" framing on facial-recognition disparity.
-- **S.T.O.P. + ECBAWM** &mdash; litigation context.
-- **NYCLU**, **EFF**, **NY Landmarks Conservancy**, **MAS** &mdash; civic-society pushback.
-- **Tandfonline (2025)** &mdash; London/Tower Hamlets parallel.
+Pure HTML/CSS/JS — single self-contained file, no framework, no build step.
 
-The donut chart in the intro section is the one remaining editorial estimate;
-the footer methodology block flags this explicitly. Every other visualization
-either pulls from a live endpoint or cites a primary source.
+| Tool | Use |
+|---|---|
+| [GSAP 3](https://gsap.com) | ScrollTrigger, SplitText, ScrambleTextPlugin, quickTo — all loaded via CDN |
+| [Leaflet.js](https://leafletjs.com) | Interactive kiosk map |
+| [CARTO](https://carto.com/basemaps/) | Dark and light map tiles (swapped on theme toggle) |
+| [Chart.js](https://www.chartjs.org) | Broadband-need vs. Link5G deployment bar chart |
+| [NYC Open Data](https://data.cityofnewyork.us/Social-Services/LinkNYC-Kiosk-Locations/s4kf-3yrf) | Live kiosk location data (endpoint `s4kf-3yrf`) |
+| Google Fonts | Figtree (headings) + Oxygen (body) |
 
-## Executive summary of the deep-dive report
+---
 
-LinkNYC was launched in 2014 as a replacement for New York City's expiring
-payphone franchise, marketed as a public utility that would close the digital
-divide through free gigabit Wi-Fi, device charging, and domestic calls.
-Behind that pitch sits a different kind of infrastructure: a privately
-operated, ad-funded sensor network of 9.5-ft kiosks (Link1.0) and 32-ft
-smart poles (Link5G) that passively log device MAC addresses, record video,
-and harvest environmental data &mdash; a system explicitly engineered by
-operator Intersection to enable "hypertargeting in the physical world."
+## Primary sources
 
-The franchise has been characterised by regulatory failure at every layer.
-The State Comptroller found that the city's Office of Technology and
-Innovation (OTI) failed to monitor CityBridge's compliance; the consortium
-accumulated roughly $70&nbsp;million in unpaid dues and approached bankruptcy
-by 2019. A KPMG privacy audit conducted in 2021 and quietly released in
-January 2023 (heavily redacted, no press notice) confirmed four findings,
-the most serious being that CityBridge had stored MAC addresses in
-plaintext for years &mdash; in direct violation of its own privacy policy.
-A hashed-MAC remediation was deployed in late 2022.
-
-LinkNYC's data is connected to the city's broader surveillance apparatus
-through the NYPD Domain Awareness System (DAS) &mdash; a 2012 Microsoft-built
-fusion platform funded with $350&nbsp;million in DHS grants and connected to
-18,000+ CCTV cameras, two billion license-plate reads, eleven million arrest
-records, and tens of millions of 911 calls, summonses, and detective
-reports. CityBridge's privacy policy permits voluntary disclosure of
-LinkNYC video to the NYPD without a warrant; documented hand-offs have
-already occurred. Although the system itself uses no built-in
-biometrics, the DAS Impact &amp; Use Policy disclosed under the POST Act
-confirms that still frames may be extracted and run retrospectively
-through external facial-recognition tools (Dataworks+, Idemia).
-
-The franchise's spatial story is one of inverted equity. The original
-Link1.0 deployment concentrated 55% of kiosks in Manhattan because the
-advertising business model rewarded high-density, high-income foot
-traffic. The 2020 Link5G corrective mandate now requires 90% of new
-kiosks to be installed in the outer boroughs or above 96th Street &mdash;
-739 mandated across 13 community districts including Brownsville,
-Hunts Point, Jamaica, Inwood, and Stapleton. These are the neighbourhoods
-with the highest broadband deficits *and* the longest histories of
-aggressive policing. The "digital divide" is not bridged; it is replaced
-by a "surveillance divide" in which connectivity is purchased with personal
-privacy.
-
-The structural failure is reinforced by a disparity in civic agency.
-Wealthy historic districts (Upper East Side, Tribeca, Carnegie Hill)
-have used preservation societies, community boards, and federal-level
-petitions (Congressman Nadler / FCC, NHPA &sect;106) to stall Link5G
-installations. Mandated outer-borough districts have no comparable
-mechanism for institutional resistance.
-
-The deepest regulatory failure is jurisdictional. The 2020 NYC POST Act
-requires the NYPD to publish Impact &amp; Use Policies for roughly forty
-surveillance technologies &mdash; including WiFi Geolocation Tracking
-Devices, the very capability LinkNYC operationalises at scale. NYPD's
-own use of that capability requires probable cause, a court order, and
-records no data; LinkNYC's parallel use requires nothing, runs continuously,
-and retained identifiable data for years. Because LinkNYC is privately
-owned by the CityBridge consortium rather than the NYPD, no IUP for
-smart kiosks exists. The infrastructure is a transparency loophole:
-data is collected outside POST Act oversight, then voluntarily routed
-into systems that fall within it.
-
-Closing this gap requires the Digital Fairness Act's affirmative-consent
-regime, meaningful enforcement of the POST Act's disclosure floor, and
-decoupling fundamental public utilities from the mechanics of surveillance
-capitalism.
-
-## Methodology &amp; disclosures
-
-A more detailed methodology block lives in the footer of the infographic
-itself, including the full list of data sources, visualization choices,
-and disclosure of which figures are hardcoded versus pulled live.
+- [NY Senate Bill S4276 — Digital Fairness Act](https://www.nysenate.gov/legislation/bills/2025/S4276)
+- [NYCLU Legislative Memo — Digital Fairness Act](https://www.nyclu.org/resources/policy/legislations/legislative-memo-digital-fairness-act)
+- [NYPD POST Act — WiFi Geolocation Tracking Devices IUP](https://www.nyc.gov/site/nypd/about/about-nypd/policy/post-act.page)
+- KPMG audit of LinkNYC (OTI, Jan 2023, redacted)
+- CityBridge remediation letter to OTI, Dec 2022
+- NYCLU testimony to NYC Council Tech Committee, Jun 2023
+- [NYCLU — "LinkNYC is a Privacy Disaster"](https://www.nyclu.org/commentary/linknyc-privacy-disaster-heres-why)
+- NYC OTI Internet Master Plan / Truth in Broadband Report (ACS 5-year, 2018–2022)
+- Tandfonline (2025) — "Digital policing of homeless and other marginalised groups in smart cities"

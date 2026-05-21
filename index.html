@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Surveilled by Default: How NYC's Free Wi-Fi Became a Surveillance Network</title>
+<meta name="description" content="LinkNYC promised to close the digital divide. Instead it built the largest warrantless surveillance substrate in New York City — concentrated in the neighborhoods least able to refuse it.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Oxygen:wght@300;400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  /* ── Whistleblower Terminal (dark default) ── */
+  --bg:       #050505;
+  --bg-card:  #121212;
+  --bg-mid:   #1a1a1a;
+  --bg-hi:    #262626;
+  --cyan:     #10b981;
+  --mag:      #e11d48;
+  --yel:      #f59e0b;
+  --text:     #f3f4f6;
+  --muted:    #9ca3af;
+  --faint:    #4b5563;
+  --border:   #27272a;
+  --max:      740px;
+  --max-wide: 1100px;
+  --font-h:   'Figtree', sans-serif;
+  --font-b:   'Oxygen', sans-serif;
+  /* RGB channels so rgba() calls update with theme */
+  --cyan-rgb:      16, 185, 129;
+  --mag-rgb:       225, 29, 72;
+  --yel-rgb:       245, 158, 11;
+  --bg-rgb:        5, 5, 5;
+  /* Component colour tokens */
+  --color-good:    #34d399;
+  --badge-red-txt: #fb7185;
+  --badge-yel-txt: #fcd34d;
+  --badge-cyn-txt: #6ee7b7;
+  color-scheme: dark;
+}
+html.light-mode {
+  /* ── Editorial Print (light) ── */
+  --bg:       #f4f4f5;
+  --bg-card:  #ffffff;
+  --bg-mid:   #e4e4e7;
+  --bg-hi:    #d4d4d8;
+  --cyan:     #1d4ed8;
+  --mag:      #dc2626;
+  --yel:      #d97706;
+  --text:     #09090b;
+  --muted:    #52525b;
+  --faint:    #a1a1aa;
+  --border:   #cbd5e1;
+  --cyan-rgb:      29, 78, 216;
+  --mag-rgb:       220, 38, 38;
+  --yel-rgb:       217, 119, 6;
+  --bg-rgb:        244, 244, 245;
+  --color-good:    #16a34a;
+  --badge-red-txt: #be123c;
+  --badge-yel-txt: #b45309;
+  --badge-cyn-txt: #1e40af;
+  color-scheme: light;
+}
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); font-family: var(--font-b); line-height: 1.75; -webkit-font-smoothing: antialiased; }
+h1,h2,h3,h4 { font-family: var(--font-h); }
+a { color: var(--cyan); }
+a:hover { opacity: .8; }
+
+/* ── Reveal (GSAP controls opacity) ── */
+.reveal { /* initial opacity set by gsap.set() */ }
+
+/* ── Nav ── */
+nav {
+  position: sticky; top: 0; z-index: 200;
+  background: rgba(var(--bg-rgb),.95); backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
+  padding: .85rem 2rem;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-brand { font-family: var(--font-h); font-weight: 900; font-size: .95rem; letter-spacing: .05em; color: var(--cyan); text-decoration: none; }
+.nav-links { display: flex; gap: 1.5rem; list-style: none; }
+.nav-links a { font-size: .78rem; font-weight: 700; color: var(--muted); text-decoration: none; letter-spacing: .05em; text-transform: uppercase; transition: color .2s; }
+.nav-links a:hover { color: var(--cyan); }
+@media (max-width:700px) { .nav-links { display: none; } }
+
+/* ── Hero ── */
+#hero {
+  min-height: 96vh; display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 3rem 2rem 5rem;
+  background: radial-gradient(ellipse at 30% 60%, #0d2040 0%, #0a0f1e 65%);
+}
+.hero-eyebrow { font-family: var(--font-h); font-size: .72rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--cyan); margin-bottom: 1.1rem; }
+.hero-title { font-family: var(--font-h); font-size: clamp(2.6rem,6vw,5rem); font-weight: 900; line-height: 1.03; max-width: 840px; margin-bottom: 1.6rem; }
+.hero-title em { font-style: normal; color: var(--mag); }
+.hero-sub { font-size: clamp(1rem,2vw,1.18rem); color: var(--muted); max-width: 600px; line-height: 1.7; margin-bottom: 2.8rem; }
+.hero-bans { display: flex; flex-wrap: wrap; gap: 2.5rem; margin-bottom: 2.5rem; }
+.hero-ban .number { font-family: var(--font-h); font-size: clamp(2.2rem,4vw,3.2rem); font-weight: 900; display: block; line-height: 1; }
+.hero-ban .unit { font-size: .75rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--muted); margin-top: .35rem; display: block; max-width: 170px; line-height: 1.35; }
+.scroll-hint { font-size: .72rem; color: var(--muted); letter-spacing: .1em; text-transform: uppercase; display: flex; align-items: center; gap: .6rem; }
+.scroll-hint::before { content: ''; display: inline-block; width: 1px; height: 36px; background: linear-gradient(to bottom, transparent, var(--faint)); animation: pulse 2s ease-in-out infinite; }
+@keyframes pulse { 0%,100%{opacity:.3} 50%{opacity:1} }
+
+/* ── Layout ── */
+.wrap { max-width: var(--max); margin: 0 auto; padding: 0 2rem; }
+.wrap-wide { max-width: var(--max-wide); margin: 0 auto; padding: 0 2rem; }
+section { padding: 5.5rem 0; border-top: 1px solid var(--border); }
+
+/* ── Section header ── */
+.s-label { font-family: var(--font-h); font-size: .68rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--cyan); margin-bottom: .9rem; }
+.s-title { font-size: clamp(1.9rem,4vw,2.8rem); font-weight: 900; line-height: 1.08; margin-bottom: 1.2rem; }
+.s-lead { font-size: 1.1rem; color: var(--muted); line-height: 1.78; margin-bottom: 2.2rem; max-width: 660px; }
+
+/* ── Inline stat pull ── */
+.pull-stat {
+  border-left: 3px solid var(--mag);
+  padding: 1.2rem 1.6rem;
+  margin: 2.2rem 0;
+  background: rgba(var(--mag-rgb),.05);
+  border-radius: 0 8px 8px 0;
+}
+.pull-stat .n { font-family: var(--font-h); font-size: 2.8rem; font-weight: 900; color: var(--mag); line-height: 1; }
+.pull-stat .label { font-size: .88rem; color: var(--muted); margin-top: .4rem; line-height: 1.5; }
+.pull-stat.cyan { border-left-color: var(--cyan); background: rgba(var(--cyan-rgb),.05); }
+.pull-stat.cyan .n { color: var(--cyan); }
+.pull-stat.yel { border-left-color: var(--yel); background: rgba(var(--yel-rgb),.05); }
+.pull-stat.yel .n { color: var(--yel); }
+
+/* ── Body text ── */
+.body-p { font-size: .97rem; color: var(--muted); line-height: 1.8; margin-bottom: 1.3rem; }
+.body-p strong { color: var(--text); }
+.body-p em { font-style: italic; }
+
+/* ── Comparison table ── */
+.card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 1.8rem; margin: 2rem 0; }
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: .88rem; }
+thead tr { border-bottom: 1px solid var(--border); }
+th { text-align: left; padding: .7rem 1rem; font-family: var(--font-h); font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; font-weight: 700; color: var(--muted); }
+td { padding: .85rem 1rem; vertical-align: top; border-bottom: 1px solid var(--border); color: var(--muted); line-height: 1.55; }
+td strong { color: var(--text); }
+.good { color: var(--color-good); }
+.bad  { color: var(--mag); }
+.badge { display: inline-block; font-size: .65rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: .18rem .5rem; border-radius: 4px; margin-top: .25rem; }
+.badge-red  { background: rgba(var(--mag-rgb),.18);  color: var(--badge-red-txt); }
+.badge-yel  { background: rgba(var(--yel-rgb),.18);  color: var(--badge-yel-txt); }
+.badge-cyan { background: rgba(var(--cyan-rgb),.18); color: var(--badge-cyn-txt); }
+
+/* ── Callout ── */
+.callout { border: 1px dashed var(--mag); border-radius: 10px; padding: 1.8rem; margin: 2.2rem 0; background: rgba(var(--mag-rgb),.04); }
+.callout-title { font-family: var(--font-h); font-size: 1.2rem; font-weight: 900; color: var(--mag); margin-bottom: .6rem; }
+.callout p { font-size: .93rem; color: var(--muted); line-height: 1.78; }
+.callout p strong { color: var(--text); }
+
+/* ── Blockquote ── */
+blockquote { border-left: 3px solid var(--mag); padding: .8rem 1.6rem; margin: 2.4rem 0; }
+blockquote p { font-size: 1.15rem; font-style: italic; line-height: 1.55; margin-bottom: .5rem; }
+blockquote footer { font-size: .8rem; color: var(--muted); }
+
+/* ── Scrollytelling map ── */
+.map-scrolly {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: start;
+  margin: 2.5rem 0;
+}
+.map-sticky-col { position: sticky; top: 4.5rem; }
+#kioskMap {
+  height: calc(100vh - 7rem);
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+  background: var(--bg-card);
+}
+.map-legend { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: .8rem; font-size: .78rem; color: var(--muted); }
+.legend-dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: .3rem; vertical-align: middle; }
+.map-steps-col { padding: 0; }
+.map-step {
+  min-height: 75vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2rem 0;
+  border-bottom: 1px solid var(--border);
+}
+.map-step:last-child { border-bottom: none; }
+.map-step-n { font-family: var(--font-h); font-size: .68rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--faint); margin-bottom: .6rem; }
+.map-step h3 { font-family: var(--font-h); font-size: 1.5rem; font-weight: 900; margin-bottom: .9rem; line-height: 1.15; }
+.map-step p { font-size: .93rem; color: var(--muted); line-height: 1.78; margin-bottom: 1rem; }
+.map-step p strong { color: var(--text); }
+@media (max-width: 800px) {
+  .map-scrolly { grid-template-columns: 1fr; }
+  .map-sticky-col { position: relative; top: auto; }
+  #kioskMap { height: 360px; }
+  .map-step { min-height: auto; padding: 1.5rem 0; }
+}
+
+/* ── Chart ── */
+.chart-wrap { position: relative; width: 100%; height: 280px; margin: 1.2rem 0; }
+.chart-wrap.md { height: 320px; }
+
+/* ── KPMG findings ── */
+.finding-banner {
+  background: var(--bg-mid);
+  border-left: 4px solid var(--mag);
+  border-radius: 0 10px 10px 0;
+  padding: 1.6rem 1.8rem;
+  margin: 2rem 0;
+}
+.finding-banner .tag { font-family: var(--font-h); font-size: .68rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--mag); margin-bottom: .4rem; }
+.finding-banner h3 { font-family: var(--font-h); font-size: 1.25rem; font-weight: 900; margin-bottom: .6rem; }
+.finding-banner p { font-size: .9rem; color: var(--muted); line-height: 1.75; }
+.finding-banner p strong { color: var(--text); }
+.finding-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: .8rem; margin: 1.5rem 0; }
+.finding-chip { background: var(--bg-hi); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.2rem; }
+.finding-chip .id { font-family: var(--font-h); font-size: .75rem; font-weight: 900; margin-bottom: .3rem; }
+.finding-chip p { font-size: .82rem; color: var(--muted); line-height: 1.55; }
+
+/* ── Timeline (compact) ── */
+.tl { position: relative; padding-left: 1.6rem; }
+.tl::before { content: ''; position: absolute; left: .3rem; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--cyan), var(--mag)); opacity: .35; }
+.tl-item { position: relative; margin-bottom: 1.6rem; }
+.tl-item::before { content: ''; position: absolute; left: -1.35rem; top: .38rem; width: 9px; height: 9px; border-radius: 50%; background: var(--cyan); border: 2px solid var(--bg); }
+.tl-item.warn::before { background: var(--yel); }
+.tl-item.crisis::before { background: var(--mag); }
+.tl-date { font-family: var(--font-h); font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--cyan); }
+.tl-item.warn .tl-date { color: var(--yel); }
+.tl-item.crisis .tl-date { color: var(--mag); }
+.tl-title { font-family: var(--font-h); font-size: .97rem; font-weight: 700; margin: .15rem 0 .2rem; }
+.tl-body { font-size: .85rem; color: var(--muted); line-height: 1.6; }
+
+/* ── Equity split ── */
+.equity-split { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 2rem 0; }
+@media (max-width:600px) { .equity-split { grid-template-columns: 1fr; } }
+.eq-card { border-radius: 10px; padding: 1.4rem 1.6rem; }
+.eq-card .eq-tag { font-size: .68rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; margin-bottom: .5rem; }
+.eq-card h4 { font-family: var(--font-h); font-size: 1.1rem; font-weight: 900; margin-bottom: .7rem; }
+.eq-card ul { list-style: none; padding: 0; }
+.eq-card li { font-size: .85rem; color: var(--muted); padding: .35rem 0; border-bottom: 1px solid rgba(255,255,255,.06); padding-left: 1rem; position: relative; }
+.eq-card li::before { content: '–'; position: absolute; left: 0; color: var(--faint); }
+.eq-result { margin-top: .8rem; font-size: .82rem; font-style: italic; line-height: 1.5; }
+
+/* ── Bill box ── */
+.bill-box { background: linear-gradient(135deg,#0d1f38,#111e35); border: 1px solid var(--border); border-left: 4px solid var(--cyan); border-radius: 10px; padding: 2rem; margin: 2.2rem 0; }
+.bill-status { display: inline-flex; align-items: center; gap: .5rem; background: rgba(var(--yel-rgb),.1); color: var(--yel); font-family: var(--font-h); font-size: .68rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; padding: .28rem .7rem; border-radius: 99px; margin-bottom: .9rem; }
+.bill-name { font-family: var(--font-h); font-size: 1.5rem; font-weight: 900; margin-bottom: .35rem; }
+.bill-nums { font-family: var(--font-h); font-size: .8rem; font-weight: 600; color: var(--muted); margin-bottom: 1.1rem; }
+.bill-points { list-style: none; padding: 0; margin: 1.1rem 0; }
+.bill-points li { font-size: .9rem; color: var(--muted); padding: .45rem 0; border-bottom: 1px solid var(--border); padding-left: 1.4rem; position: relative; line-height: 1.55; }
+.bill-points li::before { content: '→'; position: absolute; left: 0; color: var(--cyan); font-weight: 700; }
+.bill-points li strong { color: var(--text); }
+
+/* ── Rep strip ── */
+.rep-strip { background: var(--bg-mid); border: 1px solid var(--border); border-radius: 10px; padding: 1.8rem; margin: 2rem 0; }
+.rep-strip h3 { font-family: var(--font-h); font-weight: 700; margin-bottom: .4rem; }
+.rep-strip p { font-size: .88rem; color: var(--muted); margin-bottom: 1.1rem; }
+.rep-links { display: flex; flex-wrap: wrap; gap: .6rem; }
+.rep-btn { display: inline-flex; align-items: center; gap: .4rem; background: var(--bg-card); border: 1px solid var(--border); border-radius: 7px; padding: .6rem 1.1rem; font-family: var(--font-h); font-size: .85rem; font-weight: 700; color: var(--text); text-decoration: none; transition: border-color .2s, background .2s; }
+.rep-btn:hover { border-color: var(--cyan); background: rgba(var(--cyan-rgb),.07); color: var(--text); opacity: 1; }
+.rep-btn.senate   { border-left: 3px solid var(--cyan); }
+.rep-btn.assembly { border-left: 3px solid var(--mag); }
+.rep-btn.gov      { border-left: 3px solid var(--yel); }
+
+/* ── ZIP lookup ── */
+.zip-row { display: flex; gap: .6rem; align-items: center; flex-wrap: wrap; margin-bottom: .9rem; }
+.zip-input { background: var(--bg-hi); border: 1px solid var(--border); border-radius: 7px; color: var(--text); font-family: var(--font-b); font-size: .9rem; padding: .58rem .9rem; width: 130px; outline: none; transition: border-color .2s; }
+.zip-input:focus { border-color: var(--cyan); }
+.zip-input::placeholder { color: var(--faint); }
+.zip-search { display: inline-flex; align-items: center; background: var(--cyan); color: #000; font-family: var(--font-h); font-size: .82rem; font-weight: 700; padding: .58rem 1rem; border: none; border-radius: 7px; cursor: pointer; transition: opacity .2s; }
+.zip-search:hover { opacity: .85; }
+.rep-status { font-size: .8rem; color: var(--muted); font-style: italic; margin-bottom: .7rem; }
+.rep-status.error { color: var(--mag); font-style: normal; }
+.rep-status.found { color: var(--color-good); font-style: normal; }
+
+/* ── Letter ── */
+.letter-wrap h3 { font-family: var(--font-h); font-weight: 700; margin-bottom: .5rem; }
+.letter-wrap .hint { font-size: .8rem; color: var(--muted); margin-bottom: .7rem; }
+.letter-text { background: var(--bg-hi); border: 1px solid var(--border); border-radius: 8px; padding: 1.4rem 1.6rem; font-size: .85rem; color: var(--text); line-height: 1.78; white-space: pre-wrap; word-break: break-word; }
+.copy-btn { display: inline-flex; align-items: center; gap: .4rem; margin-top: .7rem; background: var(--cyan); color: #000; font-family: var(--font-h); font-size: .8rem; font-weight: 700; padding: .5rem 1rem; border-radius: 6px; border: none; cursor: pointer; transition: opacity .2s; }
+.copy-btn:hover { opacity: .85; }
+.copy-btn.copied { background: var(--color-good); }
+
+/* ── CTA section ── */
+#act { background: linear-gradient(160deg,#0d1f38,#0a0f1e); border-top: 1px solid var(--border); padding: 6rem 2rem; text-align: center; }
+#act h2 { font-family: var(--font-h); font-size: clamp(2rem,5vw,3.2rem); font-weight: 900; margin-bottom: 1rem; }
+#act h2 span { color: var(--cyan); }
+#act .sub { font-size: 1.05rem; color: var(--muted); max-width: 520px; margin: 0 auto 2.5rem; line-height: 1.7; }
+
+/* ── Photo figures ── */
+.photo-fig { margin: 0; }
+.photo-fig img { width: 100%; display: block; object-fit: cover; filter: brightness(.52) saturate(.3); }
+.photo-fig figcaption { font-size: .68rem; color: var(--muted); line-height: 1.5; }
+.photo-fig figcaption a { color: var(--muted); text-decoration: underline; }
+
+.photo-divider { width: 100%; overflow: hidden; }
+.photo-divider .photo-fig img { height: 440px; object-position: center 30%; }
+.photo-divider .photo-fig figcaption { padding: .65rem 2rem; background: rgba(var(--bg-rgb),.92); }
+
+.photo-inline { margin: 1.8rem 0; }
+.photo-inline .photo-fig { border-radius: 8px; overflow: hidden; border: 1px solid var(--border); }
+.photo-inline .photo-fig img { height: 280px; object-position: center top; }
+.photo-inline .photo-fig figcaption { padding: .55rem .9rem; background: var(--bg-card); }
+
+.map-step-photo { margin: 1.2rem 0 0; }
+.map-step-photo .photo-fig { border-radius: 6px; overflow: hidden; border: 1px solid var(--border); }
+.map-step-photo .photo-fig img { height: 180px; object-position: center; }
+.map-step-photo .photo-fig figcaption { padding: .4rem .7rem; background: var(--bg-card); }
+
+/* ── Source ── */
+.source { font-size: .7rem; color: var(--muted); opacity: .7; font-style: italic; margin-top: .6rem; }
+.source a { color: inherit; }
+
+/* ── Footer ── */
+footer { background: #000000; border-top: 1px solid var(--border); padding: 3rem 2rem; color: var(--muted); }
+.footer-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(200px,1fr)); gap: 2.5rem; max-width: var(--max-wide); margin: 0 auto; }
+footer h4 { font-family: var(--font-h); font-size: .78rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--text); margin-bottom: .7rem; }
+footer p, footer li { font-size: .8rem; line-height: 1.65; margin-bottom: .4rem; }
+footer ul { list-style: none; padding: 0; }
+footer a { color: var(--muted); }
+footer a:hover { color: var(--cyan); }
+
+/* ── Theme toggle button ── */
+.theme-toggle {
+  background: none; border: 1px solid var(--border); border-radius: 6px;
+  color: var(--muted); font-size: .78rem; font-weight: 700; font-family: var(--font-h);
+  padding: .32rem .65rem; cursor: pointer; transition: border-color .2s, color .2s;
+  letter-spacing: .04em; flex-shrink: 0;
+}
+.theme-toggle:hover { border-color: var(--cyan); color: var(--cyan); }
+
+/* ── Light-mode component overrides ── */
+html.light-mode #hero {
+  background: radial-gradient(ellipse at 30% 60%, #dbeafe 0%, #f4f4f5 65%);
+}
+html.light-mode .bill-box {
+  background: linear-gradient(135deg, #eff6ff, #f0f9ff);
+}
+html.light-mode #act {
+  background: linear-gradient(160deg, #eff6ff, #f4f4f5);
+}
+html.light-mode footer {
+  background: #18181b;
+  border-top-color: #3f3f46;
+  color: #9ca3af;
+}
+html.light-mode footer h4 { color: #f3f4f6; }
+html.light-mode footer a  { color: #9ca3af; }
+html.light-mode footer a:hover { color: #10b981; }
+html.light-mode .photo-fig img { filter: brightness(.78) saturate(.55); }
+html.light-mode blockquote { border-left-color: var(--mag); }
+
+/* ── Performance hints (only on elements that actually animate) ── */
+.hero-title, .hero-eyebrow, .hero-sub, .hero-bans, .scroll-hint { will-change: transform; }
+
+/* ── Nav active state ── */
+.nav-links a.active { color: var(--cyan); }
+
+/* ── Map step active state ── */
+.map-step { transition: background-color .4s; }
+.map-step-active { background: rgba(var(--cyan-rgb),.04); border-left-color: var(--cyan); }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-brand">NYC:SURVEILLANCE</a>
+  <ul class="nav-links">
+    <li><a href="#double-standard">The Finding</a></li>
+    <li><a href="#inside">The Machine</a></li>
+    <li><a href="#map">The Map</a></li>
+    <li><a href="#audit">The Audit</a></li>
+    <li><a href="#equity">Who Pays</a></li>
+    <li><a href="#fix">The Fix</a></li>
+    <li><a href="#act">Act Now</a></li>
+  </ul>
+  <button class="theme-toggle" id="themeToggle" aria-label="Toggle colour theme">Dark</button>
+</nav>
+
+<!-- ── HERO ── -->
+<section id="hero">
+  <div class="wrap">
+    <p class="hero-eyebrow">Investigative Data Report &mdash; New York City</p>
+    <h1 class="hero-title">
+      The Big Apple's<br>
+      <em>Big Brother</em> Problem.
+    </h1>
+    <p class="hero-sub">
+      LinkNYC was sold to New York City as a digital equity programme — free gigabit
+      Wi-Fi for the boroughs that needed it most. What it built instead was the largest
+      warrantless surveillance network in the five boroughs, concentrated in the
+      neighbourhoods least positioned to push back.
+    </p>
+    <div class="hero-bans">
+      <div class="hero-ban">
+        <span class="number" id="heroKioskCount" style="color:var(--cyan)">2,255+</span>
+        <span class="unit">Active kiosks tracking you right now</span>
+      </div>
+      <div class="hero-ban">
+        <span class="number" style="color:var(--mag)">7,500</span>
+        <span class="unit">Kiosks the city franchise requires CityBridge to deploy</span>
+      </div>
+      <div class="hero-ban">
+        <span class="number" style="color:var(--yel)">3</span>
+        <span class="unit">Location points to identify anyone</span>
+      </div>
+    </div>
+    <div class="scroll-hint">Scroll to read the story</div>
+  </div>
+</section>
+
+<!-- ── PHOTO BREAK ── -->
+<div class="photo-divider">
+  <figure class="photo-fig">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a1/LinkNYC_kiosk_at_23rd_and_8th.jpg"
+         alt="A LinkNYC kiosk at 23rd Street and 8th Avenue in Chelsea, Manhattan"
+         loading="lazy">
+    <figcaption>
+      Chelsea, Manhattan — one of more than 2,000 Link 1.0 kiosks now fixed across the five boroughs.
+      Photo: <a href="https://commons.wikimedia.org/wiki/File:LinkNYC_kiosk_at_23rd_and_8th.jpg" target="_blank" rel="noopener">Epicgenius</a> /
+      <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a>
+    </figcaption>
+  </figure>
+</div>
+
+<!-- ── SECTION 1: THE DOUBLE STANDARD ── -->
+<section id="double-standard">
+  <div class="wrap">
+    <p class="s-label reveal">The Finding</p>
+    <h2 class="s-title reveal">The NYPD needs a court order to do what LinkNYC does by default.</h2>
+    <p class="s-lead reveal">
+      The NYPD publishes an official Impact &amp; Use Policy for "WiFi Geolocation Tracking Devices."
+      It requires probable cause and a court order. LinkNYC — the largest Wi-Fi geolocation
+      network in the city — requires neither. Same underlying capability. A completely different
+      set of rules. Or rather, no rules at all.
+    </p>
+
+    <div class="card reveal">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Constraint</th>
+              <th style="color:var(--cyan)">NYPD WiFi Geolocation<br><span style="font-weight:400;color:var(--muted);text-transform:none;letter-spacing:0;font-size:.7rem;">per POST Act Impact &amp; Use Policy</span></th>
+              <th style="color:var(--mag)">LinkNYC<br><span style="font-weight:400;color:var(--muted);text-transform:none;letter-spacing:0;font-size:.7rem;">per CityBridge privacy policy</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Legal threshold</strong></td>
+              <td class="good">Probable cause <strong>and</strong> a court order</td>
+              <td class="bad">None — passive collection by default</td>
+            </tr>
+            <tr>
+              <td><strong>Justification</strong></td>
+              <td class="good">Exigent circumstances (e.g. imminent threat to life)</td>
+              <td class="bad">Walking past a kiosk</td>
+            </tr>
+            <tr>
+              <td><strong>Scale</strong></td>
+              <td class="good">Tactical devices, case-by-case deployment</td>
+              <td class="bad"><span id="compareCount">2,255+</span> fixed kiosks, citywide, always-on</td>
+            </tr>
+            <tr>
+              <td><strong>Data retention</strong></td>
+              <td class="good">Location data is not recorded</td>
+              <td class="bad">Indefinite — until the Dec 2022 hashed-MAC fix (after years of violation)</td>
+            </tr>
+            <tr>
+              <td><strong>Scope</strong></td>
+              <td class="good">Narrow, target-specific</td>
+              <td class="bad">Indiscriminate, ambient, population-wide</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="source">NYPD WiFi Geolocation Tracking Devices IUP (POST Act); KPMG audit PF-01; LinkNYC Privacy Policy; NYC.gov POST Act disclosures.</p>
+    </div>
+
+    <div class="callout reveal">
+      <div class="callout-title">The Regulatory Gap</div>
+      <p>
+        The POST Act requires the NYPD to disclose the surveillance tools it <em>owns</em>.
+        CityBridge isn't the NYPD — it's a private consortium — which means the <strong><span id="gapCount">2,255+</span>
+        kiosks</strong> logging device identifiers across the five boroughs sit entirely outside that
+        disclosure framework. Yet the footage and metadata they collect flow voluntarily into systems
+        like the Domain Awareness System and facial recognition that <em>do</em> fall within it.
+        The city gets the data without the accountability. That's not an oversight. It's the architecture.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ── SECTION 2: WHAT'S INSIDE ── -->
+<section id="inside">
+  <div class="wrap">
+    <p class="s-label reveal">The Machine</p>
+    <h2 class="s-title reveal">You don't have to connect. Walking past is enough.</h2>
+    <p class="s-lead reveal">
+      LinkNYC replaced New York's 13,000 obsolete payphones starting in 2015, promising
+      free gigabit Wi-Fi, charging ports, and domestic calls. The pitch was digital equity.
+      The funding mechanism was something else entirely.
+    </p>
+
+    <p class="body-p reveal">
+      The programme is built and operated at no direct cost to taxpayers — because it runs on
+      advertising. Intersection, the ad arm of the CityBridge consortium, pitches brands a
+      <strong>"context-aware platform"</strong> for reaching consumers as they move through physical space.
+      Their own marketing materials promise to identify niches like <strong>"18-to-34-year-old
+      high-income college graduates"</strong> based on behavioural data harvested from the surrounding
+      environment. To deliver that promise, every kiosk has to function as a sensor hub first
+      and a public utility second.
+    </p>
+
+    <p class="body-p reveal">
+      Each structure carries dual HD cameras, Wi-Fi access points, Bluetooth beacons, and
+      environmental sensors monitoring noise, temperature, light, and air quality. The cameras
+      retain footage for seven days. The beacons continuously scan for nearby devices, logging
+      the unique MAC address your phone broadcasts whenever Wi-Fi is enabled — <strong>regardless
+      of whether you've ever touched the kiosk or even noticed it standing there</strong>. The
+      32-foot Link5G poles that began appearing in 2022 extend that reach further, adding 5G
+      antennae and greater sensor capacity. At some point, it stops being street furniture
+      and starts being something else entirely.
+    </p>
+
+    <div class="pull-stat reveal">
+      <div class="n">3</div>
+      <div class="label">location data points — that's all it takes to re-identify a named
+      individual from an "anonymous" mobility dataset, per peer-reviewed research.
+      There are <span id="statKiosks">2,255+</span> kiosks collecting those points right now.</div>
+    </div>
+
+    <p class="body-p reveal">
+      The consortium — Intersection (advertising), Qualcomm (hardware), and Boldyn Networks
+      (connectivity, which already runs NYC subway Wi-Fi) — treats the public right-of-way
+      as a captive data arena. As the NYCLU put it plainly:
+    </p>
+
+    <blockquote class="reveal">
+      <p>&ldquo;LinkNYC is a barely mitigated privacy disaster.&rdquo;</p>
+      <footer>&mdash; New York Civil Liberties Union</footer>
+    </blockquote>
+
+    <div class="card reveal" style="margin-top:2rem;">
+      <h3 style="font-family:var(--font-h);font-weight:700;margin-bottom:1rem;font-size:1rem;">What each sensor captures</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>What</th><th>How</th><th>Risk</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>Passive location</strong><br><span class="badge badge-red">Critical</span></td>
+              <td>Wi-Fi &amp; Bluetooth intercept your MAC address without connection</td>
+              <td>Your daily route becomes a data product sold to advertisers</td>
+            </tr>
+            <tr>
+              <td><strong>Visual surveillance</strong><br><span class="badge badge-yel">High</span></td>
+              <td>Dual HD cameras, 7-day retention</td>
+              <td>Continuous recording; latent facial-recognition input</td>
+            </tr>
+            <tr>
+              <td><strong>Audience targeting</strong><br><span class="badge badge-red">Critical</span></td>
+              <td>Algorithmic fusion via Intersection backend</td>
+              <td>Re-identification of "anonymous" individuals for ad cohorts</td>
+            </tr>
+            <tr>
+              <td><strong>Environmental</strong><br><span class="badge badge-cyan">Medium</span></td>
+              <td>Noise, temp, light, pollutant sensors</td>
+              <td>Mission-creep into incident response; potential DAS integration</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="source">LinkNYC privacy policy; NYCLU testimony; EFF analysis; KPMG audit findings.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── SECTION 3: THE MAP ── -->
+<section id="map">
+  <div class="wrap-wide">
+    <div class="wrap" style="padding:0;">
+      <p class="s-label reveal">The Geography</p>
+      <h2 class="s-title reveal">Every kiosk. Every borough. Live.</h2>
+    </div>
+
+    <div class="map-scrolly" style="margin-top:2.5rem;">
+
+      <div class="map-sticky-col">
+        <div id="kioskMap"></div>
+        <div class="map-legend">
+          <span><span class="legend-dot" style="background:#06b6d4"></span>Link 1.0 (original)</span>
+          <span><span class="legend-dot" style="background:#e11d74"></span>Link5G with ads</span>
+          <span><span class="legend-dot" style="background:#f59e0b"></span>Link5G no-ad</span>
+          <span><span class="legend-dot" style="background:#10b981;opacity:.5;border-radius:0"></span>~80 m detection radius</span>
+        </div>
+        <p class="source" id="kioskCountLine">Loading live data from NYC Open Data&hellip;</p>
+      </div>
+
+      <div class="map-steps-col">
+        <div class="map-step reveal">
+          <div class="map-step-n">01 / The Original Sin</div>
+          <h3>Manhattan first. Outer boroughs last.</h3>
+          <p>
+            The Link 1.0 rollout concentrated kiosks in <strong>high-income Manhattan
+            commercial corridors</strong> — not because that's where the digital divide
+            was widest, but because that's where Intersection's advertisers wanted their
+            inventory. Equity was the stated purpose. Ad revenue was the actual logic.
+          </p>
+          <p>
+            Less than <strong>10% of the original LinkNYC footprint went to the Bronx</strong>
+            — the borough with the highest rates of digital disconnection and poverty
+            in the city. Spatial researchers concluded that the programme "completely failed
+            its target population." That's a measured way of saying the people most in
+            need of public Wi-Fi were last in line for it.
+          </p>
+          <div class="pull-stat cyan" style="margin:1.2rem 0 0;">
+            <div class="n">1.5M</div>
+            <div class="label">New Yorkers without reliable home broadband — the people LinkNYC claimed to serve</div>
+          </div>
+        </div>
+
+        <div class="map-step reveal">
+          <div class="map-step-n">02 / The Pivot</div>
+          <h3>Near-bankruptcy triggered the outer-borough mandate.</h3>
+          <p>
+            By 2019, CityBridge owed the city <strong>nearly $70 million in arrears</strong>.
+            Rather than rethinking the franchise, the city renegotiated it — restructuring
+            the debt in exchange for a new generation of hardware: the towering 32-foot
+            Link5G poles. An equity mandate came with them. <strong>90% of all new Link5G
+            units must be built in the outer boroughs</strong> or above 96th Street in Manhattan.
+          </p>
+          <p>
+            739 specific kiosk locations were mandated across <strong>13 community districts</strong>
+            selected for low median income, severe broadband gaps, and absence of existing
+            LinkNYC infrastructure. The surveillance follows the need.
+          </p>
+          <div class="map-step-photo">
+            <figure class="photo-fig">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkNYC%3B_Jamaica_and_Guy_R_Brewer-2.jpg"
+                   alt="LinkNYC kiosk at Jamaica Avenue and Guy R. Brewer Boulevard, Queens"
+                   loading="lazy">
+              <figcaption>
+                Jamaica Ave &amp; Guy R. Brewer Blvd, Queens — one of the 13 mandated districts.
+                Photo: <a href="https://commons.wikimedia.org/wiki/File:LinkNYC;_Jamaica_and_Guy_R_Brewer-2.jpg" target="_blank" rel="noopener">DanTD</a> /
+                <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a>
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+
+        <div class="map-step reveal">
+          <div class="map-step-n">03 / The Mismatch</div>
+          <h3>The boroughs with the greatest need get the greatest surveillance load.</h3>
+          <p>
+            The chart below shows the correlation directly: the Bronx has the city's
+            highest broadband deficit — and is also slated for the largest share of new
+            surveillance kiosks. The digital divide isn't closed. It's replaced.
+          </p>
+          <div class="chart-wrap md"><canvas id="needVsDeployChart"></canvas></div>
+          <p class="source">Need: ACS 5-year (2018–2022) via NYC OTI. Future deployment: derived from 90% outer-borough mandate and 13 priority districts (NYC Mayor's Office, 2022).</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SECTION 4: THE AUDIT ── -->
+<section id="audit">
+  <div class="wrap">
+    <p class="s-label reveal">The Confession</p>
+    <h2 class="s-title reveal">The city finally looked. Here's what it found.</h2>
+    <p class="s-lead reveal">
+      At some point, the city had to look. In 2021, the Office of Technology and Innovation
+      commissioned KPMG to audit CityBridge's compliance with its own privacy obligations.
+      The resulting report was uploaded to a government page in January 2023 — heavily
+      redacted, no press release, no link from the LinkNYC portal. The NYCLU found it
+      six months later.
+    </p>
+
+    <div class="tl reveal">
+      <div class="tl-item">
+        <div class="tl-date">Jul–Dec 2021</div>
+        <div class="tl-title">KPMG conducts the audit</div>
+        <div class="tl-body">Four privacy findings identified, designated PF-01 through PF-04.</div>
+      </div>
+      <div class="tl-item warn">
+        <div class="tl-date">Dec 2022</div>
+        <div class="tl-title">CityBridge claims all four findings remediated</div>
+        <div class="tl-body">A formal letter to OTI asserts the problems have been fixed.</div>
+      </div>
+      <div class="tl-item crisis">
+        <div class="tl-date">Jan 2023</div>
+        <div class="tl-title">Audit quietly uploaded — redacted, unannounced</div>
+        <div class="tl-body">Non-chronological order, no press release, no link from link.nyc.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">Jun 2023</div>
+        <div class="tl-title">NYCLU surfaces it in City Council testimony</div>
+        <div class="tl-body">Six months after release, the findings reach public attention through civil liberties advocates — not city communications.</div>
+      </div>
+    </div>
+
+    <div class="finding-banner reveal">
+      <div class="tag">PF-01 &mdash; Critical Finding</div>
+      <h3>For years, CityBridge stored your device's fingerprint in plaintext.</h3>
+      <p>
+        A MAC address is a unique, hardcoded identifier your phone broadcasts constantly —
+        it's effectively a fingerprint for your device. CityBridge was contractually required
+        to anonymize these before they were ever stored. <strong>They didn't.</strong> For over
+        half a decade, every device that came within range of a kiosk was uniquely identified
+        and logged, in direct violation of the franchise agreement and the company's own
+        privacy policy. The fix — a one-way hash applied to stored addresses — wasn't
+        deployed until December 2022. Years into the network's operation.
+      </p>
+    </div>
+
+    <p class="body-p reveal">The three remaining findings rounded out a picture of systematic negligence:</p>
+
+    <div class="finding-row reveal">
+      <div class="finding-chip">
+        <div class="id" style="color:var(--yel)">PF-02</div>
+        <p>The Wi-Fi sign-on page showed <strong>Intersection's privacy policy</strong> — the ad company's — instead of LinkNYC's. Users were legally misled about who governed their data.</p>
+      </div>
+      <div class="finding-chip">
+        <div class="id" style="color:var(--cyan)">PF-03</div>
+        <p>Welcome emails lacked the legally required <strong>unsubscribe link</strong>, trapping users in marketing communications in violation of anti-spam law.</p>
+      </div>
+      <div class="finding-chip">
+        <div class="id" style="color:var(--cyan)">PF-04</div>
+        <p>The Wi-Fi splash page <strong>failed to reference</strong> the correct Terms of Use and Privacy Policy — leaving users without clear notice of what they were accepting.</p>
+      </div>
+    </div>
+
+    <p class="source" style="margin-top:.5rem;">KPMG audit (OTI, redacted Jan 2023); CityBridge remediation letter to OTI, 12 Dec 2022; NYCLU testimony to NYC Council Tech Committee, 7 Jun 2023.</p>
+  </div>
+</section>
+
+<!-- ── SECTION 5: WHO PAYS ── -->
+<section id="equity">
+  <div class="wrap">
+    <p class="s-label reveal">Who Pays</p>
+    <h2 class="s-title reveal">Privacy is a luxury. The poor pay with theirs.</h2>
+    <p class="s-lead reveal">
+      Wealthier residents can largely ignore LinkNYC — they have private broadband,
+      unlimited data plans, and no real reason to use a public kiosk. Low-income residents,
+      undocumented immigrants, and unhoused New Yorkers who depend on public Wi-Fi as a
+      digital lifeline don't have that option. For them, the network isn't a convenience;
+      it's infrastructure they can't opt out of. And the price of access is their civil liberties.
+    </p>
+
+    <p class="body-p reveal">
+      Academic literature calls this <strong>digital redlining</strong> — a system where access
+      is finally extended to underserved communities, but only bundled with invasive monitoring.
+      The Link5G mandate in the 13 priority districts makes this explicit in the contract itself:
+      the same neighbourhoods with the highest broadband deficit, the lowest incomes, and the
+      longest history of aggressive policing are precisely the ones designated to receive the
+      next wave of surveillance infrastructure. It isn't a coincidence. It's the deal.
+    </p>
+
+    <div class="equity-split reveal">
+      <div class="eq-card" style="background:rgba(var(--cyan-rgb),.06);border:1px solid rgba(var(--cyan-rgb),.2);">
+        <div class="eq-tag" style="color:var(--cyan)">Civic Agency: High</div>
+        <h4 style="color:var(--cyan)">Wealthy historic districts</h4>
+        <p style="font-size:.85rem;color:var(--muted);margin-bottom:.7rem;">Upper East Side, Tribeca, Carnegie Hill, Financial District.</p>
+        <ul>
+          <li>Community Board 1 moratorium resolution</li>
+          <li>FRIENDS of the Upper East Side legal campaigns</li>
+          <li>Landmarks Conservancy aesthetic objections</li>
+          <li>Congressman Nadler petition to FCC under NHPA §106</li>
+        </ul>
+        <div class="eq-result" style="color:var(--cyan);">Link5G poles near Central Park and the Woolworth Building stalled.</div>
+      </div>
+      <div class="eq-card" style="background:rgba(var(--mag-rgb),.06);border:1px solid rgba(var(--mag-rgb),.2);">
+        <div class="eq-tag" style="color:var(--mag)">Civic Agency: Low</div>
+        <h4 style="color:var(--mag)">Mandated rollout districts</h4>
+        <p style="font-size:.85rem;color:var(--muted);margin-bottom:.7rem;">Brownsville, Hunts Point, Jamaica, Inwood, Stapleton.</p>
+        <ul>
+          <li>No equivalent preservationist institution</li>
+          <li>No federal-level political champion</li>
+          <li>Bound by the 90% outer-borough mandate</li>
+          <li>Already heavily policed by Domain Awareness System</li>
+        </ul>
+        <div class="eq-result" style="color:var(--mag);">739 kiosks mandated — surveillance infrastructure forced in the name of equity.</div>
+      </div>
+    </div>
+
+    <div class="photo-inline reveal">
+      <figure class="photo-fig">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/1/10/LinkNYC_kiosk_3rd_Ave_Bronx_IMG_3239_HLG.jpg"
+             alt="LinkNYC kiosk on 3rd Avenue in the Bronx displaying a Community Board 1 advertisement"
+             loading="lazy">
+        <figcaption>
+          Bronx, 3rd Avenue — among the fewer than 10% of original LinkNYC kiosks deployed in the borough. Note the Community Board 1 public-notice ad: civic infrastructure doubling as a surveillance node.
+          Photo: <a href="https://commons.wikimedia.org/wiki/File:LinkNYC_kiosk_3rd_Ave_Bronx_IMG_3239_HLG.jpg" target="_blank" rel="noopener">Hugo L. González</a> /
+          <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="pull-stat reveal" style="margin:2.2rem 0;">
+      <div class="n" style="color:var(--yel)">30–40%</div>
+      <div class="label">of NYC Housing Authority residents lacked home broadband — the population most dependent on LinkNYC's "free" Wi-Fi, and most exposed to its surveillance.</div>
+    </div>
+
+    <blockquote class="reveal" style="border-left-color:var(--yel);">
+      <p>&ldquo;Facial recognition gets it wrong, leading to the false arrest of New Yorkers of color — and can be easily weaponized against protesters, activists, or religious communities exercising their fundamental First Amendment rights.&rdquo;</p>
+      <footer>&mdash; Albert Kahn, Executive Director, Surveillance Technology Oversight Project (S.T.O.P.)</footer>
+    </blockquote>
+
+    <p class="body-p reveal">
+      This isn't unique to New York. Researchers tracking the rollout of InLinkUK kiosks in
+      London's Tower Hamlets documented the same pattern: smart kiosks deployed in marginalised
+      neighbourhoods catalysed heavier policing operations and data-driven criminalisation.
+      Different city. Different branding. The same architecture producing the same outcome —
+      because the incentives that built it were the same to begin with.
+    </p>
+    <p class="source reveal">Tandfonline (2025), "Digital policing of homeless and other marginalised groups in smart cities."</p>
+  </div>
+</section>
+
+<!-- ── SECTION 6: THE FIX ── -->
+<section id="fix">
+  <div class="wrap">
+    <p class="s-label reveal">What Can Be Done</p>
+    <h2 class="s-title reveal">There is a bill. It needs voices.</h2>
+    <p class="s-lead reveal">
+      There is a bill. Two legislators have introduced the Digital Fairness Act in both
+      chambers of the New York State Legislature, and it is in committee right now — which
+      means it can still move this session. What it needs isn't money or political connections.
+      It needs constituent contact. A message from a voter in a district is one of the few
+      things that actually moves a committee vote.
+    </p>
+
+    <div class="bill-box reveal">
+      <div class="bill-status">&#9679;&nbsp; Pending — In Committee</div>
+      <div class="bill-name">The Digital Fairness Act</div>
+      <div class="bill-nums">Senate Bill S4276 &nbsp;·&nbsp; Assembly Bill A3308 &nbsp;·&nbsp; Introduced Feb 2025 &nbsp;·&nbsp; Committee on Internet &amp; Technology</div>
+      <p class="body-p" style="margin-bottom:.8rem;">
+        The bill requires any entity processing the personal data of 500+ New Yorkers to provide
+        meaningful, affirmative notice before collection begins. It bans discriminatory targeted
+        advertising and establishes accountability for automated decision systems in government
+        and business contexts.
+      </p>
+      <ul class="bill-points">
+        <li><strong>Closes the consent gap:</strong> opt-in required before passive MAC tracking — directly addressing KPMG finding PF-01</li>
+        <li><strong>Covers the POST Act loophole:</strong> applies to private contractors like CityBridge, not just NYPD-owned tools</li>
+        <li><strong>Algorithmic accountability:</strong> the same systems used to target ads can deny housing, credit, and employment</li>
+        <li><strong>NYCLU has published a formal legislative memo in support</strong></li>
+        <li><strong>Legislative momentum:</strong> the NY Senate advanced a companion surveillance-pricing bill (S8623) in May 2026 — the same political current</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ── -->
+<section id="act">
+  <h2 class="reveal">Tell your rep to pass <span>S4276&nbsp;/&nbsp;A3308.</span></h2>
+  <p class="sub reveal">Two steps. Under five minutes. The bill is in committee — and a message from a constituent is one of the few things that actually moves it.</p>
+
+  <div style="max-width:680px;margin:0 auto;text-align:left;">
+    <div class="letter-wrap reveal">
+      <h3>Step 1 — Copy this message</h3>
+      <p class="hint">Paste it into the contact form on your rep's page. Adding your neighbourhood and a personal sentence makes it significantly more effective.</p>
+      <div class="letter-text" id="letterText">Subject: Support the Digital Fairness Act (S4276/A3308)
+
+Dear [Senator / Assembly Member] [Name],
+
+I am a constituent writing to ask you to co-sponsor and advance the Digital Fairness Act (S4276 / A3308) — and to push for meaningful amendments before it reaches a final vote.
+
+New York's 2020 POST Act requires the NYPD to publish use policies for its surveillance technology, but it has a critical gap: the law applies to city agencies, not to private contractors operating on city infrastructure. CityBridge LLC runs more than 2,000 LinkNYC kiosks under a franchise agreement with the city. These kiosks passively log the unique MAC address broadcast by every nearby phone — no Wi-Fi connection required, no consent asked. A KPMG audit commissioned by the city's Office of Technology and Innovation found that MAC addresses were retained in plaintext for years, in violation of CityBridge's own privacy policy. Because CityBridge is a private company, this government-funded surveillance network operates entirely outside the POST Act's disclosure requirements: no public use policy, no mandatory audit cycle, no enforcement mechanism.
+
+The Digital Fairness Act addresses this directly. By requiring affirmative consent before personal data is collected in public spaces, S4276 / A3308 would close the contractor loophole the POST Act left open. That is the right answer to the right problem, and I support it.
+
+The bill can go further. It currently restricts what companies may do with data they already hold, but does not yet require that less data be collected in the first place. I urge you to push for amendments that mandate MAC-address non-retention at the hardware level, set strict retention limits (30 days or fewer for passive surveillance data), and apply equivalent oversight to any private contractor operating under a city franchise or license.
+
+Please co-sponsor S4276 / A3308, help move it out of committee, and work with colleagues to add data-minimization provisions before the final vote. New Yorkers deserve a law that limits how much surveillance data is collected — not just what can be done with it afterward.
+
+Thank you for your time and your public service.
+
+Respectfully,
+[Your name]
+[Your address and neighbourhood, NY]</div>
+      <button class="copy-btn" onclick="copyLetter(this)">&#9647; Copy letter to clipboard</button>
+    </div>
+
+    <div class="rep-strip reveal" style="margin-top:1.5rem;">
+      <h3>Step 2 — Send it to your representatives</h3>
+      <p>Use the official NY State lookup pages to find your Senator and Assembly Member, then paste the letter into their contact form.</p>
+      <div class="rep-links">
+        <a href="https://www.nysenate.gov/find-my-senator" target="_blank" rel="noopener" class="rep-btn senate">↗ Find your State Senator</a>
+        <a href="https://nyassembly.gov/mem/search/" target="_blank" rel="noopener" class="rep-btn assembly">↗ Find your Assembly Member</a>
+        <a href="https://www.governor.ny.gov/content/governor-contact-form" target="_blank" rel="noopener" class="rep-btn gov">↗ Contact the Governor</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <h4>About this report</h4>
+      <p>An independent journalistic data project examining the LinkNYC surveillance network, its documented privacy failures, and the pending NY State legislation that would address them.</p>
+      <p style="margin-top:.6rem;">Live kiosk data: <a href="https://data.cityofnewyork.us/Social-Services/LinkNYC-Kiosk-Locations/s4kf-3yrf" target="_blank" rel="noopener">NYC Open Data — s4kf-3yrf</a></p>
+    </div>
+    <div>
+      <h4>Primary Sources</h4>
+      <ul>
+        <li><a href="https://www.nysenate.gov/legislation/bills/2025/S4276" target="_blank" rel="noopener">NY Senate Bill S4276 — Digital Fairness Act</a></li>
+        <li><a href="https://www.nyclu.org/resources/policy/legislations/legislative-memo-digital-fairness-act" target="_blank" rel="noopener">NYCLU Legislative Memo — Digital Fairness Act</a></li>
+        <li><a href="https://www.nyc.gov/site/nypd/about/about-nypd/policy/post-act.page" target="_blank" rel="noopener">NYPD POST Act Impact &amp; Use Policies</a></li>
+        <li><a href="https://www.nyclu.org/commentary/linknyc-privacy-disaster-heres-why" target="_blank" rel="noopener">NYCLU — "LinkNYC is a Privacy Disaster"</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Additional Sources</h4>
+      <ul>
+        <li>KPMG audit of LinkNYC (OTI, Jan 2023, redacted)</li>
+        <li>CityBridge remediation letter to OTI, 12 Dec 2022</li>
+        <li>NYCLU testimony to NYC Council, Jun 2023</li>
+        <li>EPIC report on NYC face surveillance</li>
+        <li>OSC audit — LinkNYC follow-up (Sep 2023)</li>
+        <li>Tandfonline (2025) — digital policing in smart cities</li>
+        <li>S.T.O.P. v. NYPD litigation (ECBAWM)</li>
+      </ul>
+    </div>
+  </div>
+  <div style="max-width:var(--max-wide);margin:2rem auto 0;padding-top:1.5rem;border-top:1px solid var(--border);font-size:.72rem;color:var(--muted);">
+    Broadband figures: ACS 5-year (2018–2022). Kiosk counts are live from NYC Open Data and will differ from static references. Digital Fairness Act status current as of May 2026 — verify at nysenate.gov before publishing.
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/SplitText.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrambleTextPlugin.min.js"></script>
+<script>
+gsap.registerPlugin(ScrollTrigger, SplitText, ScrambleTextPlugin);
+
+/* ── Reduced-motion: respect user OS preference throughout ── */
+const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ── Hero: SplitText with autoSplit (font-load safe) + ignore <em> ── */
+SplitText.create('.hero-title', {
+  type: 'words',
+  ignore: 'em',
+  autoSplit: true,
+  onSplit(self) {
+    gsap.set('.hero-title em', { autoAlpha: 0 });
+    const tl = gsap.timeline({ delay: 0.25 });
+    tl
+      .from('.hero-eyebrow', { autoAlpha: 0, y: 12, duration: 0.5, ease: 'power2.out' })
+      .from(self.words, {
+        autoAlpha: 0, y: prefersReduced ? 0 : 52,
+        stagger: prefersReduced ? 0 : 0.055,
+        duration: prefersReduced ? 0.1 : 0.8, ease: 'power3.out'
+      }, '-=0.15')
+      .from('.hero-sub',    { autoAlpha: 0, y: prefersReduced ? 0 : 18, duration: 0.6, ease: 'power2.out' }, '-=0.35')
+      .from('.hero-bans',   { autoAlpha: 0, y: prefersReduced ? 0 : 18, duration: 0.6, ease: 'power2.out' }, '-=0.25')
+      .from('.scroll-hint', { autoAlpha: 0, duration: 0.5, ease: 'power1.out' }, '-=0.1')
+      /* ScrambleText reveal on "Big Brother" — binary chars for surveillance feel */
+      .to('.hero-title em', { autoAlpha: 1, duration: 0.01 })
+      .to('.hero-title em', {
+        scrambleText: { text: 'Big Brother', chars: '01', speed: 0.4, revealDelay: 0.3 },
+        duration: prefersReduced ? 0.1 : 1.2,
+        ease: 'none'
+      }, '<');
+    return tl;
+  }
+});
+
+/* ── Hero BAN countUp ── */
+function heroBanCount(el, target, delay) {
+  if (!el) return;
+  if (prefersReduced) { el.textContent = target.toLocaleString(); return; }
+  const obj = { val: 0 };
+  gsap.to(obj, { val: target, duration: 2, delay, ease: 'power2.out',
+    onUpdate() { el.textContent = Math.round(obj.val).toLocaleString(); }
+  });
+}
+const heroBans = document.querySelectorAll('.hero-ban .number');
+heroBanCount(heroBans[1], 7500, 1.3);
+heroBanCount(heroBans[2], 3, 1.5);
+
+/* ── Section title reveals: SplitText mask (line-wipe, editorial style) ── */
+document.querySelectorAll('.s-title').forEach(el => {
+  SplitText.create(el, {
+    type: 'lines',
+    mask: 'lines',
+    autoSplit: true,
+    onSplit(self) {
+      return gsap.from(self.lines, {
+        yPercent: 100,
+        stagger: 0.12,
+        duration: prefersReduced ? 0.1 : 0.8,
+        ease: 'power3.out',
+        scrollTrigger: { trigger: el, start: 'top 88%', once: true }
+      });
+    }
+  });
+});
+
+/* ── Pull-stat number animations: countUp or scale-in on scroll ── */
+document.querySelectorAll('.pull-stat .n').forEach(el => {
+  const text    = el.textContent.trim();
+  const isRange = text.includes('–') || text.includes('-');
+  const num     = parseFloat(text.replace(/[^0-9.]/g, ''));
+  const suffix  = text.replace(/^[0-9.]+/, '').trim();
+
+  if (isRange || isNaN(num)) {
+    /* Range values (e.g. "30–40%"): scale + fade entrance */
+    gsap.from(el, {
+      scale: 0.82, autoAlpha: 0, duration: 0.7, ease: 'back.out(1.7)',
+      scrollTrigger: { trigger: el, start: 'top 90%', once: true }
+    });
+    return;
+  }
+
+  /* Numeric values: count up from 0 when scrolled into view */
+  el.textContent = '0' + suffix;
+  ScrollTrigger.create({
+    trigger: el, start: 'top 88%', once: true,
+    onEnter() {
+      if (prefersReduced) { el.textContent = text; return; }
+      const obj = { val: 0 };
+      gsap.to(obj, {
+        val: num, duration: 2, ease: 'power2.out',
+        onUpdate() {
+          el.textContent = (num % 1 !== 0
+            ? obj.val.toFixed(1)
+            : Math.round(obj.val).toLocaleString()) + suffix;
+        }
+      });
+    }
+  });
+});
+
+/* ── Scroll reveals for all other .reveal elements (s-title handled above) ── */
+gsap.set('.reveal:not(.s-title)', { autoAlpha: 0, y: 26 });
+ScrollTrigger.batch('.reveal:not(.s-title)', {
+  onEnter: batch => gsap.to(batch, { autoAlpha: 1, y: 0, stagger: 0.1, duration: 0.7, ease: 'power2.out' }),
+  once: true,
+  start: 'top 90%'
+});
+
+/* ── Nav: highlight active section link as user scrolls ── */
+document.querySelectorAll('section[id]').forEach(section => {
+  const link = document.querySelector(`.nav-links a[href="#${section.id}"]`);
+  if (!link) return;
+  ScrollTrigger.create({
+    trigger: section,
+    start: 'top center',
+    end: 'bottom center',
+    toggleClass: { targets: link, className: 'active' }
+  });
+});
+
+/* ── Hero: mouse parallax on BANs via quickTo ── */
+if (!prefersReduced) {
+  const heroEl = document.getElementById('hero');
+  const xTo = gsap.quickTo('.hero-bans', 'x', { duration: 0.8, ease: 'power3' });
+  const yTo = gsap.quickTo('.hero-bans', 'y', { duration: 0.8, ease: 'power3' });
+  heroEl.addEventListener('mousemove', e => {
+    const { left, top, width, height } = heroEl.getBoundingClientRect();
+    xTo((e.clientX - left - width  / 2) * 0.03);
+    yTo((e.clientY - top  - height / 2) * 0.03);
+  });
+  heroEl.addEventListener('mouseleave', () => { xTo(0); yTo(0); });
+}
+
+/* ── Copy letter ── */
+function copyLetter(btn) {
+  navigator.clipboard.writeText(document.getElementById('letterText').textContent).then(() => {
+    btn.textContent = '✓ Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.innerHTML = '&#9647; Copy letter to clipboard'; btn.classList.remove('copied'); }, 2500);
+  });
+}
+
+
+/* ── Chart defaults ── */
+const baseOpts = {
+  responsive: true, maintainAspectRatio: false,
+  plugins: { legend: { labels: { color: '#8899b4', font: { family: 'Oxygen,sans-serif', size: 11 } } } },
+  scales: {
+    x: { grid: { color: '#1f2f4a' }, ticks: { color: '#8899b4' } },
+    y: { grid: { color: '#1f2f4a' }, ticks: { color: '#8899b4' } }
+  }
+};
+
+/* ── Theme toggle ── */
+let kioskMap      = null;   /* set by loadKiosks()           */
+let kioskTile     = null;   /* tile layer ref for swapping   */
+let deployChart   = null;   /* chart ref for colour updates  */
+
+function applyTheme(theme) {
+  const isLight = theme === 'light';
+  document.documentElement.classList.toggle('light-mode', isLight);
+  document.getElementById('themeToggle').textContent = isLight ? 'Dark' : 'Light';
+
+  /* Swap Leaflet tiles */
+  if (kioskMap && kioskTile) {
+    kioskMap.removeLayer(kioskTile);
+    const url = isLight
+      ? 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png'
+      : 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
+    kioskTile = L.tileLayer(url, {
+      attribution: '&copy; OpenStreetMap &copy; CARTO', subdomains: 'abcd', maxZoom: 18
+    }).addTo(kioskMap);
+  }
+
+  /* Update Chart.js colours */
+  if (deployChart) {
+    const grid   = isLight ? '#e4e4e7' : '#27272a';
+    const muted  = isLight ? '#52525b' : '#9ca3af';
+    const strong = isLight ? '#09090b' : '#f3f4f6';
+    deployChart.options.scales.x.grid.color        = grid;
+    deployChart.options.scales.x.ticks.color       = strong;
+    deployChart.options.scales.y.grid.color        = grid;
+    deployChart.options.scales.y.ticks.color       = muted;
+    deployChart.options.plugins.legend.labels.color = muted;
+    deployChart.update();
+  }
+}
+
+/* Initialise from saved preference (default: dark) */
+const savedTheme = localStorage.getItem('nycst-theme') || 'dark';
+applyTheme(savedTheme);
+
+document.getElementById('themeToggle').addEventListener('click', () => {
+  const next = document.documentElement.classList.contains('light-mode') ? 'dark' : 'light';
+  localStorage.setItem('nycst-theme', next);
+  applyTheme(next);
+});
+
+/* ── Need vs deploy chart ── */
+deployChart = new Chart(document.getElementById('needVsDeployChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Bronx', 'Brooklyn', 'Staten Island', 'Queens', 'Manhattan'],
+    datasets: [
+      { label: '% households without broadband', data: [33, 24, 22, 21, 17], backgroundColor: '#06b6d4', borderRadius: 4 },
+      { label: 'Est. % share of next Link5G wave', data: [27, 31, 8, 19, 15], backgroundColor: '#e11d74', borderRadius: 4 }
+    ]
+  },
+  options: { ...baseOpts,
+    plugins: { ...baseOpts.plugins,
+      legend: { display: true, position: 'bottom', labels: { color: '#8899b4', font: { size: 10 } } },
+      tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: ${ctx.parsed.y}%` } }
+    },
+    scales: {
+      x: { ...baseOpts.scales.x, grid: { display: false }, ticks: { color: '#e8edf5', font: { weight: '700' } } },
+      y: { ...baseOpts.scales.y, beginAtZero: true, ticks: { ...baseOpts.scales.y.ticks, callback: v => v + '%' } }
+    }
+  }
+});
+
+/* ── Kiosk map generation colours ── */
+const GEN = {
+  'Link1.0':          { color: '#06b6d4', range: 70  },  /* ~15-ft kiosk, 802.11n      */
+  'LINK1.0':          { color: '#06b6d4', range: 70  },
+  'Link5G_Ad':        { color: '#e11d74', range: 120 },  /* 32-ft pole, 802.11ax       */
+  'Link5G_NonAd':     { color: '#f59e0b', range: 120 },
+  'Public Payphones': { color: '#475569', range: 40  }
+};
+
+/* ── Live kiosk data + map scrollytelling ── */
+async function loadKiosks() {
+  kioskMap = L.map('kioskMap', { preferCanvas: true, scrollWheelZoom: false })
+    .setView([40.7308, -73.9852], 11);
+  kioskMap.attributionControl.setPrefix('');
+  const isLight = document.documentElement.classList.contains('light-mode');
+  const tileUrl = isLight
+    ? 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png'
+    : 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
+  kioskTile = L.tileLayer(tileUrl, {
+    attribution: '&copy; OpenStreetMap &copy; CARTO', subdomains: 'abcd', maxZoom: 18
+  }).addTo(kioskMap);
+
+  try {
+    const res = await fetch('https://data.cityofnewyork.us/resource/s4kf-3yrf.json?$limit=5000');
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+
+    let plotted = 0;
+    data.forEach(k => {
+      const lat = parseFloat(k.latitude), lng = parseFloat(k.longitude);
+      const gen  = k.planned_kiosk_type || 'Unknown';
+      const meta = GEN[gen] || { color: '#475569' };
+      if (isNaN(lat) || isNaN(lng)) return;
+      /* Detection-range halo — accumulates on canvas to glow in dense zones */
+      L.circle([lat, lng], {
+        radius: meta.range || 70, fillColor: '#10b981', fillOpacity: 0.050,
+        color: 'transparent', weight: 0, interactive: false
+      }).addTo(kioskMap);
+
+      L.circleMarker([lat, lng], {
+        radius: gen.startsWith('Link5G') ? 4 : 3,
+        color: meta.color, fillColor: meta.color, fillOpacity: 0.75, weight: 0
+      }).addTo(kioskMap).bindPopup(
+        `<div style="color:#0f172a;font-family:sans-serif;font-size:13px;">
+          <strong>${k.link_site_id || ''}</strong><br>${k.street_address || ''}<br>
+          <em>${gen}</em><br>Status: ${k.link_installation_status || 'n/a'}
+        </div>`
+      );
+      plotted++;
+    });
+
+    const countStr = `${plotted.toLocaleString()} kiosks plotted — live from NYC Open Data`;
+    document.getElementById('kioskCountLine').textContent = countStr;
+    ['heroKioskCount', 'statKiosks', 'compareCount', 'gapCount'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = plotted.toLocaleString();
+    });
+
+  } catch(err) {
+    document.getElementById('kioskCountLine').textContent = 'Could not load live data: ' + err.message;
+  }
+
+  /* Map scrollytelling: pan/zoom as each narrative panel enters view */
+  const mapViews = [
+    { center: [40.7580, -73.9855], zoom: 13 }, /* panel 01 — Manhattan concentration */
+    { center: [40.7308, -73.9852], zoom: 11 }, /* panel 02 — all five boroughs        */
+    { center: [40.8448, -73.8648], zoom: 12 }, /* panel 03 — the Bronx                */
+  ];
+  document.querySelectorAll('.map-step').forEach((step, i) => {
+    const view = mapViews[i];
+    if (!view) return;
+    const fly = () => kioskMap.flyTo(view.center, view.zoom, { animate: !prefersReduced, duration: 1 });
+    ScrollTrigger.create({
+      trigger: step,
+      start: 'top 55%',
+      end: 'bottom 45%',
+      toggleClass: { targets: step, className: 'map-step-active' },
+      onEnter:     fly,
+      onEnterBack: fly
+    });
+  });
+}
+loadKiosks();
+</script>
+</body>
+</html>

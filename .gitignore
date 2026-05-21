@@ -1,0 +1,5 @@
+# Process artefacts — not part of the public deliverable
+infographic.html
+skills-lock.json
+agents/
+.agents/
