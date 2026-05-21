@@ -7,7 +7,7 @@
 <meta name="description" content="LinkNYC promised to close the digital divide. Instead it built the largest warrantless surveillance substrate in New York City — concentrated in the neighborhoods least able to refuse it.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Oxygen:wght@300;400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,400;0,600;0,700;0,900;1,400&family=JetBrains+Mono:wght@400;500;700&family=Oxygen:wght@300;400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
@@ -30,6 +30,7 @@
   --max-wide: 1100px;
   --font-h:   'Figtree', sans-serif;
   --font-b:   'Oxygen', sans-serif;
+  --font-mono:'JetBrains Mono', monospace;
   /* RGB channels so rgba() calls update with theme */
   --cyan-rgb:      16, 185, 129;
   --mag-rgb:       225, 29, 72;
@@ -90,20 +91,30 @@ nav {
 
 /* ── Hero ── */
 #hero {
-  min-height: 96vh; display: flex; flex-direction: column; justify-content: flex-end;
-  padding: 3rem 2rem 5rem;
-  background: radial-gradient(ellipse at 30% 60%, #0d2040 0%, #0a0f1e 65%);
+  height: 100vh; min-height: 800px;
+  display: flex; flex-direction: column; justify-content: center;
+  position: relative; overflow: hidden;
+  padding: 0 5%;
 }
-.hero-eyebrow { font-family: var(--font-h); font-size: .72rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--cyan); margin-bottom: 1.1rem; }
-.hero-title { font-family: var(--font-h); font-size: clamp(2.6rem,6vw,5rem); font-weight: 900; line-height: 1.03; max-width: 840px; margin-bottom: 1.6rem; }
+.glitch-overlay {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  background: radial-gradient(circle at 50% 50%, rgba(var(--cyan-rgb), 0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+.data-stream {
+  position: absolute; top: 0; right: 10%; width: 280px; height: 200%;
+  font-family: var(--font-h); font-size: 10px; color: var(--cyan);
+  opacity: 0.08; overflow: hidden; line-height: 1.4; pointer-events: none;
+  user-select: none; white-space: nowrap;
+}
+.hero-content { position: relative; z-index: 10; max-width: 1000px; }
+.hero-eyebrow { font-family: var(--font-h); font-size: .7rem; font-weight: 500; letter-spacing: .3em; text-transform: uppercase; color: var(--cyan); margin-bottom: 2rem; display: block; }
+.hero-title { font-family: var(--font-h); font-size: clamp(3rem,8vw,6.5rem); font-weight: 900; line-height: 0.95; max-width: 900px; margin-bottom: 2rem; }
 .hero-title em { font-style: normal; color: var(--mag); }
-.hero-sub { font-size: clamp(1rem,2vw,1.18rem); color: var(--muted); max-width: 600px; line-height: 1.7; margin-bottom: 2.8rem; }
-.hero-bans { display: flex; flex-wrap: wrap; gap: 2.5rem; margin-bottom: 2.5rem; }
-.hero-ban .number { font-family: var(--font-h); font-size: clamp(2.2rem,4vw,3.2rem); font-weight: 900; display: block; line-height: 1; }
-.hero-ban .unit { font-size: .75rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--muted); margin-top: .35rem; display: block; max-width: 170px; line-height: 1.35; }
-.scroll-hint { font-size: .72rem; color: var(--muted); letter-spacing: .1em; text-transform: uppercase; display: flex; align-items: center; gap: .6rem; }
-.scroll-hint::before { content: ''; display: inline-block; width: 1px; height: 36px; background: linear-gradient(to bottom, transparent, var(--faint)); animation: pulse 2s ease-in-out infinite; }
-@keyframes pulse { 0%,100%{opacity:.3} 50%{opacity:1} }
+.hero-sub { font-size: clamp(1rem,2.5vw,1.35rem); color: var(--muted); max-width: 680px; line-height: 1.6; margin-bottom: 4rem; font-weight: 300; }
+.hero-bans { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 3.5rem; max-width: 860px; }
+.hero-ban .number { font-family: var(--font-h); font-size: clamp(2.8rem,4vw,3.5rem); font-weight: 800; display: block; line-height: 1; margin-bottom: .5rem; letter-spacing: -.04em; }
+.hero-ban .unit { font-family: var(--font-h); font-size: .65rem; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); display: block; max-width: 200px; line-height: 1.4; }
 
 /* ── Layout ── */
 .wrap { max-width: var(--max); margin: 0 auto; padding: 0 2rem; }
@@ -363,9 +374,48 @@ html.light-mode blockquote { border-left-color: var(--mag); }
 /* ── Map step active state ── */
 .map-step { transition: background-color .4s; }
 .map-step-active { background: rgba(var(--cyan-rgb),.04); border-left-color: var(--cyan); }
+
+/* ── Accessibility: skip navigation ── */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 1rem;
+  z-index: 9999;
+  background: var(--cyan);
+  color: #000;
+  font-family: var(--font-h);
+  font-size: .9rem;
+  font-weight: 700;
+  padding: .6rem 1.2rem;
+  border-radius: 0 0 6px 6px;
+  text-decoration: none;
+  transition: top .15s;
+}
+.skip-link:focus { top: 0; }
+
+/* ── Accessibility: visually hidden but screen-reader accessible ── */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ── Accessibility: global focus indicator ── */
+:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
 </style>
 </head>
 <body>
+<a href="#main-content" class="skip-link">Skip to main content</a>
 
 <nav>
   <a href="#" class="nav-brand">NYC:SURVEILLANCE</a>
@@ -380,11 +430,14 @@ html.light-mode blockquote { border-left-color: var(--mag); }
   </ul>
   <button class="theme-toggle" id="themeToggle" aria-label="Toggle colour theme">Dark</button>
 </nav>
+<main id="main-content" tabindex="-1">
 
 <!-- ── HERO ── -->
 <section id="hero">
-  <div class="wrap">
-    <p class="hero-eyebrow">Investigative Data Report &mdash; New York City</p>
+  <div class="glitch-overlay"></div>
+  <div class="data-stream" id="dataStream"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Investigative Data Report // New York City</p>
     <h1 class="hero-title">
       The Big Apple's<br>
       <em>Big Brother</em> Problem.
@@ -398,18 +451,17 @@ html.light-mode blockquote { border-left-color: var(--mag); }
     <div class="hero-bans">
       <div class="hero-ban">
         <span class="number" id="heroKioskCount" style="color:var(--cyan)">2,255+</span>
-        <span class="unit">Active kiosks tracking you right now</span>
+        <span class="unit">Active kiosks tracking device identifiers</span>
       </div>
       <div class="hero-ban">
         <span class="number" style="color:var(--mag)">7,500</span>
-        <span class="unit">Kiosks the city franchise requires CityBridge to deploy</span>
+        <span class="unit">Kiosks mandated for citywide deployment</span>
       </div>
       <div class="hero-ban">
         <span class="number" style="color:var(--yel)">3</span>
-        <span class="unit">Location points to identify anyone</span>
+        <span class="unit">Unique points to re-identify any user</span>
       </div>
     </div>
-    <div class="scroll-hint">Scroll to read the story</div>
   </div>
 </section>
 
@@ -487,8 +539,12 @@ html.light-mode blockquote { border-left-color: var(--mag); }
         The POST Act requires the NYPD to disclose the surveillance tools it <em>owns</em>.
         CityBridge isn't the NYPD — it's a private consortium — which means the <strong><span id="gapCount">2,255+</span>
         kiosks</strong> logging device identifiers across the five boroughs sit entirely outside that
-        disclosure framework. Yet the footage and metadata they collect flow voluntarily into systems
-        like the Domain Awareness System and facial recognition that <em>do</em> fall within it.
+        disclosure framework. Yet the footage and metadata they collect flow voluntarily into the
+        Domain Awareness System — a network of 80,000+ cameras, five million license plate scans
+        per day, drone feeds, and 911 call records, all fused by machine learning into
+        &ldquo;entity reports&rdquo; on every New Yorker: appearance, social affiliations, 311 call
+        history, sealed arrest records, DNA. Accessible from any officer&rsquo;s smartphone. From
+        there, as documented, to federal agencies that answer to no one in this city.
         The city gets the data without the accountability. That's not an oversight. It's the architecture.
       </p>
     </div>
@@ -590,7 +646,12 @@ html.light-mode blockquote { border-left-color: var(--mag); }
     <div class="map-scrolly" style="margin-top:2.5rem;">
 
       <div class="map-sticky-col">
-        <div id="kioskMap"></div>
+        <div id="kioskMap"
+             role="application"
+             aria-label="Interactive map of LinkNYC kiosk locations across New York City's five boroughs"
+             aria-describedby="kiosk-map-desc"
+             tabindex="0"></div>
+        <p id="kiosk-map-desc" class="sr-only">Map showing the geographic distribution of LinkNYC surveillance kiosks. Original Link 1.0 kiosks (blue) are concentrated in Manhattan commercial corridors. Link5G kiosks (pink and amber) are deploying primarily in outer-borough neighbourhoods under the 90% equity mandate. Kiosk counts update live from NYC Open Data — see the borough broadband chart below for numerical comparisons.</p>
         <div class="map-legend">
           <span><span class="legend-dot" style="background:#06b6d4"></span>Link 1.0 (original)</span>
           <span><span class="legend-dot" style="background:#e11d74"></span>Link5G with ads</span>
@@ -807,10 +868,32 @@ html.light-mode blockquote { border-left-color: var(--mag); }
       <div class="label">of NYC Housing Authority residents lacked home broadband — the population most dependent on LinkNYC's "free" Wi-Fi, and most exposed to its surveillance.</div>
     </div>
 
+    <p class="body-p reveal">
+      That dependency is not accidental, and the city has proved it knows how to exploit it.
+      In 2025, Mayor Adams secretly connected NYCHA security cameras to the Domain Awareness
+      System using NYCHA&rsquo;s own WiFi infrastructure — without informing residents, City
+      Council, or public housing administrators. One campus was already live-streaming directly
+      to NYPD smartphones. Plans existed to add nineteen more. NYPD officers had previously
+      admitted watching tenants &ldquo;for entertainment.&rdquo; Free internet, delivered at
+      last — and used to build a live surveillance feed into the homes of the city&rsquo;s
+      poorest residents.
+    </p>
+    <p class="source reveal">S.T.O.P., &ldquo;Dragnet City: NYPD&rsquo;s Omnipresent Domain Awareness System,&rdquo; Oct. 28, 2025.</p>
+
     <blockquote class="reveal" style="border-left-color:var(--yel);">
       <p>&ldquo;Facial recognition gets it wrong, leading to the false arrest of New Yorkers of color — and can be easily weaponized against protesters, activists, or religious communities exercising their fundamental First Amendment rights.&rdquo;</p>
       <footer>&mdash; Albert Kahn, Executive Director, Surveillance Technology Oversight Project (S.T.O.P.)</footer>
     </blockquote>
+
+    <p class="body-p reveal">
+      S.T.O.P. documented what that exposure means in practice. ICE has accessed NYPD license plate
+      reader data. Sealed records — records legally protected from disclosure — were shared with
+      federal agents and used against a pro-Palestinian protester in deportation proceedings. Private
+      contractors simultaneously advise city agencies and ICE's enforcement operations. The data
+      doesn't need to travel far. The people who manage it already do. For undocumented New Yorkers
+      who rely on LinkNYC as their primary internet connection, that is not an abstraction.
+    </p>
+    <p class="source reveal">S.T.O.P., "Dear Mamdani: Dismantle NYC's Surveillance State," Feb. 26, 2026.</p>
 
     <p class="body-p reveal">
       This isn't unique to New York. Researchers tracking the rollout of InLinkUK kiosks in
@@ -885,7 +968,8 @@ Thank you for your time and your public service.
 Respectfully,
 [Your name]
 [Your address and neighbourhood, NY]</div>
-      <button class="copy-btn" onclick="copyLetter(this)">&#9647; Copy letter to clipboard</button>
+      <button class="copy-btn" id="copyBtn" onclick="copyLetter(this)">&#9647; Copy letter to clipboard</button>
+      <span aria-live="polite" class="sr-only" id="copyStatus"></span>
     </div>
 
     <div class="rep-strip reveal" style="margin-top:1.5rem;">
@@ -899,6 +983,8 @@ Respectfully,
     </div>
   </div>
 </section>
+
+</main>
 
 <!-- ── FOOTER ── -->
 <footer>
@@ -960,9 +1046,8 @@ SplitText.create('.hero-title', {
         stagger: prefersReduced ? 0 : 0.055,
         duration: prefersReduced ? 0.1 : 0.8, ease: 'power3.out'
       }, '-=0.15')
-      .from('.hero-sub',    { autoAlpha: 0, y: prefersReduced ? 0 : 18, duration: 0.6, ease: 'power2.out' }, '-=0.35')
-      .from('.hero-bans',   { autoAlpha: 0, y: prefersReduced ? 0 : 18, duration: 0.6, ease: 'power2.out' }, '-=0.25')
-      .from('.scroll-hint', { autoAlpha: 0, duration: 0.5, ease: 'power1.out' }, '-=0.1')
+      .from('.hero-sub',  { autoAlpha: 0, y: prefersReduced ? 0 : 18, duration: 0.6, ease: 'power2.out' }, '-=0.35')
+      .from('.hero-bans', { autoAlpha: 0, y: prefersReduced ? 0 : 18, duration: 0.6, ease: 'power2.out' }, '-=0.25')
       /* ScrambleText reveal on "Big Brother" — binary chars for surveillance feel */
       .to('.hero-title em', { autoAlpha: 1, duration: 0.01 })
       .to('.hero-title em', {
@@ -973,6 +1058,20 @@ SplitText.create('.hero-title', {
     return tl;
   }
 });
+
+/* ── Hero: data stream ── */
+function initDataStream() {
+  if (prefersReduced) return;
+  const stream = document.getElementById('dataStream');
+  if (!stream) return;
+  for (let i = 0; i < 140; i++) {
+    const div = document.createElement('div');
+    div.textContent = Math.random().toString(16).substring(2, 14).toUpperCase() + ' [LOGGED]';
+    stream.appendChild(div);
+  }
+  gsap.to(stream, { y: '-50%', duration: 20, repeat: -1, ease: 'none' });
+}
+initDataStream();
 
 /* ── Hero BAN countUp ── */
 function heroBanCount(el, target, delay) {
@@ -1013,11 +1112,13 @@ document.querySelectorAll('.pull-stat .n').forEach(el => {
   const suffix  = text.replace(/^[0-9.]+/, '').trim();
 
   if (isRange || isNaN(num)) {
-    /* Range values (e.g. "30–40%"): scale + fade entrance */
-    gsap.from(el, {
-      scale: 0.82, autoAlpha: 0, duration: 0.7, ease: 'back.out(1.7)',
-      scrollTrigger: { trigger: el, start: 'top 90%', once: true }
-    });
+    /* Range values (e.g. "30–40%"): scale + fade entrance, skipped for reduced motion */
+    if (!prefersReduced) {
+      gsap.from(el, {
+        scale: 0.82, autoAlpha: 0, duration: 0.7, ease: 'back.out(1.7)',
+        scrollTrigger: { trigger: el, start: 'top 90%', once: true }
+      });
+    }
     return;
   }
 
@@ -1041,9 +1142,15 @@ document.querySelectorAll('.pull-stat .n').forEach(el => {
 });
 
 /* ── Scroll reveals for all other .reveal elements (s-title handled above) ── */
-gsap.set('.reveal:not(.s-title)', { autoAlpha: 0, y: 26 });
+gsap.set('.reveal:not(.s-title)', { autoAlpha: 0, y: prefersReduced ? 0 : 26 });
 ScrollTrigger.batch('.reveal:not(.s-title)', {
-  onEnter: batch => gsap.to(batch, { autoAlpha: 1, y: 0, stagger: 0.1, duration: 0.7, ease: 'power2.out' }),
+  onEnter: batch => gsap.to(batch, {
+    autoAlpha: 1,
+    y: 0,
+    stagger: prefersReduced ? 0 : 0.1,
+    duration: prefersReduced ? 0.15 : 0.7,
+    ease: 'power2.out'
+  }),
   once: true,
   start: 'top 90%'
 });
@@ -1078,7 +1185,12 @@ function copyLetter(btn) {
   navigator.clipboard.writeText(document.getElementById('letterText').textContent).then(() => {
     btn.textContent = '✓ Copied!';
     btn.classList.add('copied');
-    setTimeout(() => { btn.innerHTML = '&#9647; Copy letter to clipboard'; btn.classList.remove('copied'); }, 2500);
+    document.getElementById('copyStatus').textContent = 'Letter copied to clipboard.';
+    setTimeout(() => {
+      btn.innerHTML = '&#9647; Copy letter to clipboard';
+      btn.classList.remove('copied');
+      document.getElementById('copyStatus').textContent = '';
+    }, 2500);
   });
 }
 
@@ -1101,7 +1213,9 @@ let deployChart   = null;   /* chart ref for colour updates  */
 function applyTheme(theme) {
   const isLight = theme === 'light';
   document.documentElement.classList.toggle('light-mode', isLight);
-  document.getElementById('themeToggle').textContent = isLight ? 'Dark' : 'Light';
+  const toggleBtn = document.getElementById('themeToggle');
+  toggleBtn.textContent = isLight ? 'Dark' : 'Light';
+  toggleBtn.setAttribute('aria-label', isLight ? 'Switch to dark mode' : 'Switch to light mode');
 
   /* Swap Leaflet tiles */
   if (kioskMap && kioskTile) {
@@ -1144,8 +1258,8 @@ deployChart = new Chart(document.getElementById('needVsDeployChart'), {
   data: {
     labels: ['Bronx', 'Brooklyn', 'Staten Island', 'Queens', 'Manhattan'],
     datasets: [
-      { label: '% households without broadband', data: [33, 24, 22, 21, 17], backgroundColor: '#06b6d4', borderRadius: 4 },
-      { label: 'Est. % share of next Link5G wave', data: [27, 31, 8, 19, 15], backgroundColor: '#e11d74', borderRadius: 4 }
+      { label: '% households without broadband', data: [33, 24, 22, 21, 17], backgroundColor: '#fb923c', borderRadius: 4 },
+      { label: 'Est. % share of next Link5G wave', data: [27, 31, 8, 19, 15], backgroundColor: '#a78bfa', borderRadius: 4 }
     ]
   },
   options: { ...baseOpts,
