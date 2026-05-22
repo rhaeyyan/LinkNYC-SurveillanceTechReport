@@ -105,3 +105,12 @@ All issues from both audits resolved in the same session:
 - Meta description trimmed to 134 chars (was 187)
 
 **Code Health gate: clear — zero critical, zero high issues remaining.**
+
+---
+
+## Deployment — 2026-05-21
+- Commit: 8874f1b
+- Changes: a11y contrast fixes, Netlify contact form, social meta tags, GSAP resilience, Chart.js 4.5.1, reduced-motion ScrambleText guard
+- Pre-flight: a11y clear (2026-05-21), code health clear (2026-05-21)
+- Live URL: https://surveillancenyc.netlify.app
+- Smoke test: passed — title "Surveilled by Default" confirmed, id="kioskMap" confirmed, OG/Twitter meta tags confirmed; nysenate.gov/find-my-senator (200), nyassembly.gov/mem/search/ (200), governor.ny.gov/content/governor-contact-form (200)
