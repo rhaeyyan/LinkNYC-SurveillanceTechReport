@@ -4,13 +4,19 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Surveilled by Default: How NYC's Free Wi-Fi Became a Surveillance Network</title>
-<meta name="description" content="LinkNYC promised to close the digital divide. Instead it built the largest warrantless surveillance substrate in New York City — concentrated in the neighborhoods least able to refuse it.">
+<meta name="description" content="LinkNYC promised to close the digital divide. What it built instead was the largest warrantless surveillance network in New York City.">
+<meta property="og:title" content="Surveilled by Default: How NYC's Free Wi-Fi Became a Surveillance Network">
+<meta property="og:description" content="LinkNYC promised to close the digital divide. What it built instead was the largest warrantless surveillance network in New York City.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://surveillancenyc.netlify.app">
+<meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/a/a1/LinkNYC_kiosk_at_23rd_and_8th.jpg">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,400;0,600;0,700;0,900;1,400&family=JetBrains+Mono:wght@400;500;700&family=Oxygen:wght@300;400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1/dist/chart.umd.min.js"></script>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
@@ -64,7 +70,7 @@ html.light-mode {
   --bg-rgb:        244, 244, 245;
   --color-good:    #16a34a;
   --badge-red-txt: #be123c;
-  --badge-yel-txt: #b45309;
+  --badge-yel-txt: #92400e;
   --badge-cyn-txt: #1e40af;
   --glass-bg:      rgba(255,255,255,.72);
   --glass-border:  rgba(0,0,0,.08);
@@ -243,7 +249,7 @@ blockquote footer { font-size: .8rem; color: var(--muted); }
   padding: 1.8rem 2rem;
   box-shadow: 0 8px 32px rgba(0,0,0,.2), inset 0 1px 0 rgba(255,255,255,.04);
 }
-.finding-banner .tag { font-family: var(--font-h); font-size: .68rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--mag); margin-bottom: .4rem; }
+.finding-banner .tag { font-family: var(--font-h); font-size: .68rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #f43f5e; margin-bottom: .4rem; }
 .finding-banner h3 { font-family: var(--font-h); font-size: 1.25rem; font-weight: 900; margin-bottom: .6rem; }
 .finding-banner p { font-size: .9rem; color: var(--muted); line-height: 1.75; }
 .finding-banner p strong { color: var(--text); }
@@ -268,7 +274,7 @@ blockquote footer { font-size: .8rem; color: var(--muted); }
 .tl-item.crisis::before { background: var(--mag); }
 .tl-date { font-family: var(--font-h); font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--cyan); }
 .tl-item.warn .tl-date { color: var(--yel); }
-.tl-item.crisis .tl-date { color: var(--mag); }
+.tl-item.crisis .tl-date { color: #f43f5e; }
 .tl-title { font-family: var(--font-h); font-size: .97rem; font-weight: 700; margin: .15rem 0 .2rem; }
 .tl-body { font-size: .85rem; color: var(--muted); line-height: 1.6; }
 
@@ -361,6 +367,17 @@ footer p, footer li { font-size: .8rem; line-height: 1.65; margin-bottom: .4rem;
 footer ul { list-style: none; padding: 0; }
 footer a { color: var(--muted); }
 footer a:hover { color: var(--cyan); }
+.cf-field { margin-bottom: .55rem; }
+.cf-field label { display: block; font-size: .68rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: .22rem; }
+.cf-field input, .cf-field textarea { width: 100%; background: var(--bg-card); border: 1px solid var(--border); color: var(--text); font-family: var(--font-b); font-size: .8rem; padding: .38rem .55rem; border-radius: 4px; box-sizing: border-box; resize: none; }
+.cf-field input:focus, .cf-field textarea:focus { border-color: var(--cyan); outline: none; }
+.cf-submit { margin-top: .5rem; background: var(--cyan); color: #000; font-family: var(--font-h); font-size: .78rem; font-weight: 700; padding: .42rem .9rem; border-radius: 6px; border: none; cursor: pointer; transition: opacity .2s; }
+.cf-submit:hover { opacity: .85; }
+.cf-submit:disabled { opacity: .5; cursor: default; }
+html.light-mode .cf-submit { color: #fff; }
+.cf-status { font-size: .75rem; margin-top: .45rem; min-height: 1.1em; }
+.cf-status.ok  { color: var(--color-good); }
+.cf-status.err { color: #f43f5e; }
 
 /* ── Theme toggle button ── */
 .theme-toggle {
@@ -391,6 +408,10 @@ html.light-mode footer a  { color: #9ca3af; }
 html.light-mode footer a:hover { color: #10b981; }
 html.light-mode .photo-fig img { filter: brightness(.78) saturate(.55); }
 html.light-mode blockquote { border-left-color: var(--mag); }
+html.light-mode .tl-item.crisis .tl-date { color: #b91c1c; }
+html.light-mode .bill-status { color: #92400e; }
+html.light-mode .copy-btn { color: #ffffff; }
+html.light-mode .cf-field label { color: #9ca3af; }
 
 /* ── Performance hints (only on elements that actually animate) ── */
 .hero-title, .hero-eyebrow, .hero-sub, .hero-bans, .scroll-hint { will-change: transform; }
@@ -439,6 +460,14 @@ html.light-mode blockquote { border-left-color: var(--mag); }
   outline-offset: 3px;
   border-radius: 3px;
 }
+
+/* ── Reduced motion: hard CSS fallback for .hero-title em ── */
+/* Catches OS-level settings and browsers (DuckDuckGo, Firefox strict mode)  */
+/* that properly set prefers-reduced-motion but may race with GSAP inline     */
+/* styles. The !important beats any GSAP-set visibility/opacity on this elem. */
+@media (prefers-reduced-motion: reduce) {
+  .hero-title em { visibility: visible !important; opacity: 1 !important; }
+}
 </style>
 </head>
 <body>
@@ -466,9 +495,9 @@ html.light-mode blockquote { border-left-color: var(--mag); }
   <div class="data-stream" id="dataStream"></div>
   <div class="hero-content">
     <p class="hero-eyebrow">Investigative Data Report // New York City</p>
-    <h1 class="hero-title">
+    <h1 class="hero-title" aria-label="The Big Apple's Big Brother Problem.">
       The Big Apple's<br>
-      <em>Big Brother</em> Problem.
+      <em aria-hidden="true">Big Brother</em> Problem.
     </h1>
     <p class="hero-sub">
       LinkNYC was sold to New York City as a digital equity programme — free gigabit
@@ -1078,10 +1107,32 @@ Respectfully,
         <li>S.T.O.P. v. NYPD litigation (ECBAWM)</li>
       </ul>
     </div>
+    <div>
+      <h4>Get in touch</h4>
+      <form name="contact" data-netlify="true" data-netlify-honeypot="bot-field" id="contactForm" novalidate>
+        <input type="hidden" name="form-name" value="contact">
+        <p style="display:none;" aria-hidden="true">
+          <label>Don't fill this out: <input name="bot-field" tabindex="-1" autocomplete="off"></label>
+        </p>
+        <div class="cf-field">
+          <label for="cf-name">Name</label>
+          <input type="text" id="cf-name" name="name" required autocomplete="name">
+        </div>
+        <div class="cf-field">
+          <label for="cf-email">Email</label>
+          <input type="email" id="cf-email" name="email" required autocomplete="email">
+        </div>
+        <div class="cf-field">
+          <label for="cf-msg">Message</label>
+          <textarea id="cf-msg" name="message" rows="3" required></textarea>
+        </div>
+        <button type="submit" class="cf-submit">Send</button>
+        <div id="cf-status" class="cf-status" aria-live="polite" aria-atomic="true"></div>
+      </form>
+    </div>
   </div>
   <div style="max-width:var(--max-wide);margin:2rem auto 0;padding-top:1.5rem;border-top:1px solid var(--border);font-size:.72rem;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem;">
     <span>Broadband figures: ACS 5-year (2018–2022). Kiosk counts are live from NYC Open Data and will differ from static references. Digital Fairness Act status current as of May 2026 — verify at nysenate.gov before publishing.</span>
-    <span>Get in touch: <a href="mailto:khanrayan.hire@pm.me">khanrayan.hire@pm.me</a></span>
   </div>
 </footer>
 
@@ -1096,6 +1147,7 @@ gsap.registerPlugin(ScrollTrigger, SplitText, ScrambleTextPlugin);
 const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /* ── Hero: SplitText with autoSplit (font-load safe) + ignore <em> ── */
+try {
 SplitText.create('.hero-title', {
   type: 'words',
   ignore: 'em',
@@ -1112,16 +1164,29 @@ SplitText.create('.hero-title', {
       }, '-=0.15')
       .from('.hero-sub',  { autoAlpha: 0, y: prefersReduced ? 0 : 18, duration: 0.6, ease: 'power2.out' }, '-=0.35')
       .from('.hero-bans', { autoAlpha: 0, y: prefersReduced ? 0 : 18, duration: 0.6, ease: 'power2.out' }, '-=0.25')
-      /* ScrambleText reveal on "Big Brother" — binary chars for surveillance feel */
-      .to('.hero-title em', { autoAlpha: 1, duration: 0.01 })
-      .to('.hero-title em', {
-        scrambleText: { text: 'Big Brother', chars: '01', speed: 0.4, revealDelay: 0.3 },
-        duration: prefersReduced ? 0.1 : 1.2,
-        ease: 'none'
-      }, '<');
+    /* ScrambleText reveal on "Big Brother" — binary chars for surveillance feel */
+    /* Skip entirely when reduced motion: short-duration tweens don't reliably   */
+    /* resolve and leave binary glyphs frozen on screen.                         */
+    if (prefersReduced) {
+      tl.set('.hero-title em', { autoAlpha: 1 });
+    } else {
+      tl
+        .to('.hero-title em', { autoAlpha: 1, duration: 0.01 })
+        .to('.hero-title em', {
+          scrambleText: { text: 'Big Brother', chars: '01', speed: 0.4, revealDelay: 0.3 },
+          duration: 1.2,
+          ease: 'none'
+        }, '<');
+    }
     return tl;
   }
 });
+} catch(e) {
+  ['.hero-title', '.hero-title em', '.hero-eyebrow', '.hero-sub', '.hero-bans'].forEach(sel => {
+    const el = document.querySelector(sel);
+    if (el) { el.style.opacity = '1'; el.style.visibility = 'visible'; }
+  });
+}
 
 /* ── Hero: data stream ── */
 function initDataStream() {
@@ -1151,6 +1216,7 @@ heroBanCount(heroBans[1], 7500, 1.3);
 heroBanCount(heroBans[2], 3, 1.5);
 
 /* ── Section title reveals: SplitText mask (line-wipe, editorial style) ── */
+try {
 document.querySelectorAll('.s-title').forEach(el => {
   SplitText.create(el, {
     type: 'lines',
@@ -1167,6 +1233,11 @@ document.querySelectorAll('.s-title').forEach(el => {
     }
   });
 });
+} catch(e) {
+  document.querySelectorAll('.s-title').forEach(el => {
+    el.style.opacity = '1'; el.style.visibility = 'visible';
+  });
+}
 
 /* ── Pull-stat number animations: countUp or scale-in on scroll ── */
 document.querySelectorAll('.pull-stat .n').forEach(el => {
@@ -1421,6 +1492,46 @@ async function loadKiosks() {
   });
 }
 loadKiosks();
+
+/* ── Contact form: AJAX submit to Netlify Forms ── */
+document.getElementById('contactForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const form = e.target;
+  const status = document.getElementById('cf-status');
+  const btn = form.querySelector('.cf-submit');
+  const name = form.querySelector('#cf-name').value.trim();
+  const email = form.querySelector('#cf-email').value.trim();
+  const msg = form.querySelector('#cf-msg').value.trim();
+  if (!name || !email || !msg) {
+    status.textContent = 'Please fill in all fields.';
+    status.className = 'cf-status err';
+    return;
+  }
+  btn.disabled = true;
+  btn.textContent = 'Sending…';
+  status.textContent = '';
+  status.className = 'cf-status';
+  try {
+    const res = await fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams(new FormData(form)).toString()
+    });
+    if (res.ok) {
+      status.textContent = 'Message sent — thank you.';
+      status.className = 'cf-status ok';
+      form.reset();
+    } else {
+      throw new Error();
+    }
+  } catch {
+    status.textContent = 'Something went wrong. Please try again.';
+    status.className = 'cf-status err';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Send';
+  }
+});
 </script>
 </body>
 </html>
