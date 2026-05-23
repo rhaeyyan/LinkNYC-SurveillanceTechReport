@@ -49,18 +49,30 @@ The page is `index.html`. That is the entire deliverable.
 
 ## Voice and copy rules
 
-All prose in `index.html` follows the author's established voice. When editing
-or adding copy, respect these constraints:
+All prose in `index.html` follows a traditional journalistic voice that
+prioritizes clarity over rhetorical compression. When editing or adding copy,
+respect these constraints:
 
-1. **Reframing moves** — "This wasn't about X; it was Y"
-2. **Short punchy landing sentences** after longer build-ups — "They didn't." / "It's the architecture."
-3. **Specific receipts before the abstraction** — concrete facts first, systemic critique second
-4. **Measured anger, never a rant** — frustration channelled into analytical sentences
-5. **Em-dash asides** — acknowledge counterarguments without conceding the point
-6. **Personal-to-systemic arc** — observation → structural critique, never opens at the structural level
-7. **No UK/American spelling mix** — American English register throughout
-
-Do not add sections without explicit approval. Edit existing copy only.
+1. **Inverted pyramid.** Lead each section with its most important factual
+   claim. The first sentence should be reportable in isolation, not a hook.
+2. **Direct attribution.** Name sources at first mention ("According to the
+   NYCLU,...", "A 2013 paper in *Scientific Reports* found that..."). Avoid
+   ungrounded plural authorities ("researchers say", "critics argue").
+3. **Complete sentences.** No fragment landings such as "They didn't." or
+   "It's the architecture." Every clause is a full sentence.
+4. **Neutral register.** Third-person reporting throughout. Do not address
+   the reader in the second person. Distinguish reported facts from analysis;
+   flag analysis explicitly ("This pattern suggests...", "Civil-liberties
+   advocates including the NYCLU characterize this as...").
+5. **Em-dashes for clarification only**, not for rhetorical asides. If a
+   parenthetical does not add necessary information, cut it.
+6. **Spell out acronyms** at first use ("Public Oversight of Surveillance
+   Technology Act (POST Act)"). Define technical terms with a brief gloss on
+   first reference.
+7. **American English** throughout. Existing copy contains British spellings
+   in places; when editing, normalize the surrounding passage to American
+   English. Do not introduce new British-English forms.
+8. **No new sections** without explicit approval. Edit existing copy only.
 
 ## Accessibility constraints
 

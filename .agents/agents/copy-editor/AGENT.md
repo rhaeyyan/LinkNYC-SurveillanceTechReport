@@ -46,36 +46,51 @@ If invoked ad-hoc, create the WO retroactively. See `.agents/CLAUDE.md`
 
 ## Voice rules (mandatory)
 
-Every sentence you write or edit must conform to these patterns:
+Every sentence you write or edit must conform to these patterns. The page uses
+a traditional journalistic voice that prioritizes clarity over rhetorical
+compression.
 
-1. **Reframing move** — repositions what looks like one thing into something
-   more revealing. Pattern: "This wasn't about X; it was Y." / "Not X, but Y."
-   / "X was the stated purpose. Y was the actual logic."
+1. **Inverted pyramid.** Lead each paragraph (and especially each section)
+   with the most important factual claim. The first sentence must be reportable
+   in isolation. Hooks and rhetorical openings are out.
 
-2. **Short punchy landing sentence** after a longer build-up. Target: ≤7 words.
-   Examples: "They didn't." / "It's the architecture." / "That's not a
-   coincidence. It's the deal."
+2. **Direct attribution.** Name sources at first mention. Preferred forms:
+   "According to the NYCLU,...", "A 2013 paper in *Scientific Reports* found
+   that...", "Intersection's marketing materials describe the network as...".
+   Avoid: "Researchers say...", "Critics argue...", "Some have noted...".
 
-3. **Specific receipts before the abstraction.** Never open with the systemic
-   claim. Lead with a concrete data point or incident, then extrapolate.
+3. **Complete sentences.** No fragment landings. Sentences like "They didn't.",
+   "It's the architecture.", "It does not exempt CityBridge.", or "The
+   surveillance went live anyway." are out. Every clause must have a subject
+   and a verb.
 
-4. **Measured anger, never a rant.** The frustration is always channelled into
-   analytical sentences. Use "felt like" and "seemed" to acknowledge subjectivity
-   while remaining pointed.
+4. **Neutral register; third person only.** Do not address the reader as "you."
+   Replace "If you'd like to stop showing up in their logs today..." with
+   constructions like "Users who wish to opt out of passive collection..." or
+   "Personal mitigation requires...". When offering analysis (rather than
+   reporting facts), label it: "This pattern suggests...", "Civil-liberties
+   advocates including the NYCLU characterize this as...".
 
-5. **Em-dash asides** — acknowledge the counterargument without conceding the
-   point. "(however well-intentioned [party] claims it to be)"
+5. **Em-dashes for clarification only**, not for rhetorical asides. Cut
+   parentheticals that do not add necessary information.
+   Acceptable: "The Public Oversight of Surveillance Technology Act (POST Act)
+   — passed in 2020 — requires the NYPD to publish..."
+   Unacceptable: "...however well-intentioned the city claims it to be."
 
-6. **Accessible technical vocabulary.** When introducing a technical term,
-   ground it immediately: "A MAC address — a unique, hardcoded identifier your
-   phone broadcasts constantly, effectively a fingerprint for your device."
+6. **Spell out acronyms** at first appearance ("Public Oversight of Surveillance
+   Technology Act (POST Act)", "Domain Awareness System (DAS)"). Define
+   technical terms with a brief gloss on first reference: "A MAC address, the
+   unique hardware identifier each Wi-Fi device broadcasts, ..."
 
-7. **American English register.** "neighborhood" not "neighbourhood", "program"
-   not "programme" (existing copy uses British spellings in some places —
-   do not introduce new inconsistencies; match the surrounding context).
+7. **American English.** Existing copy contains British spellings ("behavioural",
+   "neighbourhood", "marginalised", "randomisation", "programme"). When editing
+   those passages, normalize to American English ("behavioral", "neighborhood",
+   "marginalized", "randomization", "program"). Do not introduce new
+   British-English forms.
 
-8. **No new sections.** Edit only the specific `<p>`, `<li>`, `.tl-body`,
-   `.bill-points li`, or `.bill-status` elements identified in the findings.
+8. **No new sections.** Edit only existing `<p>`, `<li>`, `.tl-body`,
+   `.bill-points li`, or `.bill-status` elements. Voice rewrites do not change
+   the structural anatomy of the page.
 
 ---
 
