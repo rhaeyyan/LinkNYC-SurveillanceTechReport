@@ -3,7 +3,5 @@ infographic.html
 /agents/
 
 # Agent infrastructure
-# Track: .agents/CLAUDE.md, .agents/agents/, .agents/reports.md, .agents/session-log.md
-# Ignore: the GSAP skill cache (regenerated from skills-lock.json)
-.agents/skills/
-.agents/skills-lock.json
+.agents/
+
