@@ -1,5 +1,6 @@
 # Process artefacts — not part of the public deliverable
 infographic.html
+agents/
 
 # Agent infrastructure
 # Track: .agents/CLAUDE.md, .agents/agents/, .agents/reports.md, .agents/session-log.md
