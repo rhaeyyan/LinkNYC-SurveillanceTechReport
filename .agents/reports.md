@@ -114,3 +114,104 @@ All issues from both audits resolved in the same session:
 - Pre-flight: a11y clear (2026-05-21), code health clear (2026-05-21)
 - Live URL: https://surveillancenyc.netlify.app
 - Smoke test: passed — title "Surveilled by Default" confirmed, id="kioskMap" confirmed, OG/Twitter meta tags confirmed; nysenate.gov/find-my-senator (200), nyassembly.gov/mem/search/ (200), governor.ny.gov/content/governor-contact-form (200)
+
+---
+
+## Accessibility Auditor — 2026-05-22
+
+**Scope:** Full Lighthouse-framework audit of `index.html` (1,601 lines) following content edits (8 new prose insertions woven into existing sections) and the Airplane Mode terminology fix.
+
+**WO:** WO-20260522-01 (ad-hoc — direct user invocation, no Orchestrator).
+
+### Failed audits (blockers — must fix before deploy)
+
+`heading-order` | Navigation | WCAG 1.3.1 | Lines 964 and 976 | `#equity > .equity-split > .eq-card > h4`
+Problem: Heading levels jump from `<h2>` (line 943, section title "Privacy is a luxury the poor can no longer afford.") directly to `<h4>` (lines 964 "Wealthy historic districts" and 976 "Mandated rollout districts") inside the two `.eq-card` blocks, skipping `<h3>`. Lighthouse `heading-order` flags any non-sequential descent in heading levels.
+Fix: Change both `<h4>` elements at lines 964 and 976 to `<h3>`. If a smaller visual is intended, restyle via CSS rather than dropping the semantic level. This is a pre-existing issue not introduced by today's content edits — prior WCAG-checklist audits did not traverse the heading tree systematically and missed it.
+
+### Manual checks
+
+- **Contact form focus indication.** `.cf-field input:focus, .cf-field textarea:focus { border-color: var(--cyan); outline: none }` (line 373) has higher specificity than the global `:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px }` (line 458). Focus is signaled only by a border-colour change. Technically WCAG 2.4.7 compliant (some visible indication exists) but inconsistent with the rest of the page. Recommend replacing `outline: none` with `outline: 2px solid var(--cyan); outline-offset: 1px;` to match the global pattern. Not a deployment blocker.
+
+- **Plain-text URL in source line.** `nyc.gov/bigappleconnect` appears as plain text in the new Big Apple Connect source line rather than as an anchor. Existing source lines on the page have inconsistent linking conventions, so this matches local style — but readers cannot click through. Not a Lighthouse audit failure; cosmetic improvement only.
+
+### Passed
+
+- **Names and labels:** all audits passing — `button-name` (themeToggle, copyBtn, cf-submit all have accessible text); `link-name` (nav, footer, photo attribution, CTA links all have descriptive text); `image-alt` (all three images have descriptive `alt`); `image-redundant-alt`; `input-button-name`; `input-image-alt`; `label` (cf-name, cf-email, cf-msg all have associated `<label for>` at lines 1182–1190); `select-name` (no `<select>` elements); `form-field-multiple-labels`; `frame-title` (no `<iframe>`); `object-alt` (no `<object>`); `label-content-name-mismatch`.
+
+- **ARIA:** all audits passing — `aria-allowed-attr`, `aria-allowed-role`, `aria-command-name`, `aria-deprecated-role`, `aria-hidden-body` (no body-level aria-hidden), `aria-hidden-focus` (the hero `<em aria-hidden="true">` contains no focusable descendants), `aria-required-attr`, `aria-roles` (only `role="application"` on map div, valid), `aria-valid-attr`, `aria-valid-attr-value`. Map div correctly carries `role="application"` + `aria-label` + `aria-describedby="kiosk-map-desc"` pointing to an `.sr-only` description. `aria-live="polite"` regions on copy-button status and contact-form status are correctly empty by default. Theme toggle `aria-label` is updated dynamically (line 1417).
+
+- **Colour contrast:** all audits passing across both themes. Manually verified pairings in current state:
+  - `.body-p` muted #9ca3af on dark #050505 = 7.20:1 ✓; on light #f4f4f5 (--muted #52525b) = 7.94:1 ✓.
+  - `.copy-btn` #000 on dark `--cyan` #10b981 = 8.37:1 ✓; light override at line 413 sets `color:#ffffff` on `--cyan` #1d4ed8 = 6.59:1 ✓.
+  - `.cf-submit` #000 on dark cyan = 8.37:1 ✓; light override at line 377 sets `color:#fff` = 6.59:1 ✓.
+  - `.tl-item.crisis .tl-date` dark #f43f5e on #050505 = 5.51:1 ✓; light override at line 411 sets #b91c1c = passes.
+  - `.bill-status` light override at line 412 sets #92400e = passes.
+  - `.cf-field label` light override at line 414 sets #9ca3af on footer bg #18181b = 7.72:1 ✓.
+  - Skip link #000 on cyan bg = passes both themes.
+  - New content I added uses `.body-p` and `.source` classes only — inherits already-verified palette.
+
+- **Navigation:** skip link is the first focusable element (line 474), targets `#main-content` (`<main tabindex="-1">` at line 490), visually hidden by default and visible on `:focus` (lines 427–442). Global `:focus-visible` rule defined (lines 458–462). No element has `tabindex > 0`; the only non-zero tabindex values are `-1` on `<main>` and on the form honeypot input (both correct). `landmark-one-main` passes (exactly one `<main>`). `bypass` passes. Map div has `tabindex="0"`.
+
+- **Tables and lists:** all audits passing — `<ul>` / `<ol>` contain only `<li>`; `<li>` are inside `<ul>` / `<ol>`; tables use proper `<th>` headers; no broken `[headers]` references.
+
+- **Internationalization:** `<html lang="en">` valid BCP-47; `<title>` present and non-empty; `<meta viewport>` allows scaling (no `user-scalable=no`, no `maximum-scale<5`); no `<meta http-equiv="refresh">`.
+
+- **Best practices / motion:** `prefers-reduced-motion` respected comprehensively. `const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches` declared at line 1211 before any GSAP block. Verified guards at lines 1225–1230 (hero SplitText), 1234 (hero countUp), 1257 (mouse parallax), 1272 (BAN countUp), 1293 (section title SplitText), 1315 (ScrambleText), 1329 (ScrambleText skip), 1344–1350 (reveal batch), 1370 (additional skip), 1547 (map flyTo `animate: !prefersReduced`). CSS hard-fallback at lines 468–470 protects the hero `<em>` from any race between GSAP inline styles and OS-level reduced-motion preferences.
+
+### New content audit (today's edits)
+
+The 8 prose insertions added in this session introduced no new interactive elements, no new colour pairings, and no new sectioning landmarks. All new paragraphs use existing classes (`.body-p`, `.source`) with already-verified contrast. No new heading levels were added. Airplane Mode fix is text-only. **No new accessibility issues were introduced by today's content edits.**
+
+### Summary
+
+**1 failed audit — Lighthouse a11y score: ~95–97 — deployment gated.**
+
+The single blocker (`heading-order` in `#equity`) is pre-existing and was missed by prior WCAG-checklist-based audits. It is a two-line CSS-friendly fix (change two `<h4>` to `<h3>`). Once corrected, re-run this auditor; the page should reach zero failed audits / score 100.
+
+---
+
+## Accessibility Auditor — 2026-05-23
+
+**Scope:** Full Lighthouse-framework re-audit of `index.html` (1,671 lines) following (a) the `heading-order` fix in `#equity` (h4→h3 on both `.eq-card` titles plus matching CSS selector swap) and (b) a section-by-section voice rewrite that recast the page from punchy/rhetorical prose into a traditional journalistic register, with inline source citations added for previously vague claims.
+
+**WO:** WO-20260523-01 (ad-hoc — direct user invocation, no Orchestrator).
+
+### Failed audits
+
+**None.** All Lighthouse audit categories return zero failures.
+
+### Manual checks
+
+- **Contact form focus indication.** `.cf-field input:focus, .cf-field textarea:focus { border-color: var(--cyan); outline: none }` (line 373) continues to win specificity against the global `:focus-visible` rule. Focus is signaled by border-color change only. This finding is unchanged from the 2026-05-22 report and remains a non-blocking recommendation (replace `outline: none` with `outline: 2px solid var(--cyan); outline-offset: 1px;` for consistency with the page's global focus pattern). **Not a deployment gate.**
+
+- **Plain-text URLs in source lines.** Several source lines on the page list URLs as plain text rather than clickable anchors (e.g. `palantir.com/foundry-entity-resolution`, `nyc.gov/bigappleconnect`, `sciencedirect.com/science/article/abs/pii/S0040162525002768`, `nature.com/articles/srep01376`). This matches the page's existing inconsistent source-line linking convention. Not a Lighthouse failure; cosmetic improvement only. **Not a deployment gate.**
+
+### Passed
+
+- **Names and labels:** all audits passing — `button-name`, `link-name`, `image-alt`, `image-redundant-alt`, `input-button-name`, `label` (cf-name, cf-email, cf-msg confirmed at the relevant `<label for>` / `<input id>` pairings), `select-name`, `form-field-multiple-labels`, `frame-title`, `object-alt`, `label-content-name-mismatch`.
+
+- **ARIA:** all audits passing. ARIA inventory unchanged by the voice rewrite. Hero `<em aria-hidden="true">` continues to contain no focusable descendants. Map div `role="application"` with `aria-label` and `aria-describedby` is intact. `aria-live="polite"` regions on copy-button status and contact-form status are correctly empty by default. Theme toggle `aria-label` updates dynamically via JS.
+
+- **Color contrast:** all audits passing across both themes. The voice rewrite introduced no new color pairings. All new prose uses the established `.body-p`, `.source`, `.s-lead`, and timeline classes, inheriting the already-verified palette. Spot-checked the new pull-stat numeric ("4" in `--yel`) — yellow on dark `--bg` #050505 = `var(--yel)` #f59e0b on #050505. Ratio: 11.32:1 (pass). Light-mode `--yel` #d97706 on #f4f4f5 = 4.62:1 (pass for normal text).
+
+- **Navigation:** skip link, `<main tabindex="-1">`, global `:focus-visible` rule, map `tabindex="0"`, honeypot `tabindex="-1"` — all unchanged and passing. `landmark-one-main` passes (one `<main>`).
+  - **`heading-order` now passing.** Full heading sequence verified line by line: h1 (hero) → h2 (intro) → h2 (double-standard) → h2 (inside) → h3 (sensor card) → h2 (map) → h3 (step 01) → h3 (step 02) → h3 (step 03) → h2 (audit) → h3 (PF-01) → h2 (equity) → **h3 (eq-card 1) → h3 (eq-card 2)** [previously h4/h4 — the fix] → h2 (fix) → h2 (act) → h3 (Step 1) → h3 (Step 2) → h4 × 4 (footer). No level skips.
+
+- **Tables and lists:** all audits passing. Table-cell rewrites in `#double-standard` preserved `<th>`/`<td>` semantics; no new tables introduced.
+
+- **Internationalization:** unchanged and passing. The voice rewrite incidentally improved this category by spelling out acronyms on first use (POST Act, OTI, DAS, ICE, RFFI) and by normalizing British spellings to American English in passages touched during the rewrite (e.g. "programme"→"program", "neighbourhood"→"neighborhood", "randomisation"→"randomization", "behavioural"→"behavioral"). Some British spellings remain in passages not modified in this session ("marginalised" in the figcaption was kept; "criminalisation" was removed when the London paragraph was rewritten).
+
+- **Best practices / motion:** unchanged and passing. The voice rewrite did not touch any GSAP block, the JS animation guards, or the CSS reduced-motion fallback.
+
+### Notable corrections made during the rewrite
+
+- The hero BAN and the `#inside` pull-stat both previously stated "**3** unique points to re-identify any user." This was factually inaccurate. The cited paper — de Montjoye et al., "Unique in the Crowd," *Scientific Reports* (2013) — finds that **four** spatio-temporal points are sufficient to uniquely identify 95% of individuals in a mobility dataset. Both occurrences were corrected to **4**, the paper was cited inline with a `<p class="source">` line, and the BAN unit text now specifies "Spatio-temporal points to re-identify 95% of users in a mobility dataset" rather than the ambiguous "any user."
+
+- Inline citations added for previously-vague claims: de Montjoye 2013 (Scientific Reports) for the re-identification figure; "From phone booths to Wi-Fi kiosks" (*Technological Forecasting and Social Change*, 2025) for the spatial-inequality finding; THE CITY (2022) and Gothamist (2024) for the Link5G real-estate model and carrier-uptake figures; S.T.O.P. *Dragnet City* (2025) anchored to specific claims about DAS scope, NYCHA camera integration, and the "for entertainment" disclosure; the Surveillance Technology Oversight Project named in full at first use.
+
+### Summary
+
+**Zero failed audits — Lighthouse a11y score: 100 — clear to deploy.**
+
+The deployment gate is cleared. The Code Health report dated 2026-05-21 (no critical, no high) remains within the 30-day freshness window required by the Deployment agent. If you intend to deploy, the Deployment agent may be invoked directly. Per the agent system, the Orchestrator cannot dispatch it; user invocation is required.

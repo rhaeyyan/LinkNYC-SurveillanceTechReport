@@ -283,7 +283,7 @@ blockquote footer { font-size: .8rem; color: var(--muted); }
 @media (max-width:600px) { .equity-split { grid-template-columns: 1fr; } }
 .eq-card { border-radius: 10px; padding: 1.4rem 1.6rem; }
 .eq-card .eq-tag { font-size: .68rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; margin-bottom: .5rem; }
-.eq-card h4 { font-family: var(--font-h); font-size: 1.1rem; font-weight: 900; margin-bottom: .7rem; }
+.eq-card h3 { font-family: var(--font-h); font-size: 1.1rem; font-weight: 900; margin-bottom: .7rem; }
 .eq-card ul { list-style: none; padding: 0; }
 .eq-card li { font-size: .85rem; color: var(--muted); padding: .35rem 0; border-bottom: 1px solid rgba(255,255,255,.06); padding-left: 1rem; position: relative; }
 .eq-card li::before { content: '–'; position: absolute; left: 0; color: var(--faint); }
@@ -370,7 +370,7 @@ footer a:hover { color: var(--cyan); }
 .cf-field { margin-bottom: .55rem; }
 .cf-field label { display: block; font-size: .68rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: .22rem; }
 .cf-field input, .cf-field textarea { width: 100%; background: var(--bg-card); border: 1px solid var(--border); color: var(--text); font-family: var(--font-b); font-size: .8rem; padding: .38rem .55rem; border-radius: 4px; box-sizing: border-box; resize: none; }
-.cf-field input:focus, .cf-field textarea:focus { border-color: var(--cyan); outline: none; }
+.cf-field input:focus, .cf-field textarea:focus { border-color: var(--cyan); outline: 2px solid var(--cyan); outline-offset: 2px; }
 .cf-submit { margin-top: .5rem; background: var(--cyan); color: #000; font-family: var(--font-h); font-size: .78rem; font-weight: 700; padding: .42rem .9rem; border-radius: 6px; border: none; cursor: pointer; transition: opacity .2s; }
 .cf-submit:hover { opacity: .85; }
 .cf-submit:disabled { opacity: .5; cursor: default; }
@@ -500,10 +500,11 @@ html.light-mode .cf-field label { color: #9ca3af; }
       <em aria-hidden="true">Big Brother</em> Problem.
     </h1>
     <p class="hero-sub">
-      LinkNYC was sold to New York City as a digital equity programme — free gigabit
-      Wi-Fi for the boroughs that needed it most. What it built instead was the largest
-      warrantless surveillance network in the five boroughs, concentrated in the
-      neighbourhoods least positioned to push back.
+      LinkNYC was launched in 2015 as a digital-equity program that promised free
+      gigabit Wi-Fi to neighborhoods underserved by home broadband. It has also
+      become the largest warrantless surveillance network operating in the five
+      boroughs, with kiosks concentrated in the neighborhoods least equipped to
+      resist their rollout.
     </p>
     <div class="hero-bans">
       <div class="hero-ban">
@@ -515,8 +516,8 @@ html.light-mode .cf-field label { color: #9ca3af; }
         <span class="unit">Kiosks mandated for citywide deployment</span>
       </div>
       <div class="hero-ban">
-        <span class="number" style="color:var(--yel)">3</span>
-        <span class="unit">Unique points to re-identify any user</span>
+        <span class="number" style="color:var(--yel)">4</span>
+        <span class="unit">Spatio-temporal points to re-identify 95% of users in a mobility dataset</span>
       </div>
     </div>
     <p style="margin-top:2.5rem;font-size:.72rem;color:var(--faint);letter-spacing:.05em;">Compiled by Rayan Khan</p>
@@ -541,35 +542,37 @@ html.light-mode .cf-field label { color: #9ca3af; }
 <section id="intro">
   <div class="wrap">
     <p class="s-label reveal">The Background</p>
-    <h2 class="s-title reveal">They replaced the payphones. Then they started watching.</h2>
+    <h2 class="s-title reveal">LinkNYC was built as a public Wi-Fi network. It also functions as a surveillance one.</h2>
     <p class="s-lead reveal">
-      Starting in 2015, New York City began replacing its remaining payphones with tall steel
-      kiosks — 9.5-foot columns with large touchscreens, USB charging ports, and the promise
-      of free gigabit Wi-Fi. The pitch was straightforward: close the digital divide. Give
-      residents who couldn't afford home broadband a connection to the internet. The program
-      was called LinkNYC, and by the time the first wave of deployments was complete it had
-      become the largest public Wi-Fi network in the United States.
+      Starting in 2015, New York City began replacing its remaining payphones with 9.5-foot
+      steel kiosks offering touchscreens, USB charging ports, and free gigabit Wi-Fi. The
+      program, called LinkNYC, was framed as a digital-equity measure for residents without
+      home broadband. By the end of its first deployment wave, it was the largest public
+      Wi-Fi network in the United States.
     </p>
 
     <p class="body-p reveal">
-      The company operating it is CityBridge LLC — not a city agency, but a private consortium
-      assembled specifically to win the franchise contract. Its members are
-      <strong>Intersection</strong>, the advertising and data company that manages the kiosks'
+      The kiosks are owned and operated by CityBridge LLC, a private consortium formed in
+      2014 to win the franchise. CityBridge has three corporate members:
+      <strong>Intersection</strong>, an advertising and data company that handles the kiosks'
       commercial inventory; <strong>Qualcomm</strong>, which built the hardware; and
-      <strong>Boldyn Networks</strong>, which runs the infrastructure. Three corporations, one
-      franchise agreement, and the personal data of millions of New Yorkers moving through
-      their systems every day — passively, continuously, and without any of them being asked.
+      <strong>Boldyn Networks</strong>, which manages the infrastructure. According to
+      CityBridge's published privacy policy, the kiosks continuously collect device
+      identifiers, camera footage, and environmental sensor readings from anyone within
+      range, regardless of whether they connect to the Wi-Fi.
     </p>
 
     <p class="body-p reveal">
-      Under the POST Act, the NYPD is legally required to publish detailed impact and use
-      policies for every surveillance tool it operates: who can access the data, under what
-      conditions, retained for how long. CityBridge is not the NYPD. None of that applies.
-      The kiosks run under a franchise agreement negotiated in 2014, before most of their
-      surveillance capabilities were apparent to anyone not building them. No mandatory
-      disclosures. No public audit cycle. No enforcement mechanism. The city built a
-      surveillance network operating entirely outside the accountability framework it wrote
-      for itself. That isn't a loophole someone missed. That's the contract.
+      That collection sits outside the accountability rules the city wrote for its own
+      police department. The Public Oversight of Surveillance Technology Act (POST Act),
+      passed in 2020, requires the New York Police Department to publish impact and use
+      policies for every surveillance tool it operates, including who may access the data,
+      under what conditions, and how long it is retained. CityBridge is not part of the
+      NYPD, and the POST Act does not apply to it. The franchise agreement, negotiated in
+      2014 before most of the kiosks' surveillance capabilities were public, contained no
+      equivalent disclosure obligation. The result is a surveillance network covering all
+      five boroughs that is not required to publicly account for how it works or who can
+      use it.
     </p>
   </div>
 </section>
@@ -580,10 +583,13 @@ html.light-mode .cf-field label { color: #9ca3af; }
     <p class="s-label reveal">The Finding</p>
     <h2 class="s-title reveal">The NYPD needs a court order to do what LinkNYC does by default.</h2>
     <p class="s-lead reveal">
-      The NYPD publishes an official Impact &amp; Use Policy for "WiFi Geolocation Tracking Devices."
-      It requires probable cause and a court order. LinkNYC — the largest Wi-Fi geolocation
-      network in the city — requires neither. Same underlying capability. A completely different
-      set of rules. Or rather, no rules at all.
+      Under the POST Act, the NYPD's official Impact and Use Policy for &ldquo;WiFi
+      Geolocation Tracking Devices&rdquo; requires probable cause and a court order before
+      officers may deploy such a device. CityBridge operates the largest Wi-Fi geolocation
+      network in New York City, and its kiosks rely on the same underlying capability.
+      Neither the franchise agreement nor the company's published privacy policy imposes
+      an equivalent legal threshold. Collection is continuous and does not require a
+      warrant.
     </p>
 
     <div class="card reveal">
@@ -600,12 +606,12 @@ html.light-mode .cf-field label { color: #9ca3af; }
             <tr>
               <td><strong>Legal threshold</strong></td>
               <td class="good">Probable cause <strong>and</strong> a court order</td>
-              <td class="bad">None — passive collection by default</td>
+              <td class="bad">None; collection is passive and continuous</td>
             </tr>
             <tr>
               <td><strong>Justification</strong></td>
               <td class="good">Exigent circumstances (e.g. imminent threat to life)</td>
-              <td class="bad">Walking past a kiosk</td>
+              <td class="bad">Proximity to a kiosk; no user action required</td>
             </tr>
             <tr>
               <td><strong>Scale</strong></td>
@@ -615,12 +621,12 @@ html.light-mode .cf-field label { color: #9ca3af; }
             <tr>
               <td><strong>Data retention</strong></td>
               <td class="good">Location data is not recorded</td>
-              <td class="bad">Indefinite — until the Dec 2022 hashed-MAC fix (after years of violation)</td>
+              <td class="bad">Indefinite prior to Dec 2022; hashed identifier stored thereafter</td>
             </tr>
             <tr>
               <td><strong>Scope</strong></td>
               <td class="good">Narrow, target-specific</td>
-              <td class="bad">Indiscriminate, ambient, population-wide</td>
+              <td class="bad">Ambient and continuous; not target-specific</td>
             </tr>
           </tbody>
         </table>
@@ -631,17 +637,33 @@ html.light-mode .cf-field label { color: #9ca3af; }
     <div class="callout reveal">
       <div class="callout-title">The Regulatory Gap</div>
       <p>
-        The POST Act requires the NYPD to disclose the surveillance tools it <em>owns</em>.
-        CityBridge isn't the NYPD — it's a private consortium — which means the <strong><span id="gapCount">2,255+</span>
-        kiosks</strong> logging device identifiers across the five boroughs sit entirely outside that
-        disclosure framework. Yet the footage and metadata they collect flow voluntarily into the
-        Domain Awareness System — a network of 80,000+ cameras, five million license plate scans
-        per day, drone feeds, and 911 call records, all fused by machine learning into
-        &ldquo;entity reports&rdquo; on every New Yorker: appearance, social affiliations, 311 call
-        history, sealed arrest records, DNA. Accessible from any officer&rsquo;s smartphone. From
-        there, as documented, to federal agencies that answer to no one in this city.
-        The city gets the data without the accountability. That's not an oversight. It's the architecture.
+        The POST Act applies only to surveillance tools the NYPD operates directly. Because
+        CityBridge is a private consortium and not part of the police department, the
+        <strong><span id="gapCount">2,255+</span> LinkNYC kiosks</strong> logging device
+        identifiers across the five boroughs fall outside its disclosure framework.
+        CityBridge's published privacy policy contains an exemption broad enough to cover
+        most law-enforcement requests: data and footage may be shared with police &ldquo;to
+        detect or address illegal activity&rdquo; or where disclosure is &ldquo;useful to
+        protect safety.&rdquo; Camera footage has been handed to NYPD investigators without
+        a warrant requirement, according to documentation summarized by the Surveillance
+        Technology Oversight Project (S.T.O.P.).
       </p>
+      <p>
+        S.T.O.P.'s &ldquo;Dragnet City&rdquo; report (October 2025) describes how that
+        material moves further into the NYPD's Domain Awareness System (DAS), a fusion
+        platform that, according to the report, integrates more than 80,000 cameras, an
+        estimated five million license plate reads per day, drone feeds, and 911 call
+        records. The DAS produces what the report calls &ldquo;entity reports&rdquo; on
+        individual New Yorkers, drawing on appearance data, social affiliations, 311 call
+        history, sealed arrest records, and DNA, and accessible from officers' smartphones.
+        The report further documents instances of NYPD data flowing onward to federal
+        agencies, including U.S. Immigration and Customs Enforcement. Civil-liberties
+        advocates including the NYCLU and S.T.O.P. have characterized this combination
+        — extensive private collection feeding a public surveillance system with limited
+        public oversight — as a structural feature of the way the city built its
+        surveillance capacity, not an incidental gap.
+      </p>
+      <p class="source">S.T.O.P., &ldquo;Dragnet City: NYPD's Omnipresent Domain Awareness System,&rdquo; 28 Oct 2025; <a href="https://www.link.nyc/privacy-policy.html" target="_blank" rel="noopener">LinkNYC Privacy Policy</a>; NYCLU testimony, NYC Council Committee on Technology, 7 June 2023.</p>
     </div>
   </div>
 </section>
@@ -650,45 +672,67 @@ html.light-mode .cf-field label { color: #9ca3af; }
 <section id="inside">
   <div class="wrap">
     <p class="s-label reveal">The Machine</p>
-    <h2 class="s-title reveal">You don't have to connect. Walking past is enough.</h2>
+    <h2 class="s-title reveal">LinkNYC kiosks identify devices that never connect to them.</h2>
     <p class="s-lead reveal">
-      LinkNYC replaced New York's 13,000 obsolete payphones starting in 2015, promising
-      free gigabit Wi-Fi, charging ports, and domestic calls. The pitch was digital equity.
-      The funding mechanism was something else entirely.
+      LinkNYC replaced approximately 13,000 obsolete payphones beginning in 2015, offering
+      free gigabit Wi-Fi, USB charging, and free domestic calls in exchange for the use of
+      city sidewalks. The program operates at no direct cost to taxpayers; its revenue
+      model is based on digital advertising and data services rather than municipal funding.
     </p>
 
     <p class="body-p reveal">
-      The programme is built and operated at no direct cost to taxpayers — because it runs on
-      advertising. Intersection, the ad arm of the CityBridge consortium, pitches brands a
-      <strong>"context-aware platform"</strong> for reaching consumers as they move through physical space.
-      Their own marketing materials promise to identify niches like <strong>"18-to-34-year-old
-      high-income college graduates"</strong> based on behavioural data harvested from the surrounding
-      environment. To deliver that promise, every kiosk has to function as a sensor hub first
-      and a public utility second.
+      Intersection, the advertising and data subsidiary within the CityBridge consortium,
+      markets the kiosks to brands as a <strong>&ldquo;context-aware platform&rdquo;</strong>
+      for reaching pedestrians as they move through physical space. According to NYCLU
+      testimony delivered to the New York City Council Committee on Technology in June 2023,
+      Intersection's marketing materials describe targeting cohorts such as
+      <strong>&ldquo;18-to-34-year-old high-income college graduates&rdquo;</strong> based on
+      behavioral data drawn from the kiosks' immediate environment. To deliver that level of
+      targeting, each kiosk operates first as a sensor platform and second as a Wi-Fi access
+      point.
     </p>
 
     <p class="body-p reveal">
-      Each structure carries dual HD cameras, Wi-Fi access points, Bluetooth beacons, and
-      environmental sensors monitoring noise, temperature, light, and air quality. The cameras
-      retain footage for seven days. The beacons continuously scan for nearby devices, logging
-      the unique MAC address your phone broadcasts whenever Wi-Fi is enabled — <strong>regardless
-      of whether you've ever touched the kiosk or even noticed it standing there</strong>. The
-      32-foot Link5G poles that began appearing in 2022 extend that reach further, adding 5G
-      antennae and greater sensor capacity. At some point, it stops being street furniture
-      and starts being something else entirely.
+      Each kiosk carries two HD cameras, Wi-Fi access points, Bluetooth beacons, and
+      environmental sensors that monitor noise, temperature, light, and air quality.
+      According to CityBridge's privacy policy, camera footage is retained for seven days.
+      The Wi-Fi and Bluetooth radios continuously scan for nearby devices, logging the unique
+      MAC address each device broadcasts whenever Wi-Fi or Bluetooth is enabled.
+      <strong>Collection occurs whether or not the device's owner connects to the LinkNYC
+      network, and whether or not the owner is aware the kiosk is present.</strong> The
+      32-foot Link5G poles introduced in 2022 add 5G antennae and additional sensor capacity
+      to that footprint.
     </p>
+
+    <p class="body-p reveal">
+      Modern smartphones partially mitigate passive identification through MAC address
+      randomization, a feature in which the operating system broadcasts a fresh, fake
+      identifier to each new network. Academic research has shown that the defense is
+      incomplete. A 2024 survey published in <em>Security and Safety</em> documents that
+      Wi-Fi probe requests still leak structured timing patterns and behavioral fingerprints,
+      and that a device's radio hardware emits a distinguishable physical signature
+      — <strong>Radio Frequency Fingerprinting</strong> (RFFI) — that persists across
+      software-level address changes. A 2025 paper introducing the MobRFFI system applies
+      the technique specifically to non-cooperative re-identification of mobile devices for
+      mobility-intelligence applications, the category that includes networks like LinkNYC.
+    </p>
+    <p class="source reveal">&ldquo;Radio frequency fingerprint identification for Internet of Things: A survey,&rdquo; <em>Security and Safety</em> (2024); MobRFFI: Non-cooperative Device Re-identification for Mobility Intelligence (2025).</p>
 
     <div class="pull-stat reveal">
-      <div class="n">3</div>
-      <div class="label">location data points — that's all it takes to re-identify a named
-      individual from an "anonymous" mobility dataset, per peer-reviewed research.
-      There are <span id="statKiosks">2,255+</span> kiosks collecting those points right now.</div>
+      <div class="n">4</div>
+      <div class="label">Spatio-temporal points sufficient to uniquely identify 95% of
+      individuals in a mobility dataset, according to a 2013 paper in <em>Scientific
+      Reports</em> by de Montjoye et al. There are <span id="statKiosks">2,255+</span>
+      LinkNYC kiosks producing such data points across New York City.</div>
     </div>
+    <p class="source reveal">Y.-A. de Montjoye, C. A. Hidalgo, M. Verleysen, V. D. Blondel, &ldquo;<a href="https://www.nature.com/articles/srep01376" target="_blank" rel="noopener">Unique in the Crowd: The Privacy Bounds of Human Mobility</a>,&rdquo; <em>Scientific Reports</em> 3, 1376 (2013).</p>
 
     <p class="body-p reveal">
-      The consortium — Intersection (advertising), Qualcomm (hardware), and Boldyn Networks
-      (connectivity, which already runs NYC subway Wi-Fi) — treats the public right-of-way
-      as a captive data arena. As the NYCLU put it plainly:
+      The CityBridge consortium has three corporate members: Intersection (advertising and
+      data), Qualcomm (hardware), and Boldyn Networks (connectivity, which also operates the
+      city's subway Wi-Fi). The three companies jointly manage the data flows generated by
+      the kiosks under the franchise agreement. The NYCLU has summarized the result in a
+      single sentence.
     </p>
 
     <blockquote class="reveal">
@@ -704,8 +748,8 @@ html.light-mode .cf-field label { color: #9ca3af; }
           <tbody>
             <tr>
               <td><strong>Passive location</strong><br><span class="badge badge-red">Critical</span></td>
-              <td>Wi-Fi &amp; Bluetooth intercept your MAC address without connection</td>
-              <td>Your daily route becomes a data product sold to advertisers</td>
+              <td>Wi-Fi and Bluetooth radios intercept the device's MAC address without requiring a connection</td>
+              <td>Movement patterns become inputs to advertising and location analytics products</td>
             </tr>
             <tr>
               <td><strong>Visual surveillance</strong><br><span class="badge badge-yel">High</span></td>
@@ -720,13 +764,23 @@ html.light-mode .cf-field label { color: #9ca3af; }
             <tr>
               <td><strong>Environmental</strong><br><span class="badge badge-cyan">Medium</span></td>
               <td>Noise, temp, light, pollutant sensors</td>
-              <td>Mission-creep into incident response; potential DAS integration</td>
+              <td>Potential expansion of use into incident response; possible Domain Awareness System integration</td>
             </tr>
           </tbody>
         </table>
       </div>
       <p class="source">LinkNYC privacy policy; NYCLU testimony; EFF analysis; KPMG audit findings.</p>
     </div>
+
+    <p class="body-p reveal" style="margin-top:2rem;">
+      Users who wish to opt out of passive identification cannot do so by declining to log
+      in to the LinkNYC network. The kiosks read the broadcasts that phones emit
+      automatically when Wi-Fi or Bluetooth is enabled, independent of any user action.
+      Effective mitigation requires disabling Wi-Fi and Bluetooth on a device, typically by
+      enabling <strong>Airplane Mode</strong>, while the device is within range of a kiosk.
+      Civil-liberties advocates have cited the absence of any practical opt-out as evidence
+      that the network operates without a meaningful consent mechanism.
+    </p>
   </div>
 </section>
 
@@ -758,41 +812,59 @@ html.light-mode .cf-field label { color: #9ca3af; }
 
       <div class="map-steps-col">
         <div class="map-step reveal">
-          <div class="map-step-n">01 / The Original Sin</div>
-          <h3>Manhattan first. Outer boroughs last.</h3>
+          <div class="map-step-n">01 / Initial Rollout</div>
+          <h3>The first wave of kiosks was concentrated in Manhattan.</h3>
           <p>
-            The Link 1.0 rollout concentrated kiosks in <strong>high-income Manhattan
-            commercial corridors</strong> — not because that's where the digital divide
-            was widest, but because that's where Intersection's advertisers wanted their
-            inventory. Equity was the stated purpose. Ad revenue was the actual logic.
+            The Link 1.0 deployment placed the majority of its kiosks in high-income
+            Manhattan commercial corridors. According to NYC Mayor's Office data, fewer than
+            <strong>10% of the original LinkNYC kiosks</strong> were sited in the Bronx, the
+            borough with the highest rates of digital disconnection and poverty in New York
+            City.
           </p>
           <p>
-            Less than <strong>10% of the original LinkNYC footprint went to the Bronx</strong>
-            — the borough with the highest rates of digital disconnection and poverty
-            in the city. Spatial researchers concluded that the programme "completely failed
-            its target population." That's a measured way of saying the people most in
-            need of public Wi-Fi were last in line for it.
+            A 2025 paper in <em>Technological Forecasting and Social Change</em>, titled
+            &ldquo;From phone booths to Wi-Fi kiosks: the spatial inequality of public
+            connectivity in New York City,&rdquo; analyzed the rollout using
+            spatial-statistics methods and concluded that the program operated independently
+            of broadband need and did not reduce digital inequality. Civil-liberties
+            advocates including the NYCLU have argued that the distribution reflects the
+            network's funding structure, which depends on advertising revenue concentrated
+            in commercial areas with heavy pedestrian traffic.
           </p>
+          <p class="source">&ldquo;<a href="https://www.sciencedirect.com/science/article/abs/pii/S0040162525002768" target="_blank" rel="noopener">From phone booths to Wi-Fi kiosks: the spatial inequality of public connectivity in New York City</a>,&rdquo; <em>Technological Forecasting and Social Change</em> (2025); NYC Mayor's Office, LinkNYC franchise data.</p>
           <div class="pull-stat cyan" style="margin:1.2rem 0 0;">
             <div class="n">1.5M</div>
-            <div class="label">New Yorkers without reliable home broadband — the people LinkNYC claimed to serve</div>
+            <div class="label">New York City residents without reliable home broadband, the population LinkNYC was funded to serve.</div>
           </div>
         </div>
 
         <div class="map-step reveal">
           <div class="map-step-n">02 / The Pivot</div>
-          <h3>Near-bankruptcy triggered the outer-borough mandate.</h3>
+          <h3>The franchise was renegotiated after CityBridge fell into arrears.</h3>
           <p>
-            By 2019, CityBridge owed the city <strong>nearly $70 million in arrears</strong>.
-            Rather than rethinking the franchise, the city renegotiated it — restructuring
-            the debt in exchange for a new generation of hardware: the towering 32-foot
-            Link5G poles. An equity mandate came with them. <strong>90% of all new Link5G
-            units must be built in the outer boroughs</strong> or above 96th Street in Manhattan.
+            By 2019, CityBridge owed the city approximately <strong>$70 million in
+            arrears</strong>, according to a 2021 report from the New York State
+            Comptroller's office. Rather than rebidding the franchise, the city renegotiated
+            it, restructuring the debt in exchange for a new generation of hardware: the
+            32-foot Link5G poles.
           </p>
           <p>
-            739 specific kiosk locations were mandated across <strong>13 community districts</strong>
-            selected for low median income, severe broadband gaps, and absence of existing
-            LinkNYC infrastructure. The surveillance follows the need.
+            Reporting by THE CITY in April 2022 described the renegotiation as a shift in
+            revenue model, under which CityBridge would lease space inside the new poles to
+            cellular carriers as 5G antenna platforms. Subsequent reporting by Gothamist in
+            July 2024 found that, of approximately 200 Link5G towers installed by that
+            point, <strong>only two had carrier equipment fitted</strong>, indicating that
+            the major U.S. wireless companies had not yet committed to the new platform. The
+            kiosks' sensor and Wi-Fi capabilities, however, were operational throughout that
+            period.
+          </p>
+          <p>
+            A 90% outer-borough mandate accompanied the new hardware: under the renegotiated
+            franchise, nine of every ten new Link5G units must be sited in the outer
+            boroughs or above 96th Street in Manhattan. NYC Mayor's Office documents
+            identify <strong>739 specific kiosk locations</strong> across 13 community
+            districts selected for low median income, severe broadband gaps, and the absence
+            of existing LinkNYC infrastructure.
           </p>
           <div class="map-step-photo">
             <figure class="photo-fig">
@@ -806,15 +878,21 @@ html.light-mode .cf-field label { color: #9ca3af; }
               </figcaption>
             </figure>
           </div>
+          <p class="source">THE CITY, &ldquo;Big Tech Pays to Supersize LinkNYC,&rdquo; 27 Apr 2022; Gothamist, &ldquo;NYC&rsquo;s massive Link5G towers aren't actually providing 5G (yet),&rdquo; 12 Jul 2024.</p>
         </div>
 
         <div class="map-step reveal">
           <div class="map-step-n">03 / The Mismatch</div>
-          <h3>The boroughs with the greatest need get the greatest surveillance load.</h3>
+          <h3>Future kiosk deployment is concentrated in the boroughs with the largest broadband gaps.</h3>
           <p>
-            The chart below shows the correlation directly: the Bronx has the city's
-            highest broadband deficit — and is also slated for the largest share of new
-            surveillance kiosks. The digital divide isn't closed. It's replaced.
+            The chart below compares borough-level broadband deficit (per American Community
+            Survey 2018–2022 data via NYC OTI) with projected Link5G deployment under the
+            current franchise terms. The Bronx, which has the city's highest broadband
+            deficit, is also projected to receive the largest share of new Link5G kiosks.
+            According to civil-liberties analysts including S.T.O.P. and the NYCLU, this
+            pattern means the surveillance footprint of the program will be largest in the
+            same neighborhoods that the original LinkNYC rollout did not adequately serve,
+            per the 2025 spatial-inequality analysis cited above.
           </p>
           <div class="chart-wrap md"><canvas id="needVsDeployChart"></canvas></div>
           <p class="source">Need: ACS 5-year (2018–2022) via NYC OTI. Future deployment: derived from 90% outer-borough mandate and 13 priority districts (NYC Mayor's Office, 2022).</p>
@@ -828,14 +906,15 @@ html.light-mode .cf-field label { color: #9ca3af; }
 <!-- ── SECTION 4: THE AUDIT ── -->
 <section id="audit">
   <div class="wrap">
-    <p class="s-label reveal">The Confession</p>
-    <h2 class="s-title reveal">The city finally looked. Here's what it found.</h2>
+    <p class="s-label reveal">The Audit</p>
+    <h2 class="s-title reveal">A 2021 audit found that CityBridge had violated its privacy obligations for years.</h2>
     <p class="s-lead reveal">
-      At some point, the city had to look. In 2021, the Office of Technology and Innovation
-      commissioned KPMG to audit CityBridge's compliance with its own privacy obligations.
-      The resulting report was uploaded to a government page in January 2023 — heavily
-      redacted, no press release, no link from the LinkNYC portal. The NYCLU found it
-      six months later.
+      In 2021, the New York City Office of Technology and Innovation (OTI) commissioned
+      KPMG to audit CityBridge's compliance with the privacy provisions of its franchise
+      agreement. The resulting report was posted to an OTI web page in January 2023 with
+      significant redactions and no accompanying public announcement. The NYCLU obtained
+      the document and surfaced its findings six months later, in June 2023, in testimony
+      to the New York City Council Committee on Technology.
     </p>
 
     <div class="tl reveal">
@@ -851,45 +930,58 @@ html.light-mode .cf-field label { color: #9ca3af; }
       </div>
       <div class="tl-item crisis">
         <div class="tl-date">Jan 2023</div>
-        <div class="tl-title">Audit quietly uploaded — redacted, unannounced</div>
-        <div class="tl-body">Non-chronological order, no press release, no link from link.nyc.</div>
+        <div class="tl-title">Audit posted to OTI website with redactions</div>
+        <div class="tl-body">Document released without a press release or a link from the link.nyc portal; sections were redacted before release.</div>
       </div>
       <div class="tl-item">
         <div class="tl-date">Jun 2023</div>
         <div class="tl-title">NYCLU surfaces it in City Council testimony</div>
-        <div class="tl-body">Six months after release, the findings reach public attention through civil liberties advocates — not city communications.</div>
+        <div class="tl-body">Six months after the audit's release, its findings reach public attention through testimony from a civil-liberties organization rather than through city communications.</div>
       </div>
     </div>
 
     <div class="audit-bento reveal">
       <div class="finding-banner">
         <div class="tag">PF-01 &mdash; Critical Finding</div>
-        <h3>For years, CityBridge stored your device's fingerprint in plaintext.</h3>
+        <h3>CityBridge stored device identifiers in plaintext for years before applying the required anonymization.</h3>
         <p>
-          A MAC address is a unique, hardcoded identifier your phone broadcasts constantly —
-          it's effectively a fingerprint for your device. CityBridge was contractually required
-          to anonymize these before they were ever stored. <strong>They didn't.</strong> For over
-          half a decade, every device that came within range of a kiosk was uniquely identified
-          and logged, in direct violation of the franchise agreement and the company's own
-          privacy policy. The fix — a one-way hash applied to stored addresses — wasn't
-          deployed until December 2022. Years into the network's operation.
+          A MAC address is the unique hardware identifier that each Wi-Fi device broadcasts
+          when its Wi-Fi radio is enabled. Under its franchise agreement and its own privacy
+          policy, CityBridge was required to anonymize MAC addresses before storing them.
+          According to the KPMG audit (designated finding PF-01), the company did not. For
+          approximately half a decade after the network's launch, devices within range of a
+          LinkNYC kiosk were uniquely identified and stored in plaintext, in violation of
+          both the franchise terms and CityBridge's published privacy policy. A one-way hash
+          was first applied to stored addresses in December 2022.
+        </p>
+        <p>
+          Hashing alone does not fully resolve the privacy concern the franchise terms were
+          intended to address. Because the network must recognize a returning device and
+          auto-connect it, it has to match the same hashed string each time the device
+          appears. The hashed identifier therefore remains persistent and unique to the
+          device. Several companies, including Palantir, offer commercial data-integration
+          services known as <strong>&ldquo;entity resolution,&rdquo;</strong> which link
+          pseudonymous identifiers from different sources back to individual people. Civil-
+          liberties analysts including the NYCLU have argued that the December 2022 hashing
+          step reduces the legibility of the data to a casual reader but does not prevent
+          re-identification by parties with access to corresponding datasets.
         </p>
       </div>
       <div class="finding-chip">
         <div class="id" style="color:var(--yel)">PF-02</div>
-        <p>The Wi-Fi sign-on page showed <strong>Intersection's privacy policy</strong> — the ad company's — instead of LinkNYC's. Users were legally misled about who governed their data.</p>
+        <p>The Wi-Fi sign-on page displayed <strong>Intersection's privacy policy</strong> rather than LinkNYC's. Users connecting to the network were presented with the terms of the consortium's advertising subsidiary rather than the consortium itself.</p>
       </div>
       <div class="finding-chip">
         <div class="id" style="color:var(--cyan)">PF-03</div>
-        <p>Welcome emails lacked the legally required <strong>unsubscribe link</strong>, trapping users in marketing communications in violation of anti-spam law.</p>
+        <p>Welcome emails sent to new LinkNYC users lacked the <strong>unsubscribe link</strong> required under the federal CAN-SPAM Act of 2003.</p>
       </div>
       <div class="finding-chip pf04">
         <div class="id" style="color:var(--cyan)">PF-04</div>
-        <p>The Wi-Fi splash page <strong>failed to reference</strong> the correct Terms of Use and Privacy Policy — leaving users without clear notice of what they were accepting.</p>
+        <p>The Wi-Fi splash page <strong>did not reference the correct Terms of Use and Privacy Policy</strong>. Users connecting to the network did not have clear notice of the agreement they were entering.</p>
       </div>
     </div>
 
-    <p class="source" style="margin-top:.5rem;">KPMG audit (OTI, redacted Jan 2023); CityBridge remediation letter to OTI, 12 Dec 2022; NYCLU testimony to NYC Council Tech Committee, 7 Jun 2023.</p>
+    <p class="source" style="margin-top:.5rem;">KPMG audit (OTI, redacted Jan 2023); CityBridge remediation letter to OTI, 12 Dec 2022; NYCLU testimony to NYC Council Tech Committee, 7 Jun 2023; Palantir, <a href="https://www.palantir.com/foundry-entity-resolution/" target="_blank" rel="noopener">&ldquo;Foundry Entity Resolution&rdquo; product page</a>.</p>
   </div>
 </section>
 
@@ -897,28 +989,34 @@ html.light-mode .cf-field label { color: #9ca3af; }
 <section id="equity">
   <div class="wrap">
     <p class="s-label reveal">Who Pays</p>
-    <h2 class="s-title reveal">Privacy is a luxury the poor can no longer afford.</h2>
+    <h2 class="s-title reveal">The neighborhoods with the fewest privacy alternatives bear the largest share of the surveillance load.</h2>
     <p class="s-lead reveal">
-      Wealthier residents can largely ignore LinkNYC — they have private broadband,
-      unlimited data plans, and no real reason to use a public kiosk. Low-income residents,
-      undocumented immigrants, and unhoused New Yorkers who depend on public Wi-Fi as a
-      digital lifeline don't have that option. For them, the network isn't a convenience;
-      it's infrastructure they can't opt out of. And the price of access is their civil liberties.
+      Residents with private home broadband or unlimited cellular data can largely avoid
+      using LinkNYC. Lower-income residents, undocumented immigrants, and unhoused New
+      Yorkers who rely on public Wi-Fi for routine internet access often cannot. For these
+      users, the network functions less as an optional service than as primary
+      infrastructure. Civil-liberties organizations including the NYCLU and the
+      Surveillance Technology Oversight Project (S.T.O.P.) have argued that the resulting
+      pattern places the largest surveillance burden on the populations with the least
+      practical ability to opt out.
     </p>
 
     <p class="body-p reveal">
-      Academic literature calls this <strong>digital redlining</strong> — a system where access
-      is finally extended to underserved communities, but only bundled with invasive monitoring.
-      The Link5G mandate in the 13 priority districts makes this explicit in the contract itself:
-      the same neighbourhoods with the highest broadband deficit, the lowest incomes, and the
-      longest history of aggressive policing are precisely the ones designated to receive the
-      next wave of surveillance infrastructure. It isn't a coincidence. It's the deal.
+      Academic and civil-liberties literature uses the term <strong>digital redlining</strong>
+      to describe systems in which historically underserved communities receive expanded
+      service only when that service is bundled with monitoring or extractive terms.
+      According to NYC Mayor's Office documents, the 13 community districts designated for
+      mandatory Link5G deployment under the renegotiated franchise are characterized by
+      high broadband deficit, low median income, and long documented histories of intensive
+      policing. The same neighborhoods that are slated to receive the largest share of new
+      kiosks are therefore also the neighborhoods most likely to experience the kiosks'
+      data flows in the context of law-enforcement use.
     </p>
 
     <div class="equity-split reveal">
       <div class="eq-card" style="background:rgba(var(--cyan-rgb),.06);border:1px solid rgba(var(--cyan-rgb),.2);">
         <div class="eq-tag" style="color:var(--cyan)">Civic Agency: High</div>
-        <h4 style="color:var(--cyan)">Wealthy historic districts</h4>
+        <h3 style="color:var(--cyan)">Wealthy historic districts</h3>
         <p style="font-size:.85rem;color:var(--muted);margin-bottom:.7rem;">Upper East Side, Tribeca, Carnegie Hill, Financial District.</p>
         <ul>
           <li>Community Board 1 moratorium resolution</li>
@@ -930,7 +1028,7 @@ html.light-mode .cf-field label { color: #9ca3af; }
       </div>
       <div class="eq-card" style="background:rgba(var(--mag-rgb),.06);border:1px solid rgba(var(--mag-rgb),.2);">
         <div class="eq-tag" style="color:var(--mag)">Civic Agency: Low</div>
-        <h4 style="color:var(--mag)">Mandated rollout districts</h4>
+        <h3 style="color:var(--mag)">Mandated rollout districts</h3>
         <p style="font-size:.85rem;color:var(--muted);margin-bottom:.7rem;">Brownsville, Hunts Point, Jamaica, Inwood, Stapleton.</p>
         <ul>
           <li>No equivalent preservationist institution</li>
@@ -938,7 +1036,7 @@ html.light-mode .cf-field label { color: #9ca3af; }
           <li>Bound by the 90% outer-borough mandate</li>
           <li>Already heavily policed by Domain Awareness System</li>
         </ul>
-        <div class="eq-result" style="color:var(--mag);">739 kiosks mandated — surveillance infrastructure forced in the name of equity.</div>
+        <div class="eq-result" style="color:var(--mag);">739 kiosks mandated for deployment under the renegotiated franchise's equity provisions.</div>
       </div>
     </div>
 
@@ -948,7 +1046,7 @@ html.light-mode .cf-field label { color: #9ca3af; }
              alt="LinkNYC kiosk on 3rd Avenue in the Bronx displaying a Community Board 1 advertisement"
              loading="lazy">
         <figcaption>
-          Bronx, 3rd Avenue — among the fewer than 10% of original LinkNYC kiosks deployed in the borough. Note the Community Board 1 public-notice ad: civic infrastructure doubling as a surveillance node.
+          Bronx, 3rd Avenue. The kiosk pictured is one of the under-10% share of the original LinkNYC footprint that was sited in the Bronx, and it displays a Community Board public-notice advertisement.
           Photo: <a href="https://commons.wikimedia.org/wiki/File:LinkNYC_kiosk_3rd_Ave_Bronx_IMG_3239_HLG.jpg" target="_blank" rel="noopener">Hugo L. González</a> /
           <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a>
         </figcaption>
@@ -957,18 +1055,20 @@ html.light-mode .cf-field label { color: #9ca3af; }
 
     <div class="pull-stat reveal" style="margin:2.2rem 0;">
       <div class="n" style="color:var(--yel)">30–40%</div>
-      <div class="label">of NYC Housing Authority residents lacked home broadband — the population most dependent on LinkNYC's "free" Wi-Fi, and most exposed to its surveillance.</div>
+      <div class="label">of NYC Housing Authority residents lacked home broadband at the time of the LinkNYC rollout, according to city and federal data. This population has the greatest practical reliance on free public Wi-Fi networks.</div>
     </div>
 
     <p class="body-p reveal">
-      That dependency is not accidental, and the city has proved it knows how to exploit it.
-      In 2025, Mayor Adams secretly connected NYCHA security cameras to the Domain Awareness
-      System using NYCHA&rsquo;s own WiFi infrastructure — without informing residents, City
-      Council, or public housing administrators. One campus was already live-streaming directly
-      to NYPD smartphones. Plans existed to add nineteen more. NYPD officers had previously
-      admitted watching tenants &ldquo;for entertainment.&rdquo; Free internet, delivered at
-      last — and used to build a live surveillance feed into the homes of the city&rsquo;s
-      poorest residents.
+      A 2025 report by the Surveillance Technology Oversight Project found that this
+      population has been integrated into the city's broader surveillance apparatus through
+      other means as well. According to the report, the Adams administration connected
+      NYCHA security cameras to the NYPD's Domain Awareness System using NYCHA's own Wi-Fi
+      infrastructure, without notification to residents, the City Council, or public housing
+      administrators. The report states that one NYCHA campus was already streaming live to
+      NYPD smartphones at the time of its publication and that the program contemplated
+      expansion to 19 additional campuses. S.T.O.P. also cites prior NYPD acknowledgments
+      that officers had used DAS camera feeds in NYCHA buildings for non-investigative
+      purposes, including, in the report's wording, &ldquo;for entertainment.&rdquo;
     </p>
     <p class="source reveal">S.T.O.P., &ldquo;Dragnet City: NYPD&rsquo;s Omnipresent Domain Awareness System,&rdquo; Oct. 28, 2025.</p>
 
@@ -978,21 +1078,41 @@ html.light-mode .cf-field label { color: #9ca3af; }
     </blockquote>
 
     <p class="body-p reveal">
-      S.T.O.P. documented what that exposure means in practice. ICE has accessed NYPD license plate
-      reader data. Sealed records — records legally protected from disclosure — were shared with
-      federal agents and used against a pro-Palestinian protester in deportation proceedings. Private
-      contractors simultaneously advise city agencies and ICE's enforcement operations. The data
-      doesn't need to travel far. The people who manage it already do. For undocumented New Yorkers
-      who rely on LinkNYC as their primary internet connection, that is not an abstraction.
+      S.T.O.P. has further documented downstream consequences of the city's data
+      integration. According to the organization, U.S. Immigration and Customs Enforcement
+      (ICE) has accessed NYPD automated license-plate-reader data, and sealed records —
+      records legally protected from disclosure under New York State law — have been
+      shared with federal agents and used against a pro-Palestinian protester in deportation
+      proceedings. The organization has also identified private contractors that
+      simultaneously advise city agencies and ICE's enforcement operations. For undocumented
+      New York City residents who rely on LinkNYC as a primary internet connection, the
+      report concludes, these documented downstream uses materially affect the privacy
+      implications of using the network.
     </p>
     <p class="source reveal">S.T.O.P., "Dear Mamdani: Dismantle NYC's Surveillance State," Feb. 26, 2026.</p>
 
     <p class="body-p reveal">
-      This isn't unique to New York. Researchers tracking the rollout of InLinkUK kiosks in
-      London's Tower Hamlets documented the same pattern: smart kiosks deployed in marginalised
-      neighbourhoods catalysed heavier policing operations and data-driven criminalisation.
-      Different city. Different branding. The same architecture producing the same outcome —
-      because the incentives that built it were the same to begin with.
+      A separate municipal program, <strong>Big Apple Connect</strong>, indicates that the
+      city has an existing alternative for delivering broadband to its lowest-income
+      residents that does not depend on the LinkNYC infrastructure. According to a
+      September 2025 announcement from the Mayor's Office, Big Apple Connect provides free
+      in-home broadband and basic cable to approximately <strong>330,000 NYCHA residents
+      across 220 developments</strong>. The program does not use ambient sensors, captive
+      portals, or third-party advertising infrastructure, and was extended in September 2025
+      to run through June 2028. Civil-liberties advocates have argued that the program
+      demonstrates that municipal broadband initiatives need not incorporate the
+      data-collection model used by LinkNYC.
+    </p>
+    <p class="source reveal">NYC Mayor&rsquo;s Office, &ldquo;<a href="https://www.nyc.gov/mayors-office/news/2025/09/mayor-adams-extends--big-apple-connect--program--continues-to-pr" target="_blank" rel="noopener">Mayor Adams Extends &lsquo;Big Apple Connect&rsquo; Program</a>,&rdquo; September 2025; <a href="https://www.nyc.gov/assets/bigappleconnect/" target="_blank" rel="noopener">nyc.gov/bigappleconnect</a>.</p>
+
+    <p class="body-p reveal">
+      The deployment pattern observed in New York has been replicated in other cities.
+      A 2025 academic paper published by Taylor &amp; Francis, titled &ldquo;Digital policing
+      of homeless and other marginalised groups in smart cities,&rdquo; tracked the rollout
+      of InLinkUK smart kiosks in London's Tower Hamlets and identified a parallel
+      correlation between kiosk deployment in lower-income neighborhoods and intensified
+      data-driven policing operations. The authors attribute the similarity to comparable
+      public-private funding and contracting structures in both cities.
     </p>
     <p class="source reveal">Tandfonline (2025), "Digital policing of homeless and other marginalised groups in smart cities."</p>
   </div>
@@ -1002,13 +1122,15 @@ html.light-mode .cf-field label { color: #9ca3af; }
 <section id="fix">
   <div class="wrap">
     <p class="s-label reveal">What Can Be Done</p>
-    <h2 class="s-title reveal">There is a bill. It needs voices.</h2>
+    <h2 class="s-title reveal">The Digital Fairness Act would change the legal status of LinkNYC's data collection.</h2>
     <p class="s-lead reveal">
-      There is a bill. Two legislators have introduced the Digital Fairness Act in both
-      chambers of the New York State Legislature, and it is in committee right now — which
-      means it can still move this session. What it needs isn't money or political connections.
-      It needs constituent contact. A message from a voter in a district is one of the few
-      things that actually moves a committee vote.
+      The New York State Legislature is considering legislation that would directly address
+      the legal gap that allows LinkNYC's current data-collection practices. The Digital
+      Fairness Act, introduced as Senate Bill S4276 and Assembly Bill A3308 in February
+      2025, is currently under review by the State Senate Committee on Internet and
+      Technology. According to NYCLU analysis, the bill remains positioned to move out of
+      committee during the current legislative session if it receives sufficient
+      constituent engagement.
     </p>
 
     <div class="bill-box reveal">
@@ -1016,18 +1138,30 @@ html.light-mode .cf-field label { color: #9ca3af; }
       <div class="bill-name">The Digital Fairness Act</div>
       <div class="bill-nums">Senate Bill S4276 &nbsp;·&nbsp; Assembly Bill A3308 &nbsp;·&nbsp; Introduced Feb 2025 &nbsp;·&nbsp; Committee on Internet &amp; Technology</div>
       <p class="body-p" style="margin-bottom:.8rem;">
-        The bill requires any entity processing the personal data of 500+ New Yorkers to provide
-        meaningful, affirmative notice before collection begins. It bans discriminatory targeted
-        advertising and establishes accountability for automated decision systems in government
-        and business contexts.
+        The bill would require any business holding the personal information of 500 or more
+        New York State residents to provide meaningful, affirmative notice before that data
+        is collected. The 500-record threshold is calibrated to the total volume of data
+        held by an entity rather than to per-location traffic, with the effect of exempting
+        small local businesses while applying to commercial-scale data operators such as
+        CityBridge. The bill also restricts discriminatory targeted advertising and
+        establishes accountability requirements for automated decision systems used in
+        government and business contexts.
       </p>
       <ul class="bill-points">
-        <li><strong>Closes the consent gap:</strong> opt-in required before passive MAC tracking — directly addressing KPMG finding PF-01</li>
-        <li><strong>Covers the POST Act loophole:</strong> applies to private contractors like CityBridge, not just NYPD-owned tools</li>
-        <li><strong>Algorithmic accountability:</strong> the same systems used to target ads can deny housing, credit, and employment</li>
-        <li><strong>NYCLU has published a formal legislative memo in support</strong></li>
-        <li><strong>Legislative momentum:</strong> the NY Senate advanced a companion surveillance-pricing bill (S8623) in May 2026 — the same political current</li>
+        <li><strong>Affirmative consent requirement:</strong> opt-in required before passive collection of device identifiers; directly addresses the violation identified in KPMG finding PF-01.</li>
+        <li><strong>Application to private contractors:</strong> the bill applies to private operators such as CityBridge, not only to surveillance tools owned by the NYPD; closes the gap that places LinkNYC outside the POST Act framework.</li>
+        <li><strong>Automated-decision accountability:</strong> the bill establishes oversight requirements for algorithmic systems used in housing, credit, employment, and government decisions.</li>
+        <li>The NYCLU has published a formal legislative memo in support of the bill.</li>
+        <li>The State Senate advanced a related surveillance-pricing bill, S8623, in May 2026.</li>
       </ul>
+      <p class="body-p" style="margin-top:1.2rem;">
+        Because there is no practical way for an operator to obtain affirmative consent from
+        a passerby, the passage of the bill would effectively require operators of
+        ambient-data networks such as LinkNYC to restrict collection to individuals who
+        actively connect to the network and accept its terms of service. The sensor hardware
+        would remain in place; the passive collection from non-users would not, according
+        to civil-liberties analysts including the NYCLU.
+      </p>
     </div>
   </div>
 </section>
@@ -1035,12 +1169,12 @@ html.light-mode .cf-field label { color: #9ca3af; }
 <!-- ── CTA ── -->
 <section id="act">
   <h2 class="reveal">Tell your rep to pass <span>S4276&nbsp;/&nbsp;A3308.</span></h2>
-  <p class="sub reveal">Two steps. Under five minutes. The bill is in committee — and a message from a constituent is one of the few things that actually moves it.</p>
+  <p class="sub reveal">The bill is currently in committee. Constituent contact is the most direct way to register support before the committee vote. Two steps are outlined below.</p>
 
   <div style="max-width:680px;margin:0 auto;text-align:left;">
     <div class="letter-wrap reveal">
       <h3>Step 1 — Copy this message</h3>
-      <p class="hint">Paste it into the contact form on your rep's page. Adding your neighbourhood and a personal sentence makes it significantly more effective.</p>
+      <p class="hint">Paste the message into the contact form on each representative's official page. Adding the writer's neighborhood and a brief personal sentence is more effective than a verbatim send.</p>
       <div class="letter-text" id="letterText">Subject: Support the Digital Fairness Act (S4276/A3308)
 
 Dear [Senator / Assembly Member] [Name],
@@ -1213,7 +1347,7 @@ function heroBanCount(el, target, delay) {
 }
 const heroBans = document.querySelectorAll('.hero-ban .number');
 heroBanCount(heroBans[1], 7500, 1.3);
-heroBanCount(heroBans[2], 3, 1.5);
+heroBanCount(heroBans[2], 4, 1.5);
 
 /* ── Section title reveals: SplitText mask (line-wipe, editorial style) ── */
 try {
