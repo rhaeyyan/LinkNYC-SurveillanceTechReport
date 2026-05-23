@@ -1,7 +1,8 @@
 # Process artefacts — not part of the public deliverable
 infographic.html
-agents/skills-lock.json
 
-# Agent infrastructure — track prompts and history, ignore GSAP skill cache
-!agents/history.md
+# Agent infrastructure
+# Track: .agents/CLAUDE.md, .agents/agents/, .agents/reports.md, .agents/session-log.md
+# Ignore: the GSAP skill cache (regenerated from skills-lock.json)
 .agents/skills/
+.agents/skills-lock.json
