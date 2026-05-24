@@ -94,6 +94,9 @@ Pure HTML/CSS/JS — single self-contained file, no framework, no build step.
 - [NY Senate Bill S4276 — Digital Fairness Act](https://www.nysenate.gov/legislation/bills/2025/S4276)
 - [NYCLU Legislative Memo — Digital Fairness Act](https://www.nyclu.org/resources/policy/legislations/legislative-memo-digital-fairness-act)
 - [NYPD POST Act — WiFi Geolocation Tracking Devices IUP](https://www.nyc.gov/site/nypd/about/about-nypd/policy/post-act.page)
+- Link5G Design Proposal (DoITT/CityBridge, Oct 2021)
+- "Technology & Connectivity in NYC: Citywide Survey Findings" (HarrisX/LinkNYC/Tech:NYC, May 2025)
+- LinkNYC 2025 Impact Report (CityBridge, 2025)
 - KPMG audit of LinkNYC (OTI, Jan 2023, redacted)
 - CityBridge remediation letter to OTI, Dec 2022
 - NYCLU testimony to NYC Council Tech Committee, Jun 2023
