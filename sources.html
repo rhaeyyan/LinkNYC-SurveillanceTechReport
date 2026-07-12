@@ -1856,6 +1856,7 @@ footer a:hover { color: var(--alarm); text-decoration-color: var(--alarm); }
   display: flex; justify-content: space-between;
   flex-wrap: wrap; gap: 1rem;
 }
+.footer-credit span { min-width: 0; overflow-wrap: break-word; flex: 1 1 220px; }
 
 /* ── Accessibility primitives ─────────────────────────────────────── */
 .skip-link {
@@ -1971,6 +1972,8 @@ html.ink-mode .photo-fig img {
 .jump-nav {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(4, auto);
+  grid-auto-flow: column;
   gap: 0 2.5rem;
   margin-top: 1.8rem;
   padding-top: 1.4rem;
@@ -1997,7 +2000,11 @@ html.ink-mode .photo-fig img {
 .jump-nav a:hover, .jump-nav a.active { color: var(--alarm); }
 .jump-nav a:hover .jn-num, .jump-nav a.active .jn-num { color: var(--alarm); }
 @media (max-width: 560px) {
-  .jump-nav { grid-template-columns: 1fr; }
+  .jump-nav {
+    grid-template-columns: 1fr;
+    grid-template-rows: none;
+    grid-auto-flow: row;
+  }
 }
 
 .cat-head {
@@ -2693,8 +2700,8 @@ html.ink-mode .photo-fig img {
     </div>
   </div>
   <div class="footer-credit">
+    <span>Prepared by Rayan Khan &middot; Published June 10, 2026 &middot; Updated July 12, 2026</span>
     <span>This bibliography lists every source cited in the report as of publication. Kiosk counts and legislative status are time-sensitive &mdash; see the report itself for current figures.</span>
-    <span>Published June 10, 2026 &middot; Updated July 12, 2026</span>
   </div>
 </footer>
 
