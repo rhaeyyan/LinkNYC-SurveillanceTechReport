@@ -2531,16 +2531,18 @@ html.ink-mode .photo-fig img {
       <div class="audit-bento">
         <div class="finding-banner">
           <div class="tag">PF-01 &mdash; Critical Finding</div>
-          <h3>CityBridge stored device identifiers in plaintext for years before applying the required anonymization.</h3>
+          <h3>CityBridge stopped anonymizing the device identifiers it stored, in violation of its franchise agreement and privacy policy.</h3>
           <p>
             A MAC address is the unique hardware identifier that each Wi-Fi device broadcasts
             when its Wi-Fi radio is enabled. Under its franchise agreement and its own privacy
-            policy, CityBridge was required to anonymize MAC addresses before storing them.
-            According to the <a href="https://www.nyc.gov/assets/oti/downloads/pdf/reports/LinkNYC-Audit-Report-Privacy-Section-of-March-2022_Redacted.pdf" target="_blank" rel="noopener">KPMG audit</a> (designated finding PF-01), the company did not. For
-            approximately half a decade after the network's launch, devices within range of a
-            LinkNYC kiosk were uniquely identified and <mark class="hl">stored in plaintext</mark>, in violation of
-            both the franchise terms and CityBridge's published privacy policy. A one-way hash
-            was first applied to stored addresses in December 2022.
+            policy, CityBridge was required to anonymize the MAC addresses of connecting
+            devices before storing them. According to the <a href="https://www.nyc.gov/assets/oti/downloads/pdf/reports/LinkNYC-Audit-Report-Privacy-Section-of-March-2022_Redacted.pdf" target="_blank" rel="noopener">KPMG audit</a> (designated finding PF-01),
+            that safeguard lapsed when the network's infrastructure vendor changed &mdash; a
+            transition CityBridge dates to mid-2020 &mdash; and the replacement system
+            <mark class="hl">encrypted stored addresses but did not anonymize them</mark>,
+            leaving every address recoverable by anyone holding the decryption key. The audit
+            concluded the network had &ldquo;not been compliant since approximately June
+            2021.&rdquo; A one-way hash was first applied to stored addresses in December 2022.
           </p>
           <p>
             Hashing alone does not fully resolve the privacy concern the franchise terms were
@@ -2557,7 +2559,7 @@ html.ink-mode .photo-fig img {
         </div>
         <div class="finding-chip severe">
           <div class="id">PF-02</div>
-          <p>The Wi-Fi sign-on page displayed <strong>Intersection's privacy policy</strong> rather than LinkNYC's. Users connecting to the network were presented with the terms of the consortium's advertising subsidiary rather than the consortium itself.</p>
+          <p>The Wi-Fi sign-on page displayed <strong>Intersection's privacy policy</strong> rather than LinkNYC's &mdash; in every instance the auditors tested. Users were shown the terms of the consortium's advertising subsidiary rather than the policy that actually governed their data.</p>
         </div>
         <div class="finding-chip">
           <div class="id">PF-03</div>
@@ -2565,7 +2567,7 @@ html.ink-mode .photo-fig img {
         </div>
         <div class="finding-chip">
           <div class="id">PF-04</div>
-          <p>The Wi-Fi splash page <strong>did not reference the correct Terms of Use and Privacy Policy</strong>. Users connecting to the network did not have clear notice of the agreement they were entering.</p>
+          <p>The splash page <strong>omitted contractually required information</strong>: the mandated disclaimer that the City of New York is not responsible for material delivered over the Wi-Fi service, and a link to the correct version of the Terms of Service.</p>
         </div>
       </div>
     </div>
@@ -2610,11 +2612,15 @@ html.ink-mode .photo-fig img {
       to describe systems in which historically underserved communities receive expanded
       service only when that service is bundled with monitoring or extractive terms.
       According to NYC Mayor's Office documents, the 13 community districts designated for
-      mandatory Link5G deployment under the renegotiated franchise are characterized by
-      high broadband deficit, low median income, and long documented histories of intensive
-      policing. The same neighborhoods that are slated to receive the largest share of new
-      kiosks are therefore also the neighborhoods most likely to experience the kiosks'
-      data flows in the context of law-enforcement use.
+      mandatory Link5G deployment under the renegotiated franchise were selected for high
+      broadband deficit and low median income. Independent research documents that many of
+      the same areas also carry long histories of intensive policing:
+      <a href="https://www.amnesty.org/en/latest/news/2022/02/usa-facial-recognition-technology-reinforcing-racist-stop-and-frisk-policing-in-new-york-new-research/" target="_blank" rel="noopener">Amnesty International's Decode Surveillance NYC project</a> found that in the Bronx,
+      Brooklyn, and Queens, the higher a neighborhood's proportion of non-white residents,
+      the higher its concentration of facial-recognition-compatible CCTV cameras. The
+      neighborhoods slated to receive the largest share of new kiosks are therefore also
+      the neighborhoods most likely to experience the kiosks' data flows in the context of
+      law-enforcement use.
     </p>
 
     </div> <!-- end wrap -->
@@ -2809,7 +2815,7 @@ Dear <mark>[Senator / Assembly Member]</mark> <mark>[Name]</mark>,
 
 I am a constituent writing to ask you to co-sponsor and advance the Digital Fairness Act (S4276 / A3308) — and to push for meaningful amendments before it reaches a final vote.
 
-New York's 2020 POST Act requires the NYPD to publish use policies for its surveillance technology, but it has a critical gap: the law applies to city agencies, not to private contractors operating on city infrastructure. CityBridge LLC runs more than 2,000 LinkNYC kiosks under a franchise agreement with the city. These kiosks passively log the unique MAC address broadcast by every nearby phone — no Wi-Fi connection required, no consent asked. A KPMG audit commissioned by the city's Office of Technology and Innovation found that MAC addresses were retained in plaintext for years, in violation of CityBridge's own privacy policy. Because CityBridge is a private company, this city-franchised surveillance network operates entirely outside the POST Act's disclosure requirements: no public use policy, no mandatory audit cycle, no enforcement mechanism.
+New York's 2020 POST Act requires the NYPD to publish use policies for its surveillance technology, but it has a critical gap: the law applies to city agencies, not to private contractors operating on city infrastructure. CityBridge LLC runs more than 2,000 LinkNYC kiosks under a franchise agreement with the city. These kiosks passively log the unique MAC address broadcast by every nearby phone — no Wi-Fi connection required, no consent asked. A KPMG audit commissioned by the city's Office of Technology and Innovation found that CityBridge had stopped anonymizing the MAC addresses it stored, in violation of its own privacy policy and franchise agreement. Because CityBridge is a private company, this city-franchised surveillance network operates entirely outside the POST Act's disclosure requirements: no public use policy, no mandatory audit cycle, no enforcement mechanism.
 
 The Digital Fairness Act addresses this directly. By requiring affirmative consent before personal data is collected in public spaces, S4276 / A3308 would close the contractor loophole the POST Act left open. That is the right answer to the right problem, and I support it.
 
@@ -2885,6 +2891,7 @@ Respectfully,
         <li><a href="https://www.stopspying.org/dear-mamdani" target="_blank" rel="noopener">S.T.O.P. — "Dear Mamdani: Dismantle NYC's Surveillance State," Feb 2026</a></li>
         <li><a href="https://ecbawm.com/news/ecbawm-s-t-o-p-sue-nypd-for-domain-awareness-surveillance-system-which-illegally-collects-surveillance-data-on-every-new-yorker/" target="_blank" rel="noopener">S.T.O.P. v. NYPD — ECBAWM lawsuit filing</a></li>
         <li><a href="https://epic.org/report-black-and-brown-nyc-communities-disproportionately-exposed-to-facial-recognition-surveillance/" target="_blank" rel="noopener">EPIC — Black and Brown NYC Communities Disproportionately Exposed to Facial Recognition</a></li>
+        <li><a href="https://www.amnesty.org/en/latest/news/2022/02/usa-facial-recognition-technology-reinforcing-racist-stop-and-frisk-policing-in-new-york-new-research/" target="_blank" rel="noopener">Amnesty International — Decode Surveillance NYC: facial recognition and stop-and-frisk, Feb 2022</a></li>
         <li><a href="https://www.thecity.nyc/2022/04/27/link5g-free-wifi-tech-linknyc/" target="_blank" rel="noopener">THE CITY — "Big Tech Pays to Supersize LinkNYC," Apr 2022</a></li>
         <li><a href="https://gothamist.com/news/nycs-massive-link5g-towers-arent-actually-providing-5g-yet" target="_blank" rel="noopener">Gothamist — "NYC's massive Link5G towers aren't actually providing 5G (yet)," Jul 2024</a></li>
         <li><a href="https://www.prnewswire.com/news-releases/linknyc-celebrates-10-years-of-free-public-wi-fi-serving-more-than-20-million-users-302688093.html" target="_blank" rel="noopener">LinkNYC 2025 Impact Report — 10-year anniversary (CityBridge)</a></li>
