@@ -1969,23 +1969,36 @@ html.ink-mode .photo-fig img {
    single alarm accent, document-facsimile numbering (cf. .bill-points).
    No new colors are introduced.                                        */
 .jump-nav {
-  display: flex; flex-wrap: wrap;
-  gap: .5rem 1.4rem;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0 2.5rem;
   margin-top: 1.8rem;
   padding-top: 1.4rem;
   border-top: 1px solid var(--rule);
 }
 .jump-nav a {
+  display: flex;
+  align-items: baseline;
+  gap: .7rem;
   font-family: var(--font-mono);
   font-size: .72rem;
   letter-spacing: .06em;
   text-transform: uppercase;
   color: var(--ink-mute);
   text-decoration: none;
-  border-bottom: 1px solid transparent;
-  padding-bottom: 1px;
+  padding: .55rem 0;
+  border-bottom: 1px dotted var(--rule);
 }
-.jump-nav a:hover, .jump-nav a.active { color: var(--alarm); border-bottom-color: var(--alarm); }
+.jump-nav a .jn-num {
+  flex-shrink: 0;
+  color: var(--alarm);
+  font-weight: 600;
+}
+.jump-nav a:hover, .jump-nav a.active { color: var(--alarm); }
+.jump-nav a:hover .jn-num, .jump-nav a.active .jn-num { color: var(--alarm); }
+@media (max-width: 560px) {
+  .jump-nav { grid-template-columns: 1fr; }
+}
 
 .cat-head {
   display: flex; flex-wrap: wrap; align-items: baseline; gap: .3rem 1rem;
@@ -2163,13 +2176,13 @@ html.ink-mode .photo-fig img {
       fact it states outright, the note below says so.
     </p>
     <nav class="jump-nav reveal" aria-label="Jump to source category">
-      <a href="#legislation">01 &middot; Legislation &amp; Public Policy</a>
-      <a href="#audits">02 &middot; Franchise, Audits &amp; Oversight</a>
-      <a href="#advocacy">03 &middot; Civil-Liberties &amp; Advocacy</a>
-      <a href="#academic">04 &middot; Academic Research</a>
-      <a href="#journalism">05 &middot; Journalism</a>
-      <a href="#corporate">06 &middot; Industry &amp; Corporate</a>
-      <a href="#photography">07 &middot; Photography Credits</a>
+      <a href="#legislation"><span class="jn-num">01</span>Legislation &amp; Public Policy</a>
+      <a href="#audits"><span class="jn-num">02</span>Franchise, Audits &amp; Oversight</a>
+      <a href="#advocacy"><span class="jn-num">03</span>Civil-Liberties &amp; Advocacy</a>
+      <a href="#academic"><span class="jn-num">04</span>Academic Research</a>
+      <a href="#journalism"><span class="jn-num">05</span>Journalism</a>
+      <a href="#corporate"><span class="jn-num">06</span>Industry &amp; Corporate</a>
+      <a href="#photography"><span class="jn-num">07</span>Photography Credits</a>
     </nav>
   </div>
 </section>
@@ -2646,7 +2659,7 @@ html.ink-mode .photo-fig img {
       <p style="margin-top:.6rem;"><a href="index.html">&larr; Back to the full report</a></p>
     </div>
     <div>
-      <h4>Read next</h4>
+      <h4>Read Next</h4>
       <ul>
         <li><a href="index.html#double-standard">The Finding &mdash; NYPD vs. LinkNYC</a></li>
         <li><a href="index.html#audit">The Audit &mdash; KPMG's findings</a></li>
