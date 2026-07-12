@@ -5,8 +5,8 @@ surveillance network operating across the five boroughs — and the pending
 New York State legislation that would address it.
 
 **Primary goal:** Inform New Yorkers about how LinkNYC works, what the KPMG
-audit found, and why the Digital Fairness Act (S4276 / A3308) matters.
-Make it easy for readers to contact their representatives and support the bill.
+audit found, and why the Digital Fairness Act (S4276) matters. Make it easy
+for readers to contact their representatives and support the bill.
 
 ---
 
@@ -25,8 +25,9 @@ violation of CityBridge's own privacy policy. Because CityBridge is a
 private contractor, not the NYPD, the entire network operates outside the
 POST Act oversight regime that governs the city's other surveillance tools.
 
-The Digital Fairness Act (NY Senate S4276 / Assembly A3308) would close
-that loophole. It is in committee. It can still pass this session.
+The Digital Fairness Act (NY Senate S4276) would close that loophole. It is
+in committee, with no Assembly companion introduced yet — it can still pass
+this session.
 
 ---
 
@@ -35,7 +36,7 @@ that loophole. It is in committee. It can still pass this session.
 | | |
 |---|---|
 | **Senate Bill** | S4276 |
-| **Assembly Bill** | A3308 |
+| **Assembly Bill** | None introduced yet |
 | **Short title** | Digital Fairness Act |
 | **Status** | In Committee on Internet & Technology (introduced Feb 2025) |
 | **What it does** | Requires affirmative consent before personal data is collected; closes the private-contractor exemption the POST Act left open; bans discriminatory targeted advertising |
