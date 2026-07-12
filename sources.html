@@ -1,0 +1,2784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sources &amp; Bibliography — Surveilled by Default</title>
+<meta name="description" content="Every source cited in the LinkNYC surveillance investigation, organized by type, with notes on what each supports and where it appears in the report.">
+<meta property="og:title" content="Sources &amp; Bibliography — Surveilled by Default">
+<meta property="og:description" content="Every source cited in the LinkNYC surveillance investigation, organized by type, with notes on what each supports and where it appears in the report.">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2026-06-10">
+<meta property="article:modified_time" content="2026-07-12">
+<meta property="og:url" content="https://surveillancenyc.netlify.app/sources.html">
+<meta name="twitter:card" content="summary">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@500;700;800;900&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  /* ── Editorial Paper (default) ─────────────────────────────────────
+     Single accent: --alarm. Every text/background pair clears WCAG AA;
+     most clear AAA. Cyan / magenta / amber are removed.                */
+  --paper:        #F5EFE3;
+  --paper-warm:   #EFE7D6;
+  --paper-deep:   #E6DCC6;
+  --ink:          #14110E;
+  --ink-soft:     #2A2520;
+  --ink-mute:     #5A524A;
+  --rule:         #C9BFA9;
+  --rule-soft:    #DCD3BF;
+  --alarm:        #B0271A;
+  --alarm-soft:   #D88C7E;
+  --alarm-tint:   rgba(176, 39, 26, .08);
+  --highlight:    #F2D26B;
+
+  /* RGB channels for rgba() composites */
+  --paper-rgb:    245, 239, 227;
+  --ink-rgb:      20, 17, 14;
+  --alarm-rgb:    176, 39, 26;
+
+  /* Type system */
+  --font-display: 'Figtree', sans-serif;
+  --font-body:    'Source Serif 4', Georgia, serif;
+  --font-ui:      'Figtree', sans-serif;
+  --font-mono:    'IBM Plex Mono', ui-monospace, monospace;
+
+  /* Layout */
+  --max:      720px;
+  --max-wide: 1100px;
+
+  color-scheme: light;
+}
+html.ink-mode {
+  /* ── Editorial Ink (inverted toggle) ─────────────────────────────── */
+  --paper:        #14110E;
+  --paper-warm:   #1E1A15;
+  --paper-deep:   #25201A;
+  --ink:          #F5EFE3;
+  --ink-soft:     #D7CFBF;
+  --ink-mute:     #9A8E7C;
+  --rule:         #3A332B;
+  --rule-soft:    #2A2520;
+  --alarm:        #E26B58;
+  --alarm-soft:   #6E2C24;
+  --alarm-tint:   rgba(226, 107, 88, .12);
+  --highlight:    #B89438;
+  --paper-rgb:    20, 17, 14;
+  --ink-rgb:      245, 239, 227;
+  --alarm-rgb:    226, 107, 88;
+  color-scheme: dark;
+}
+html { scroll-behavior: smooth; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+h1, h2, h3, h4 { font-family: var(--font-body); color: var(--ink); font-weight: 400; }
+strong, b { font-weight: 600; }
+em, i { font-style: italic; }
+a { color: var(--ink); text-decoration: underline; text-decoration-color: var(--alarm); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+a:hover { color: var(--alarm); }
+::selection { background: var(--alarm); color: var(--paper); }
+
+/* ── Reveal (GSAP controls opacity) ── */
+.reveal { /* initial opacity set by gsap.set() */ }
+
+/* ── Motif primitive: .ping ─────────────────────────────────────────
+   A pulsing alarm dot. Used inline anywhere a kiosk count, a geographic
+   claim, or a "live" surveillance fact is named. Repetition builds dread. */
+.ping {
+  display: inline-block;
+  width: .55em; height: .55em;
+  border-radius: 50%;
+  background: var(--alarm);
+  margin-right: .42em;
+  vertical-align: .08em;
+  box-shadow: 0 0 0 0 rgba(var(--alarm-rgb), .55);
+  animation: ping 2.4s ease-out infinite;
+}
+@keyframes ping {
+  0%   { box-shadow: 0 0 0 0    rgba(var(--alarm-rgb), .55); }
+  70%  { box-shadow: 0 0 0 .9em rgba(var(--alarm-rgb), 0);   }
+  100% { box-shadow: 0 0 0 0    rgba(var(--alarm-rgb), 0);   }
+}
+@media (prefers-reduced-motion: reduce) { .ping { animation: none; } }
+
+/* ── Motif primitive: .rail ───────────────────────────────────────── */
+.rail {
+  position: fixed;
+  left: 1.6rem; top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--font-mono);
+  font-size: .7rem; letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  pointer-events: none;
+  z-index: 100;
+  display: flex; flex-direction: column; align-items: center; gap: .9rem;
+}
+.rail .r-num {
+  color: var(--alarm);
+  font-weight: 600;
+  font-size: .82rem;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  letter-spacing: .2em;
+}
+.rail .r-name {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  letter-spacing: .22em;
+}
+@media (max-width: 1080px) { .rail { display: none; } }
+
+/* ── Nav ── */
+nav {
+  position: sticky; top: 0; z-index: 200;
+  background: rgba(var(--paper-rgb), .94);
+  backdrop-filter: blur(4px);
+  border-bottom: 1px solid var(--rule);
+  padding: .85rem 2rem;
+  display: flex; align-items: center; justify-content: space-between;
+  font-family: var(--font-ui);
+}
+.nav-brand {
+  font-family: var(--font-ui);
+  font-weight: 900; font-size: .92rem;
+  letter-spacing: .05em; color: var(--ink);
+  text-decoration: none;
+}
+.nav-brand:hover { color: var(--ink); }
+.nav-links { display: flex; gap: 1.5rem; list-style: none; }
+.nav-links a {
+  font-family: var(--font-ui);
+  font-size: .76rem; font-weight: 500;
+  color: var(--ink-mute);
+  text-decoration: none;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  transition: color .2s;
+  padding-bottom: 2px;
+  border-bottom: 1.5px solid transparent;
+}
+.nav-links a:hover { color: var(--alarm); }
+.nav-links a.active { color: var(--alarm); border-bottom-color: var(--alarm); }
+@media (max-width: 700px) { .nav-links { display: none; } }
+
+/* ── Theme toggle ── */
+.theme-toggle {
+  background: none;
+  border: 1px solid var(--rule);
+  border-radius: 0;
+  color: var(--ink-mute);
+  font-family: var(--font-mono);
+  font-size: .72rem; font-weight: 500;
+  padding: .35rem .75rem;
+  cursor: pointer;
+  transition: border-color .2s, color .2s;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+.theme-toggle:hover { border-color: var(--alarm); color: var(--alarm); }
+
+/* ── Hero ─────────────────────────────────────────────────────────── */
+#hero {
+  min-height: 720px;
+  height: 100vh;
+  display: flex; flex-direction: column; justify-content: center;
+  position: relative; overflow: hidden;
+  padding: 0 5%;
+  background: var(--paper);
+}
+.hero-content { position: relative; z-index: 10; max-width: 1000px; }
+.hero-eyebrow {
+  font-family: var(--font-mono);
+  font-size: .72rem; font-weight: 500;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  margin-bottom: 2.4rem;
+  display: flex; align-items: center;
+}
+.hero-eyebrow::before {
+  content: '';
+  display: inline-block;
+  width: 36px; height: 1px;
+  background: var(--alarm);
+  margin-right: .9rem;
+}
+.hero-title {
+  font-family: var(--font-body);
+  font-size: clamp(2.6rem, 7vw, 5.4rem);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -.01em;
+  max-width: 920px;
+  margin-bottom: 2rem;
+  color: var(--ink);
+}
+.hero-title em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: var(--alarm);
+  text-decoration-thickness: 3px;
+  text-underline-offset: 8px;
+  text-decoration-skip-ink: none;
+}
+.hero-sub {
+  font-family: var(--font-body);
+  font-size: clamp(1.05rem, 2.3vw, 1.3rem);
+  color: var(--ink-soft);
+  max-width: 680px;
+  line-height: 1.55;
+  margin-bottom: 4rem;
+  font-weight: 400;
+}
+.hero-sub .bait { font-style: italic; color: var(--ink-soft); }
+.hero-sub .switch { font-style: normal; }
+.hero-bans {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 3rem;
+  max-width: 880px;
+}
+.hero-ban .number {
+  font-family: var(--font-body);
+  font-size: clamp(3rem, 5.4vw, 4.4rem);
+  font-weight: 400;
+  font-style: italic;
+  display: block;
+  line-height: 1;
+  margin-bottom: .55rem;
+  letter-spacing: -.02em;
+  color: var(--ink);
+}
+.hero-ban .unit {
+  font-family: var(--font-ui);
+  font-size: .68rem;
+  font-weight: 500;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  display: block;
+  max-width: 220px;
+  line-height: 1.45;
+}
+.hero-byline {
+  margin-top: 2.6rem;
+  font-family: var(--font-mono);
+  font-size: .85rem;
+  font-weight: 500;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+/* ── Layout ── */
+.wrap { max-width: var(--max); margin: 0 auto; padding: 0 2rem; }
+.wrap-wide { max-width: var(--max-wide); margin: 0 auto; padding: 0 2rem; }
+section { padding: 5.5rem 0; border-top: 1px solid var(--rule); }
+
+/* ── Section header ── */
+.s-label {
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  font-weight: 500;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: var(--alarm);
+  margin-bottom: 1rem;
+  display: flex; align-items: center;
+}
+.s-label::before {
+  content: '';
+  display: inline-block;
+  width: 28px; height: 1px;
+  background: var(--alarm);
+  margin-right: .8rem;
+}
+.s-title {
+  font-family: var(--font-body);
+  font-size: clamp(1.9rem, 4vw, 2.8rem);
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.15;
+  letter-spacing: -.005em;
+  margin-bottom: 1.3rem;
+  color: var(--ink);
+  max-width: 720px;
+}
+.s-lead {
+  font-family: var(--font-body);
+  font-size: 1.18rem;
+  color: var(--ink-soft);
+  line-height: 1.6;
+  margin-bottom: 2.2rem;
+  max-width: 660px;
+  font-weight: 400;
+}
+
+/* ── Body text ── */
+.body-p {
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  color: var(--ink);
+  line-height: 1.7;
+  margin-bottom: 1.3rem;
+}
+.body-p strong { font-weight: 600; color: var(--ink); }
+.body-p em { font-style: italic; }
+
+/* ── Inline stat pull ─────────────────────────────────────────────── */
+.pull-stat {
+  border-left: 3px solid var(--alarm);
+  padding: 1.3rem 1.8rem;
+  margin: 2.4rem 0;
+  background: var(--paper-warm);
+}
+.pull-stat .n {
+  font-family: var(--font-body);
+  font-size: 3.2rem;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--ink);
+  line-height: 1;
+  letter-spacing: -.02em;
+}
+.pull-stat .label {
+  font-family: var(--font-body);
+  font-size: .98rem;
+  color: var(--ink-soft);
+  margin-top: .5rem;
+  line-height: 1.55;
+}
+.pull-stat.cyan, .pull-stat.yel { /* legacy modifiers — flattened to base */ }
+
+/* ── Document highlighter ── */
+mark.hl, .body-p mark, .audit-doc mark {
+  background: var(--highlight);
+  color: var(--ink);
+  padding: 0 .2em;
+  border-radius: 0;
+}
+
+/* ── Redaction bar (purely typographic ornament) ── */
+.redact {
+  display: inline-block;
+  background: var(--ink);
+  height: .9em;
+  vertical-align: -.05em;
+  border-radius: 0;
+  user-select: none;
+}
+.redact.r-sm { width: 1.8em; }
+.redact.r-md { width: 3.2em; }
+.redact.r-lg { width: 5em; }
+
+/* ── Split-screen Finding exhibit ──────────────────────────────────── */
+.exhibit {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin: 2.6rem 0 1rem;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+@media (max-width: 760px) { .exhibit { grid-template-columns: 1fr; gap: 0; } }
+.exhibit-col {
+  padding: 2.2rem 1.8rem;
+  position: relative;
+}
+.exhibit-col.col-a {
+  background: var(--paper);
+  color: var(--ink);
+}
+.exhibit-col.col-b {
+  background: var(--ink);
+  color: var(--paper);
+}
+.exhibit-col.col-b .ex-meta,
+.exhibit-col.col-b .ex-head,
+.exhibit-col.col-b .ex-sub,
+.exhibit-col.col-b dt,
+.exhibit-col.col-b dd,
+.exhibit-col.col-b .ex-stamp { color: var(--paper); }
+.ex-meta {
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  font-weight: 600;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  margin-bottom: .7rem;
+}
+.exhibit-col.col-b .ex-meta { color: var(--alarm); }
+.exhibit-col.col-a .ex-meta { color: var(--alarm); }
+.ex-head {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 800;
+  letter-spacing: -.005em;
+  line-height: 1.15;
+  margin-bottom: .25rem;
+  text-transform: none;
+}
+.ex-sub {
+  font-family: var(--font-body);
+  font-style: italic;
+  font-size: .85rem;
+  color: var(--ink-mute);
+  margin-bottom: 1.4rem;
+  line-height: 1.4;
+}
+.exhibit-col.col-b .ex-sub { color: var(--ink-mute); }
+.ex-stamp {
+  display: inline-block;
+  border: 2px solid var(--alarm);
+  color: var(--alarm) !important;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: .72rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  padding: .35rem .65rem;
+  margin: .4rem 0 1.2rem;
+  transform: rotate(-3deg);
+  opacity: .92;
+}
+.exhibit-col.col-b .ex-stamp { border-color: var(--alarm); }
+.ex-dl { margin: 0; }
+.ex-dl > div { padding: .8rem 0; border-bottom: 1px solid var(--rule-soft); }
+.exhibit-col.col-b .ex-dl > div { border-bottom-color: rgba(245, 239, 227, .12); }
+.ex-dl > div:last-child { border-bottom: none; }
+.ex-dl dt {
+  font-family: var(--font-ui);
+  font-size: .66rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  margin-bottom: .3rem;
+}
+.ex-dl dd {
+  font-family: var(--font-body);
+  font-size: .98rem;
+  line-height: 1.5;
+  color: var(--ink);
+  margin: 0;
+}
+.ex-dl dd strong { font-weight: 600; }
+.ex-mark {
+  font-family: var(--font-mono);
+  font-size: .85rem;
+  font-weight: 600;
+  margin-right: .4em;
+  display: inline-block;
+  width: 1em;
+}
+.ex-mark.constrained { color: var(--ink); }
+.ex-mark.unconstrained { color: var(--alarm); }
+.exhibit-col.col-b .ex-mark.constrained { color: var(--paper); }
+.ex-source {
+  grid-column: 1 / -1;
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  letter-spacing: .04em;
+  color: var(--ink-mute);
+  padding: .9rem 1.8rem 1.1rem;
+  border-top: 1px solid var(--rule);
+  background: var(--paper-warm);
+}
+.ex-source a { color: inherit; }
+
+/* ── Callout ─────────────────────────────────────────────────────── */
+.callout {
+  background: var(--paper-warm);
+  border-left: 4px solid var(--alarm);
+  padding: 1.8rem 2rem;
+  margin: 2.4rem 0;
+}
+.callout-title {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--alarm);
+  margin-bottom: .8rem;
+}
+.callout p {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--ink);
+  line-height: 1.65;
+  margin-bottom: 1rem;
+}
+.callout p:last-child { margin-bottom: 0; }
+.callout p strong { font-weight: 600; }
+.callout a { color: var(--ink); text-decoration-color: var(--alarm); }
+
+/* ── Blockquote ── */
+blockquote {
+  border-left: 3px solid var(--alarm);
+  padding: .9rem 1.8rem;
+  margin: 2.4rem 0;
+}
+blockquote p {
+  font-family: var(--font-body);
+  font-size: 1.3rem;
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.45;
+  margin-bottom: .6rem;
+  color: var(--ink);
+}
+blockquote footer {
+  font-family: var(--font-mono);
+  font-size: .74rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+/* ── The Machine — annotated diagram ──────────────────────────────── */
+.machine-frame {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.4rem;
+  align-items: stretch;
+  margin: 2.4rem 0;
+  padding: 2rem 0;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+@media (max-width: 760px) {
+  .machine-frame { grid-template-columns: 1fr; gap: 1.5rem; align-items: start; }
+  .machine-svg-wrap { max-width: 320px; margin: 0 auto; }
+  .machine-svg-wrap .machine-exhibit { height: auto; min-height: 0; }
+  .annotations { grid-template-columns: 1fr !important; }
+}
+.machine-svg-wrap {
+  display: flex;
+  flex-direction: column;
+}
+.machine-exhibit {
+  margin: 0;
+  border: 1px solid var(--rule);
+  background: var(--paper-warm);
+  overflow: hidden;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.2rem .8rem;
+  min-height: 480px;
+}
+.machine-exhibit img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  display: block;
+  background: transparent;
+  padding: 0;
+  filter: grayscale(.4) contrast(1.08) sepia(.04);
+}
+html.ink-mode .machine-exhibit img { filter: grayscale(.6) invert(.92) hue-rotate(180deg) contrast(1.05); }
+.machine-caption {
+  font-family: var(--font-mono);
+  font-size: .66rem; letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  margin-top: .9rem;
+  text-align: left;
+  line-height: 1.5;
+}
+
+.annotations { display: grid; grid-template-columns: 1fr 1fr; gap: .9rem; }
+.ann {
+  background: var(--paper-warm);
+  border: 1px solid var(--rule);
+  padding: 1.1rem 1.3rem 1.2rem 3.4rem;
+  position: relative;
+}
+.ann-n {
+  position: absolute;
+  left: 1rem; top: 1.05rem;
+  width: 1.7rem; height: 1.7rem;
+  border-radius: 50%;
+  background: var(--alarm);
+  color: var(--paper);
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: .82rem;
+  display: flex; align-items: center; justify-content: center;
+  line-height: 1;
+}
+.ann-h {
+  font-family: var(--font-ui);
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  margin-bottom: .35rem;
+}
+.ann-h .sev {
+  margin-left: .6rem;
+  padding: 1px 6px;
+  border: 1px solid var(--ink-mute);
+  font-size: .62rem;
+  letter-spacing: .08em;
+  vertical-align: 1px;
+}
+.ann-h .sev.crit { color: var(--alarm); border-color: var(--alarm); }
+.ann-name {
+  font-family: var(--font-body);
+  font-size: 1.08rem;
+  font-style: italic;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: .4rem;
+  display: block;
+}
+.ann-body {
+  font-family: var(--font-body);
+  font-size: .95rem;
+  color: var(--ink-soft);
+  line-height: 1.55;
+}
+.ann.feature {
+  background: var(--paper-deep);
+  border-color: var(--alarm);
+}
+.ann.feature .ann-body { color: var(--ink); }
+
+/* ── Scale exhibit (Link 1.0 vs Link5G elevation) ──────────────────
+   Technical-schematic register: thin ink poles, hairline rules, dim
+   labels in Plex Mono so the comparison reads as a drawing.            */
+.scale-exhibit {
+  margin: 2.8rem .25rem 1.8rem;
+  padding: 2.4rem 2rem 2rem;
+  background: var(--paper-warm);
+  border: 1px solid var(--rule);
+}
+.scale-header {
+  text-align: center;
+  margin-bottom: 2.2rem;
+  padding-bottom: 1.1rem;
+  border-bottom: 1px solid var(--rule);
+}
+.scale-label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--alarm);
+  margin-bottom: .55rem;
+}
+.scale-title {
+  font-family: var(--font-body);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1.4rem, 2.6vw, 1.85rem);
+  color: var(--ink);
+  letter-spacing: -.005em;
+  line-height: 1.15;
+}
+.scale-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: end;
+  gap: 1.6rem;
+  max-width: 480px;
+  margin: 0 auto;
+  padding-top: .6rem;
+}
+.scale-col { text-align: center; }
+.pole-container {
+  position: relative;
+  display: inline-block;
+  padding: 6px 3.4rem 0 0;
+  margin-bottom: 1.2rem;
+}
+.pole-9ft {
+  width: 24px;
+  height: 110px;
+  background: var(--ink);
+  margin: 0 auto;
+}
+.pole-32ft {
+  width: 32px;
+  height: 370px;
+  background: var(--ink);
+  margin: 0 auto;
+  position: relative;
+}
+.pole-32ft .shroud {
+  position: absolute;
+  top: 0; left: -4px; right: -4px;
+  height: 28px;
+  background: var(--alarm);
+  border-bottom: 1px solid var(--ink);
+}
+.pole-32ft .bays {
+  position: absolute;
+  top: 36px; left: 4px; right: 4px; bottom: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.pole-32ft .bay {
+  flex: 1;
+  background: var(--paper-warm);
+  border: 1px solid var(--paper-deep);
+}
+.pole-9ft + .dim-line,
+.pole-32ft + .dim-line {
+  position: absolute;
+  top: 0; bottom: 0;
+  right: 1.5rem;
+  width: 0;
+  border-right: 1px solid var(--ink);
+}
+.dim-line::before,
+.dim-line::after {
+  content: '';
+  position: absolute;
+  right: -5px;
+  width: 11px;
+  height: 1px;
+  background: var(--ink);
+}
+.dim-line::before { top: 0; }
+.dim-line::after  { bottom: 0; }
+.dim-line span {
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  transform: translate(.4rem, -50%);
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: var(--paper-warm);
+  padding: 2px 5px;
+  white-space: nowrap;
+}
+.pole-label {
+  font-family: var(--font-body);
+  font-style: italic;
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--ink);
+  line-height: 1.3;
+}
+.pole-detail {
+  display: block;
+  font-style: normal;
+  font-weight: 500;
+  font-family: var(--font-mono);
+  font-size: .66rem;
+  letter-spacing: .1em;
+  color: var(--ink-mute);
+  margin-top: .35rem;
+  text-transform: uppercase;
+}
+.scale-note {
+  margin: 2.2rem auto 0;
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--rule);
+  font-family: var(--font-body);
+  font-style: italic;
+  font-size: .94rem;
+  color: var(--ink-soft);
+  line-height: 1.5;
+  text-align: center;
+  max-width: 580px;
+}
+.scale-blueprint {
+  margin: 0;
+  text-align: center;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  padding: 1.4rem 1rem .4rem;
+}
+.scale-blueprint img {
+  max-width: 100%;
+  height: auto;
+  max-height: 460px;
+  display: block;
+  margin: 0 auto;
+  filter: grayscale(.35) contrast(1.04) sepia(.05);
+}
+html.ink-mode .scale-blueprint img { filter: grayscale(.6) invert(.92) hue-rotate(180deg) contrast(1.05); }
+.scale-blueprint figcaption {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  font-family: var(--font-mono);
+  font-size: .66rem;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  padding-top: .8rem;
+  margin-top: .5rem;
+  border-top: 1px solid var(--rule);
+}
+.scale-blueprint figcaption span { text-align: center; }
+@media (max-width: 640px) {
+  .scale-exhibit { padding: 1.8rem 1.2rem 1.4rem; margin: 1.8rem 0 1.4rem; }
+  .scale-blueprint { padding: 1rem .5rem .3rem; }
+  .scale-blueprint img { max-height: 320px; }
+  .scale-blueprint figcaption { font-size: .58rem; gap: .3rem; }
+}
+
+/* ── Map ─────────────────────────────────────────────────────────── */
+.map-scrolly {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: start;
+  margin: 2.5rem 0;
+}
+.map-sticky-col { position: sticky; top: 4.5rem; }
+#kioskMap {
+  height: calc(100vh - 7rem);
+  border: 1px solid var(--rule);
+  overflow: hidden;
+  background: var(--paper-warm);
+}
+.map-legend {
+  display: flex; flex-wrap: wrap; gap: 1rem;
+  margin-top: .8rem;
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  letter-spacing: .04em;
+  color: var(--ink-mute);
+}
+.legend-dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: .35rem; vertical-align: middle; }
+.legend-dot.link1  { background: var(--alarm); width: 8px; height: 8px; }
+.legend-dot.link5g { background: transparent; border: 1.5px solid var(--alarm); width: 10px; height: 10px; }
+.legend-dot.range  { background: rgba(var(--alarm-rgb), .18); border-radius: 2px; width: 12px; height: 9px; }
+
+.map-steps-col { padding: 0 .25rem 0 1rem; }
+@media (max-width: 800px) { .map-steps-col { padding: 0; } }
+.map-step {
+  min-height: 75vh;
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 2rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+.map-step:last-child { border-bottom: none; }
+.map-step-n {
+  font-family: var(--font-mono);
+  font-size: .72rem; font-weight: 600;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: var(--alarm);
+  margin-bottom: .8rem;
+  display: flex; align-items: center;
+}
+.map-step-n::before {
+  content: '';
+  display: inline-block;
+  width: 24px; height: 1px;
+  background: var(--alarm);
+  margin-right: .7rem;
+}
+.map-step h3 {
+  font-family: var(--font-body);
+  font-size: 1.55rem;
+  font-weight: 400;
+  font-style: italic;
+  margin-bottom: .9rem;
+  line-height: 1.2;
+  color: var(--ink);
+}
+.map-step p {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--ink);
+  line-height: 1.65;
+  margin-bottom: 1rem;
+}
+.map-step p strong { font-weight: 600; }
+@media (max-width: 800px) {
+  .map-scrolly { grid-template-columns: 1fr; }
+  .map-sticky-col { position: relative; top: auto; }
+  #kioskMap { height: 360px; }
+  .map-step { min-height: auto; padding: 1.5rem 0; }
+}
+
+/* ── Mismatch diverging chart (replaces Chart.js) ──────────────────── */
+.mismatch-chart {
+  margin: 1.6rem 0;
+  background: var(--paper-warm);
+  border: 1px solid var(--rule);
+  padding: 1.4rem 1.6rem 1.6rem;
+}
+.mismatch-axis {
+  display: grid;
+  grid-template-columns: 1fr 130px 1fr;
+  gap: .6rem;
+  font-family: var(--font-mono);
+  font-size: .66rem;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  padding-bottom: .8rem;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: .8rem;
+}
+.mismatch-axis .axis-l { text-align: right; }
+.mismatch-axis .axis-c { text-align: center; }
+.mismatch-axis .axis-r { text-align: left; }
+.mismatch-rows { list-style: none; padding: 0; margin: 0; }
+.mismatch-rows .row {
+  display: grid;
+  grid-template-columns: 1fr 130px 1fr;
+  gap: .6rem;
+  align-items: center;
+  padding: .55rem 0;
+  border-bottom: 1px dotted var(--rule);
+}
+.mismatch-rows .row:last-child { border-bottom: none; }
+.mismatch-rows .label {
+  text-align: center;
+  font-family: var(--font-ui);
+  font-size: .82rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+  color: var(--ink);
+  text-transform: uppercase;
+}
+.bar-track {
+  height: 18px;
+  display: flex; align-items: center;
+  min-width: 0;
+}
+.bar-track.left { justify-content: flex-end; }
+.bar-track.right { justify-content: flex-start; }
+.bar {
+  height: 14px;
+  position: relative;
+  display: block;
+  max-width: 100%;
+}
+.bar.deficit { background: var(--ink); width: calc(var(--v) * 1%); }
+.bar.deficit .v {
+  position: absolute;
+  right: calc(100% + .55rem);
+  top: 50%; transform: translateY(-50%);
+  font-family: var(--font-mono);
+  font-size: .76rem; font-weight: 600;
+  color: var(--ink);
+  white-space: nowrap;
+}
+.bar.allocation { background: var(--alarm); width: calc(var(--v) * 1%); }
+.bar.allocation .v {
+  position: absolute;
+  left: calc(100% + .55rem);
+  top: 50%; transform: translateY(-50%);
+  font-family: var(--font-mono);
+  font-size: .76rem; font-weight: 600;
+  color: var(--alarm);
+  white-space: nowrap;
+}
+.mismatch-foot {
+  margin-top: 1rem;
+  padding-top: .9rem;
+  border-top: 1px solid var(--rule);
+  font-family: var(--font-body);
+  font-style: italic;
+  font-size: .9rem;
+  color: var(--ink-soft);
+  line-height: 1.5;
+}
+@media (max-width: 640px) {
+  /* Narrow screens: stack each row as borough label + a small dl of bars
+     so the alarm-red allocation bar can't hide behind the ink deficit bar.   */
+  .mismatch-axis { display: none; }
+  .mismatch-rows .row {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'label'
+      'def'
+      'alloc';
+    gap: .35rem;
+    padding: .9rem 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .mismatch-rows .label {
+    grid-area: label;
+    text-align: left;
+    font-size: .88rem;
+    padding-bottom: .15rem;
+  }
+  .bar-track {
+    height: auto;
+    padding-left: 6.6rem;
+    position: relative;
+  }
+  .bar-track::before {
+    position: absolute;
+    left: 0; top: 50%; transform: translateY(-50%);
+    font-family: var(--font-mono);
+    font-size: .64rem; font-weight: 600;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    width: 6rem;
+  }
+  .row .bar-track.left  { grid-area: def;   justify-content: flex-start; }
+  .row .bar-track.right { grid-area: alloc; justify-content: flex-start; }
+  .row .bar-track.left::before  { content: 'Deficit'; }
+  .row .bar-track.right::before { content: 'Link5G wave'; color: var(--alarm); }
+  .bar.deficit .v    { right: auto; left: calc(100% + .55rem); }
+  .bar.allocation .v { left: calc(100% + .55rem); }
+}
+
+/* ── KPMG findings — document facsimile ──────────────────────────── */
+.audit-doc {
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  padding: 2.6rem 2.4rem 2.2rem;
+  margin: 2rem .25rem;
+  box-shadow: 0 1px 0 var(--rule), 0 6px 0 -3px var(--paper-warm), 0 7px 0 -3px var(--rule);
+}
+@media (max-width: 640px) {
+  .audit-doc { padding: 1.8rem 1.4rem 1.4rem; margin: 1.6rem 0; }
+}
+.doc-header {
+  display: flex; flex-wrap: wrap;
+  align-items: baseline; gap: .9rem;
+  padding-bottom: .9rem;
+  margin-bottom: 1.6rem;
+  border-bottom: 1px solid var(--rule);
+  font-family: var(--font-mono);
+  font-size: .7rem;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--alarm);
+}
+.doc-header .sep { color: var(--ink-mute); }
+.doc-header .doc-meta { color: var(--ink-mute); font-weight: 500; margin-left: auto; }
+
+.audit-bento {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin: 1.4rem 0 0;
+}
+.audit-bento .finding-banner { grid-column: 1 / -1; }
+@media (max-width: 760px) {
+  .audit-bento { grid-template-columns: 1fr; }
+  .audit-bento .finding-banner { grid-column: auto; }
+}
+.finding-banner {
+  background: var(--paper-warm);
+  border: 1px solid var(--rule);
+  border-left: 4px solid var(--alarm);
+  padding: 1.6rem 1.8rem;
+}
+.finding-banner .tag {
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--alarm);
+  margin-bottom: .45rem;
+}
+.finding-banner h3 {
+  font-family: var(--font-body);
+  font-size: 1.25rem;
+  font-weight: 400;
+  font-style: italic;
+  margin-bottom: .8rem;
+  line-height: 1.25;
+  color: var(--ink);
+}
+.finding-banner p {
+  font-family: var(--font-body);
+  font-size: .98rem;
+  color: var(--ink);
+  line-height: 1.6;
+  margin-bottom: .85rem;
+}
+.finding-banner p:last-child { margin-bottom: 0; }
+.finding-banner p strong { font-weight: 600; }
+
+.finding-chip {
+  background: var(--paper-warm);
+  border: 1px solid var(--rule);
+  padding: 1.3rem 1.5rem;
+}
+.finding-chip .id {
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  font-weight: 600;
+  letter-spacing: .14em;
+  margin-bottom: .5rem;
+  color: var(--ink-mute);
+}
+.finding-chip.severe .id { color: var(--alarm); }
+.finding-chip.severe { border-left: 3px solid var(--alarm); }
+.finding-chip p {
+  font-family: var(--font-body);
+  font-size: .96rem;
+  color: var(--ink);
+  line-height: 1.55;
+}
+.finding-chip p strong { font-weight: 600; }
+
+/* ── Timeline ─────────────────────────────────────────────────────── */
+.tl { position: relative; padding-left: 1.6rem; margin: 2rem 0 2.4rem; }
+.tl::before {
+  content: '';
+  position: absolute;
+  left: .3rem; top: .4rem; bottom: .4rem;
+  width: 1px;
+  background: var(--rule);
+}
+.tl-item { position: relative; margin-bottom: 1.6rem; }
+.tl-item::before {
+  content: '';
+  position: absolute;
+  left: -1.35rem; top: .45rem;
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  background: var(--ink-mute);
+  border: 2px solid var(--paper);
+}
+.tl-item.warn::before { background: var(--ink); }
+.tl-item.crisis::before { background: var(--alarm); }
+.tl-date {
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+.tl-item.crisis .tl-date { color: var(--alarm); }
+.tl-title {
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin: .2rem 0 .25rem;
+  color: var(--ink);
+}
+.tl-body {
+  font-family: var(--font-body);
+  font-size: .94rem;
+  color: var(--ink-soft);
+  line-height: 1.55;
+}
+
+/* ── Equity split ─────────────────────────────────────────────────── */
+.equity-split { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 2rem 0; }
+@media (max-width: 600px) { .equity-split { grid-template-columns: 1fr; } }
+.eq-card {
+  padding: 1.6rem 1.8rem;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+}
+.eq-card.flagged {
+  background: var(--paper-warm);
+  border: 1px solid var(--rule);
+  border-left: 4px solid var(--alarm);
+}
+.eq-card .eq-tag {
+  font-family: var(--font-mono);
+  font-size: .66rem;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  margin-bottom: .6rem;
+}
+.eq-card.flagged .eq-tag { color: var(--alarm); }
+.eq-card h3 {
+  font-family: var(--font-body);
+  font-size: 1.2rem;
+  font-weight: 400;
+  font-style: italic;
+  margin-bottom: .85rem;
+  color: var(--ink);
+}
+.eq-card .eq-where {
+  font-family: var(--font-body);
+  font-size: .9rem;
+  color: var(--ink-mute);
+  margin-bottom: .9rem;
+  font-style: italic;
+}
+.eq-card ul { list-style: none; padding: 0; }
+.eq-card li {
+  font-family: var(--font-body);
+  font-size: .95rem;
+  color: var(--ink);
+  padding: .4rem 0 .4rem 1.2rem;
+  border-bottom: 1px dotted var(--rule);
+  position: relative;
+}
+.eq-card li:last-child { border-bottom: none; }
+.eq-card li::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  color: var(--ink-mute);
+}
+.eq-card.flagged li::before {
+  content: '';
+  width: .45em; height: .45em;
+  border-radius: 50%;
+  background: var(--alarm);
+  top: .8em;
+  left: .15em;
+}
+.eq-result {
+  margin-top: 1rem;
+  padding-top: .9rem;
+  border-top: 1px solid var(--rule);
+  font-family: var(--font-body);
+  font-style: italic;
+  font-size: .95rem;
+  line-height: 1.5;
+  color: var(--ink);
+}
+.eq-card.flagged .eq-result { color: var(--alarm); }
+
+/* ── Bill cover sheet ─────────────────────────────────────────────── */
+.bill-box {
+  background: var(--paper-warm);
+  border: 1px solid var(--rule);
+  border-left: 4px solid var(--alarm);
+  padding: 2rem 2.2rem;
+  margin: 2.4rem 0;
+  counter-reset: billpt;
+}
+.bill-status {
+  display: inline-flex;
+  align-items: center;
+  gap: .55rem;
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--ink);
+  padding: .25rem 0;
+  margin-bottom: 1.1rem;
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: .55rem;
+  width: 100%;
+}
+.bill-status::before {
+  content: '●';
+  color: var(--alarm);
+  font-size: .85rem;
+}
+.bill-name {
+  font-family: var(--font-body);
+  font-size: 2.1rem;
+  font-weight: 400;
+  font-style: italic;
+  margin-bottom: .35rem;
+  color: var(--ink);
+  letter-spacing: -.01em;
+  line-height: 1.1;
+}
+.bill-nums {
+  font-family: var(--font-mono);
+  font-size: .78rem;
+  font-weight: 500;
+  color: var(--ink-mute);
+  margin-bottom: 1.3rem;
+  letter-spacing: .04em;
+}
+.bill-box .body-p {
+  font-size: 1rem;
+  color: var(--ink);
+}
+.bill-points { list-style: none; padding: 0; margin: 1.3rem 0 .4rem; counter-reset: billpt; }
+.bill-points li {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--ink);
+  padding: .8rem 0 .8rem 3.6rem;
+  border-bottom: 1px solid var(--rule);
+  position: relative;
+  line-height: 1.55;
+  counter-increment: billpt;
+}
+.bill-points li:last-child { border-bottom: none; }
+.bill-points li::before {
+  content: '§ ' counter(billpt, decimal-leading-zero);
+  position: absolute;
+  left: 0; top: .9rem;
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  font-weight: 600;
+  letter-spacing: .08em;
+  color: var(--alarm);
+}
+.bill-points li strong { font-weight: 600; }
+
+/* ── Act Now — letterhead + envelopes ─────────────────────────────── */
+#act {
+  background: var(--paper);
+  border-top: 1px solid var(--rule);
+  padding: 5.5rem 2rem;
+}
+#act > h2 {
+  font-family: var(--font-body);
+  font-size: clamp(2rem, 4.5vw, 2.8rem);
+  font-weight: 400;
+  font-style: italic;
+  text-align: center;
+  margin-bottom: 1rem;
+  color: var(--ink);
+  max-width: 720px;
+  margin-left: auto; margin-right: auto;
+  letter-spacing: -.005em;
+}
+#act > h2 span {
+  font-family: var(--font-mono);
+  font-style: normal;
+  font-size: .8em;
+  letter-spacing: .03em;
+  color: var(--alarm);
+}
+#act .sub {
+  font-family: var(--font-body);
+  font-size: 1.1rem;
+  color: var(--ink-soft);
+  max-width: 600px;
+  margin: 0 auto 2.8rem;
+  line-height: 1.55;
+  text-align: center;
+}
+
+.letterhead {
+  background: var(--paper-warm);
+  border: 1px solid var(--rule);
+  padding: 2.6rem 2.4rem;
+  margin: 1.4rem 0 1.8rem;
+  position: relative;
+}
+.letterhead-header {
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  display: flex; align-items: center;
+  padding-bottom: 1rem;
+  margin-bottom: 1.3rem;
+  border-bottom: 1px solid var(--rule);
+}
+.letterhead-header::before {
+  content: '';
+  display: inline-block;
+  width: 32px; height: 2px;
+  background: var(--alarm);
+  margin-right: .8rem;
+}
+.letterhead .hint {
+  font-family: var(--font-body);
+  font-style: italic;
+  font-size: .92rem;
+  color: var(--ink-mute);
+  margin-bottom: 1.2rem;
+  line-height: 1.5;
+}
+.letter-text {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--ink);
+  line-height: 1.7;
+  white-space: pre-wrap;
+  word-break: break-word;
+  background: transparent;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+}
+.letter-text mark {
+  background: var(--alarm-tint);
+  color: var(--ink);
+  padding: 1px 4px;
+  border-bottom: 1px solid var(--alarm);
+}
+.letter-text .subj-key {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: .85em;
+  letter-spacing: .08em;
+  color: var(--alarm);
+  text-transform: uppercase;
+}
+.letter-text .subj-val { font-weight: 600; }
+.sig-rule {
+  display: inline-block;
+  width: 200px;
+  height: 0;
+  border-top: 1px solid var(--ink);
+  margin: 1rem 0 .4rem;
+}
+.copy-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: .55rem;
+  margin-top: 1.4rem;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-mono);
+  font-size: .78rem;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: .75rem 1.3rem;
+  border: 1px solid var(--ink);
+  cursor: pointer;
+  transition: background .2s, color .2s;
+}
+.copy-btn:hover { background: var(--alarm); border-color: var(--alarm); color: var(--paper); }
+.copy-btn.copied { background: var(--alarm); border-color: var(--alarm); }
+.copy-btn::before {
+  content: '▌';
+  font-size: .9em;
+}
+
+/* Envelopes (Step 2) */
+.rep-strip {
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 1.4rem 0 0;
+}
+.rep-strip h3 {
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  margin-bottom: .8rem;
+  display: flex; align-items: center;
+}
+.rep-strip h3::before {
+  content: '';
+  display: inline-block;
+  width: 32px; height: 2px;
+  background: var(--alarm);
+  margin-right: .8rem;
+}
+.rep-strip > p {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--ink);
+  margin-bottom: 1.4rem;
+  line-height: 1.55;
+}
+.rep-links {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.2rem;
+}
+.envelope {
+  position: relative;
+  background: var(--paper);
+  border: 1px solid var(--ink);
+  padding: 1.4rem 1.3rem 1.2rem;
+  text-decoration: none;
+  color: var(--ink);
+  display: flex; flex-direction: column; gap: .4rem;
+  min-height: 150px;
+  transition: transform .25s ease, box-shadow .25s ease;
+  overflow: hidden;
+}
+.envelope::before {
+  /* envelope flap */
+  content: '';
+  position: absolute;
+  top: -1px; left: -1px; right: -1px;
+  height: 38px;
+  background: var(--paper-warm);
+  border-bottom: 1px solid var(--ink);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  transform-origin: top center;
+  transition: transform .35s ease;
+  pointer-events: none;
+}
+.envelope:hover { transform: translateY(-2px) rotate(-1deg); box-shadow: 4px 4px 0 0 var(--ink); }
+.envelope:hover::before { transform: scaleY(0.65); }
+.envelope:focus-visible { outline: 2px solid var(--alarm); outline-offset: 3px; }
+.envelope .env-stamp {
+  position: absolute;
+  top: .55rem; right: .65rem;
+  width: 38px; height: 44px;
+  border: 1.5px solid var(--alarm);
+  color: var(--alarm);
+  font-family: var(--font-mono);
+  font-size: .58rem;
+  font-weight: 600;
+  letter-spacing: .04em;
+  display: flex; align-items: center; justify-content: center;
+  text-align: center;
+  background: var(--paper);
+  line-height: 1.05;
+  padding: 2px;
+  z-index: 2;
+}
+.envelope .env-to {
+  font-family: var(--font-mono);
+  font-size: .62rem;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  margin-top: 1.6rem;
+}
+.envelope .env-name {
+  font-family: var(--font-body);
+  font-size: 1.1rem;
+  font-style: italic;
+  font-weight: 600;
+  color: var(--ink);
+  margin-top: .1rem;
+  text-decoration: none;
+}
+.envelope .env-addr {
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  letter-spacing: .04em;
+  color: var(--ink-mute);
+  line-height: 1.4;
+  margin-top: auto;
+  padding-top: .5rem;
+}
+
+/* ── Photo figures ────────────────────────────────────────────────── */
+.photo-fig { margin: 0; }
+.photo-fig img {
+  width: 100%;
+  display: block;
+  object-fit: cover;
+  filter: grayscale(.55) contrast(1.04) sepia(.06);
+}
+.photo-fig figcaption {
+  font-family: var(--font-body);
+  font-size: .82rem;
+  font-style: italic;
+  color: var(--ink-mute);
+  line-height: 1.5;
+}
+.photo-fig figcaption a { color: var(--ink-mute); text-decoration-color: var(--rule); }
+
+.photo-divider { width: 100%; overflow: hidden; border-bottom: 1px solid var(--rule); border-top: 1px solid var(--rule); background: var(--paper-warm); }
+.photo-divider .photo-fig img {
+  width: 100%;
+  height: 620px;
+  object-fit: cover;
+  object-position: center 35%;
+  filter: grayscale(.4) contrast(1.04) sepia(.04);
+}
+.photo-divider .photo-fig figcaption {
+  padding: .8rem 2rem;
+  background: var(--paper);
+  border-top: 1px solid var(--rule);
+  text-align: center;
+}
+@media (max-width: 720px) {
+  .photo-divider .photo-fig img { height: 380px; }
+}
+
+.photo-inline { margin: 1.8rem 0; }
+.photo-inline .photo-fig { border: 1px solid var(--rule); }
+.photo-inline .photo-fig img { height: 320px; object-position: center top; }
+.photo-inline .photo-fig figcaption {
+  padding: .7rem .95rem;
+  background: var(--paper-warm);
+  border-top: 1px solid var(--rule);
+}
+
+.map-step-photo { margin: 1.4rem 0 0; }
+.map-step-photo .photo-fig { border: 1px solid var(--rule); }
+.map-step-photo .photo-fig img { height: 200px; object-position: center; }
+.map-step-photo .photo-fig figcaption {
+  padding: .5rem .8rem;
+  background: var(--paper-warm);
+  border-top: 1px solid var(--rule);
+}
+
+/* ── Paired photos (Promise vs. Reality, evidence two-ups) ────────── */
+.photo-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin: 2.2rem 0;
+  padding: 0;
+}
+@media (max-width: 640px) {
+  .photo-pair { grid-template-columns: 1fr; gap: .8rem; }
+}
+.photo-pair > .photo-fig {
+  margin: 0;
+  border: 1px solid var(--rule);
+  background: var(--paper-warm);
+  display: flex; flex-direction: column;
+}
+.photo-pair > .photo-fig img {
+  width: 100%; height: 340px;
+  object-fit: cover; object-position: center 35%;
+  display: block;
+}
+.photo-pair > .photo-fig figcaption {
+  padding: .85rem 1rem 1rem;
+  border-top: 1px solid var(--rule);
+  background: var(--paper);
+  font-family: var(--font-body);
+  font-style: italic;
+  font-size: .92rem;
+  color: var(--ink-soft);
+  line-height: 1.5;
+  flex: 1;
+}
+.photo-pair .pair-tag {
+  display: block;
+  font-family: var(--font-mono);
+  font-style: normal;
+  font-size: .66rem;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--alarm);
+  margin-bottom: .35rem;
+}
+.photo-pair .pair-credit {
+  display: block;
+  margin-top: .55rem;
+  font-family: var(--font-mono);
+  font-style: normal;
+  font-size: .66rem;
+  letter-spacing: .04em;
+  color: var(--ink-mute);
+}
+.photo-pair .pair-credit a { color: inherit; }
+
+/* ── Map evidence exhibit (DoITT) ─────────────────────────────────── */
+.evidence-pair { background: var(--paper-warm); padding: 1rem; border: 1px solid var(--rule); margin: 2.4rem 0; }
+.evidence-pair .photo-pair { margin: 0; gap: .75rem; }
+.evidence-pair-title {
+  font-family: var(--font-mono);
+  font-size: .68rem; font-weight: 600;
+  letter-spacing: .14em; text-transform: uppercase;
+  color: var(--alarm);
+  margin-bottom: 1rem;
+  display: flex; align-items: center;
+}
+.evidence-pair-title::before {
+  content: ''; display: inline-block;
+  width: 28px; height: 1px;
+  background: var(--alarm); margin-right: .8rem;
+}
+.evidence-pair .photo-pair > .photo-fig img { height: 480px; object-fit: contain; background: var(--paper); }
+
+/* Single-image full-width variant: used for the Equity Mandate map so
+   the per-district kiosk counts (29, 117, 76…) stay legible. */
+.evidence-map {
+  background: var(--paper-warm);
+  padding: 1.4rem 1.6rem 1.2rem;
+  border: 1px solid var(--rule);
+  margin: 2.2rem 0;
+}
+.evidence-map > img {
+  width: 100%; height: auto;
+  display: block;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  padding: .9rem;
+  margin-bottom: 1rem;
+  filter: grayscale(.15) contrast(1.02);
+}
+html.ink-mode .evidence-map > img { filter: grayscale(.4) invert(.9) hue-rotate(180deg) contrast(1.05); }
+.evidence-map > figcaption {
+  font-family: var(--font-body);
+  font-style: italic;
+  font-size: .95rem;
+  color: var(--ink-soft);
+  line-height: 1.5;
+}
+.evidence-map .pair-tag {
+  display: block;
+  font-family: var(--font-mono);
+  font-style: normal;
+  font-size: .68rem; font-weight: 600;
+  letter-spacing: .14em; text-transform: uppercase;
+  color: var(--alarm);
+  margin-bottom: .35rem;
+}
+.evidence-map .pair-credit {
+  display: block; margin-top: .5rem;
+  font-family: var(--font-mono); font-style: normal;
+  font-size: .68rem; letter-spacing: .04em;
+  color: var(--ink-mute);
+}
+
+/* ── Source line ─────────────────────────────────────────────────── */
+.source {
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  letter-spacing: .04em;
+  color: var(--ink-mute);
+  font-style: normal;
+  margin-top: .8rem;
+  margin-bottom: 1.4rem;
+  line-height: 1.55;
+}
+.source a { color: var(--ink-mute); text-decoration-color: var(--rule); }
+.source a:hover { color: var(--alarm); text-decoration-color: var(--alarm); }
+
+/* ── Footer ─────────────────────────────────────────────────────── */
+footer {
+  background: var(--paper-warm);
+  border-top: 1px solid var(--rule);
+  padding: 3.5rem 2rem 2rem;
+  color: var(--ink);
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 2.5rem;
+  max-width: var(--max-wide);
+  margin: 0 auto;
+}
+footer h4 {
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--alarm);
+  margin-bottom: .9rem;
+}
+footer p, footer li {
+  font-family: var(--font-body);
+  font-size: .92rem;
+  color: var(--ink);
+  line-height: 1.55;
+  margin-bottom: .5rem;
+}
+footer ul { list-style: none; padding: 0; }
+footer p:first-of-type {
+  font-style: italic;
+  color: var(--ink-soft);
+}
+footer a { color: var(--ink); text-decoration-color: var(--rule); }
+footer a:hover { color: var(--alarm); text-decoration-color: var(--alarm); }
+
+.cf-field { margin-bottom: .6rem; }
+.cf-field label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: .66rem;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  margin-bottom: .25rem;
+}
+.cf-field input, .cf-field textarea {
+  width: 100%;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: .92rem;
+  padding: .45rem .6rem;
+  box-sizing: border-box;
+  resize: none;
+}
+.cf-field input:focus, .cf-field textarea:focus {
+  border-color: var(--alarm);
+  outline: 2px solid var(--alarm);
+  outline-offset: 1px;
+}
+.cf-submit {
+  margin-top: .6rem;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: .5rem 1rem;
+  border: 1px solid var(--ink);
+  cursor: pointer;
+  transition: background .2s, border-color .2s;
+}
+.cf-submit:hover { background: var(--alarm); border-color: var(--alarm); }
+.cf-submit:disabled { opacity: .5; cursor: default; }
+.cf-status { font-family: var(--font-body); font-size: .82rem; margin-top: .5rem; min-height: 1.1em; }
+.cf-status.ok  { color: var(--ink); font-style: italic; }
+.cf-status.err { color: var(--alarm); }
+.footer-credit {
+  max-width: var(--max-wide);
+  margin: 2.4rem auto 0;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--rule);
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  letter-spacing: .04em;
+  color: var(--ink-mute);
+  display: flex; justify-content: space-between;
+  flex-wrap: wrap; gap: 1rem;
+}
+
+/* ── Accessibility primitives ─────────────────────────────────────── */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 1rem;
+  z-index: 9999;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-mono);
+  font-size: .82rem;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: .65rem 1.2rem;
+  border: 1px solid var(--alarm);
+  text-decoration: none;
+  transition: top .15s;
+}
+.skip-link:focus { top: 0; }
+
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+:focus-visible {
+  outline: 2px solid var(--alarm);
+  outline-offset: 3px;
+}
+
+/* ── Reduced motion hard fallback for hero em ── */
+@media (prefers-reduced-motion: reduce) {
+  .hero-title em { visibility: visible !important; opacity: 1 !important; }
+}
+
+/* ── Ink-mode adjustments for raster images ── */
+html.ink-mode .photo-fig img {
+  filter: grayscale(.6) contrast(1.05) brightness(.85);
+}
+
+/* ── Leaflet overrides ── */
+.leaflet-container { font-family: var(--font-body); background: var(--paper-warm); }
+.leaflet-popup-content-wrapper { background: var(--paper); color: var(--ink); border-radius: 0; border: 1px solid var(--ink); box-shadow: 4px 4px 0 0 var(--rule); }
+.leaflet-popup-tip { background: var(--paper); border: 1px solid var(--ink); }
+.leaflet-popup-content { font-family: var(--font-body); font-size: .88rem; line-height: 1.45; }
+
+/* ── Map step active state ── */
+.map-step { transition: background-color .4s; }
+.map-step-active { background: var(--alarm-tint); }
+
+/* ── Scale Exhibit ───────────────────────────────────────────────── */
+.scale-exhibit {
+  margin: 3rem 0;
+  padding: 2.2rem;
+  background: var(--paper-warm);
+  border: 1px solid var(--rule);
+  position: relative;
+  overflow: hidden;
+}
+.scale-header { margin-bottom: 3rem; border-bottom: 1px solid var(--rule); padding-bottom: 1rem; }
+.scale-label { font-family: var(--font-mono); font-size: .66rem; letter-spacing: .12em; text-transform: uppercase; color: var(--alarm); }
+.scale-title { font-family: var(--font-body); font-size: 1.5rem; font-style: italic; margin-top: .2rem; color: var(--ink); }
+.scale-grid { display: grid; grid-template-columns: 1fr 1.5fr; gap: 2rem; align-items: flex-end; min-height: 420px; }
+.scale-col { display: flex; flex-direction: column; align-items: center; position: relative; }
+.pole-container { position: relative; width: 100%; display: flex; flex-direction: column; align-items: center; height: 350px; justify-content: flex-end; }
+
+/* The poles themselves (scaled roughly 10px = 1ft) */
+.pole-9ft { width: 14px; height: 95px; background: var(--ink); position: relative; border-radius: 1px; }
+.pole-32ft { width: 22px; height: 320px; background: var(--ink-soft); position: relative; border-radius: 1px; }
+.pole-32ft .bays { position: absolute; top: 5px; left: -6px; right: -6px; height: 125px; display: flex; flex-direction: column; gap: 2px; }
+.pole-32ft .bay { flex: 1; background: var(--ink); border: 1px solid var(--rule); opacity: 0.9; }
+.pole-32ft .shroud { 
+  position: absolute; top: 0; left: -10px; right: -10px; height: 135px; 
+  border: 1px dashed var(--alarm); background: var(--alarm-tint); 
+  pointer-events: none; 
+}
+
+.scale-col .dim-line { 
+  position: absolute; left: 75%; top: 0; bottom: 0; 
+  border-left: 1px solid var(--rule); display: flex; align-items: center; 
+}
+.scale-col .dim-line::before, .scale-col .dim-line::after {
+  content: ''; position: absolute; left: -4px; width: 9px; height: 1px; background: var(--rule);
+}
+.scale-col .dim-line::before { top: 0; }
+.scale-col .dim-line::after { bottom: 0; }
+
+.scale-col .dim-line span { 
+  font-family: var(--font-mono); font-size: .68rem; font-weight: 600;
+  background: var(--paper-warm); padding: 4px 6px; 
+  margin-left: -18px; transform: rotate(-90deg); color: var(--ink-mute); 
+}
+
+.pole-label { margin-top: 1.8rem; font-family: var(--font-ui); font-size: .68rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-mute); text-align: center; }
+.pole-detail { font-family: var(--font-mono); font-size: .6rem; color: var(--alarm); margin-top: .3rem; display: block; }
+
+.scale-note {
+  margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--rule);
+  font-family: var(--font-body); font-size: .88rem; font-style: italic;
+  color: var(--ink-soft); line-height: 1.5;
+}
+
+/* ── Bibliography page ──────────────────────────────────────────────
+   Extends the report's editorial system: hairline rules, mono labels,
+   single alarm accent, document-facsimile numbering (cf. .bill-points).
+   No new colors are introduced.                                        */
+.jump-nav {
+  display: flex; flex-wrap: wrap;
+  gap: .5rem 1.4rem;
+  margin-top: 1.8rem;
+  padding-top: 1.4rem;
+  border-top: 1px solid var(--rule);
+}
+.jump-nav a {
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  padding-bottom: 1px;
+}
+.jump-nav a:hover, .jump-nav a.active { color: var(--alarm); border-bottom-color: var(--alarm); }
+
+.cat-head {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: .3rem 1rem;
+  margin-bottom: 1.6rem;
+  padding-bottom: .9rem;
+  border-bottom: 1px solid var(--rule);
+}
+.cat-num {
+  font-family: var(--font-mono);
+  font-size: .78rem; font-weight: 600;
+  color: var(--alarm);
+  letter-spacing: .12em;
+}
+.cat-title {
+  font-family: var(--font-body);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1.35rem, 2.8vw, 1.8rem);
+  color: var(--ink);
+  line-height: 1.2;
+  letter-spacing: -.005em;
+}
+.cat-count {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: .66rem;
+  color: var(--ink-mute);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.cat-dek {
+  font-family: var(--font-body);
+  font-size: .98rem;
+  font-style: italic;
+  color: var(--ink-mute);
+  margin: -.9rem 0 1.6rem;
+  max-width: 640px;
+}
+
+.cite-list { list-style: none; padding: 0; margin: 0; counter-reset: cite; }
+.cite-item {
+  counter-increment: cite;
+  display: grid;
+  grid-template-columns: 2.2rem 1fr;
+  gap: 0 1.1rem;
+  padding: 1.4rem 0;
+  border-bottom: 1px solid var(--rule-soft);
+}
+.cite-item:last-child { border-bottom: none; }
+.cite-num::before {
+  content: counter(cite, decimal-leading-zero);
+  font-family: var(--font-mono);
+  font-size: .76rem;
+  font-weight: 600;
+  color: var(--ink-mute);
+}
+.cite-head {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: .5rem .8rem;
+  margin-bottom: .35rem;
+}
+.cite-title {
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.35;
+}
+.cite-title a { color: var(--ink); text-decoration-color: var(--alarm); }
+.cite-title a:hover { color: var(--alarm); }
+.cite-tag {
+  font-family: var(--font-mono);
+  font-size: .6rem;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  border: 1px solid var(--rule);
+  padding: .15rem .45rem;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.cite-meta {
+  font-family: var(--font-mono);
+  font-size: .74rem;
+  color: var(--ink-mute);
+  letter-spacing: .02em;
+  margin-bottom: .55rem;
+}
+.cite-note {
+  font-family: var(--font-body);
+  font-size: .95rem;
+  color: var(--ink-soft);
+  line-height: 1.55;
+  margin-bottom: .6rem;
+}
+.cite-sections {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: .3rem .5rem;
+  font-family: var(--font-mono);
+  font-size: .64rem;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+.cite-sections .lbl { color: var(--ink-mute); opacity: .75; }
+.cite-sections a {
+  color: var(--ink-mute);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--rule);
+}
+.cite-sections a:hover { color: var(--alarm); border-bottom-color: var(--alarm); }
+
+.photo-credit-list { list-style: none; padding: 0; margin: 0; }
+.photo-credit-list li {
+  padding: .9rem 0;
+  border-bottom: 1px dotted var(--rule);
+  font-family: var(--font-body);
+  font-size: .95rem;
+  color: var(--ink);
+  line-height: 1.55;
+}
+.photo-credit-list li:last-child { border-bottom: none; }
+.photo-credit-list a { color: var(--ink); text-decoration-color: var(--alarm); }
+.photo-credit-list .pc-meta {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  color: var(--ink-mute);
+  letter-spacing: .04em;
+  margin-top: .25rem;
+}
+
+@media (max-width: 640px) {
+  .cite-item { grid-template-columns: 1fr; gap: .3rem; }
+  .cite-num::before { display: inline-block; margin-bottom: .2rem; }
+  .cat-count { margin-left: 0; }
+}
+</style>
+</head>
+<body>
+<a href="#main-content" class="skip-link">Skip to main content</a>
+<aside class="rail" aria-hidden="true">
+  <span class="r-num">§ 09</span>
+  <span class="r-name">Sources</span>
+</aside>
+
+<nav>
+  <a href="index.html" class="nav-brand">SURVEILLANCE\NYC</a>
+  <ul class="nav-links">
+    <li><a href="index.html#intro">Background</a></li>
+    <li><a href="index.html#double-standard">The Finding</a></li>
+    <li><a href="index.html#inside">The Machine</a></li>
+    <li><a href="index.html#map">The Map</a></li>
+    <li><a href="index.html#audit">The Audit</a></li>
+    <li><a href="index.html#equity">Who Pays</a></li>
+    <li><a href="index.html#fix">The Fix</a></li>
+    <li><a href="index.html#act">Act Now</a></li>
+    <li><a href="sources.html" class="active">Sources</a></li>
+  </ul>
+  <button class="theme-toggle" id="themeToggle" aria-label="Toggle color theme">Ink</button>
+</nav>
+<main id="main-content" tabindex="-1">
+
+<!-- ── PAGE HEADER ── -->
+<section id="top">
+  <div class="wrap">
+    <p class="s-label reveal">Methodology &amp; Citations</p>
+    <h1 class="s-title reveal">Sources &amp; Bibliography</h1>
+    <p class="s-lead reveal">
+      Every factual claim in <a href="index.html">&ldquo;Surveilled by Default: How NYC's Free
+      Wi-Fi Became a Surveillance Network&rdquo;</a> traces to a primary document, an
+      independently reviewed audit, an academic paper, or on-the-record reporting. This page
+      lists every source cited in the report, grouped by type, with a note on what each
+      supports and a link back to where it appears. Government filings, litigation records,
+      and audit PDFs were downloaded and read directly rather than taken from secondary
+      summaries; where a claim depends on characterizing a source's argument rather than a
+      fact it states outright, the note below says so.
+    </p>
+    <nav class="jump-nav reveal" aria-label="Jump to source category">
+      <a href="#legislation">01 &middot; Legislation &amp; Public Policy</a>
+      <a href="#audits">02 &middot; Franchise, Audits &amp; Oversight</a>
+      <a href="#advocacy">03 &middot; Civil-Liberties &amp; Advocacy</a>
+      <a href="#academic">04 &middot; Academic Research</a>
+      <a href="#journalism">05 &middot; Journalism</a>
+      <a href="#corporate">06 &middot; Industry &amp; Corporate</a>
+      <a href="#photography">07 &middot; Photography Credits</a>
+    </nav>
+  </div>
+</section>
+<!-- ── 01: LEGISLATION & PUBLIC POLICY ── -->
+<section id="legislation">
+  <div class="wrap">
+    <div class="cat-head reveal">
+      <span class="cat-num">§ 01</span>
+      <h2 class="cat-title">Legislation &amp; Public Policy</h2>
+      <span class="cat-count">6 sources</span>
+    </div>
+    <ol class="cite-list reveal">
+      <li class="cite-item">
+        <span class="cite-num" aria-hidden="true"></span>
+        <div class="cite-body">
+          <div class="cite-head">
+            <span class="cite-title"><a href="https://www.nysenate.gov/legislation/bills/2025/S4276" target="_blank" rel="noopener">Digital Fairness Act — Senate Bill S4276 / Assembly Bill A3308</a></span>
+            <span class="cite-tag">Legislation</span>
+          </div>
+          <div class="cite-meta">New York State Senate &middot; introduced Feb 2025 &middot; in Committee on Internet &amp; Technology</div>
+          <p class="cite-note">The pending state bill this report calls on readers to support. Would require affirmative, opt-in consent before a business collects personal data from 500+ New York residents — closing the contractor loophole that exempts CityBridge from the POST Act.</p>
+          <div class="cite-sections"><span class="lbl">Cited in:</span> <a href="index.html#fix">The Fix</a> <a href="index.html#act">Act Now</a></div>
+        </div>
+      </li>
+      <li class="cite-item">
+        <span class="cite-num" aria-hidden="true"></span>
+        <div class="cite-body">
+          <div class="cite-head">
+            <span class="cite-title"><a href="https://www.nyc.gov/site/nypd/about/about-nypd/policy/post-act.page" target="_blank" rel="noopener">NYPD Impact &amp; Use Policy — &ldquo;WiFi Geolocation Tracking Devices&rdquo; (POST Act)</a></span>
+            <span class="cite-tag">Government</span>
+          </div>
+          <div class="cite-meta">NYPD / NYC.gov &middot; POST Act public disclosures</div>
+          <p class="cite-note">Establishes the probable-cause-and-court-order standard the NYPD must meet before deploying a Wi-Fi geolocation device. This is the legal baseline LinkNYC's kiosks operate without, and the basis for the report's central comparison.</p>
+          <div class="cite-sections"><span class="lbl">Cited in:</span> <a href="index.html#intro">Background</a> <a href="index.html#double-standard">The Finding</a></div>
+        </div>
+      </li>
+      <li class="cite-item">
+        <span class="cite-num" aria-hidden="true"></span>
+        <div class="cite-body">
+          <div class="cite-head">
+            <span class="cite-title"><a href="https://www.nyc.gov/assets/cto/downloads/internet-master-plan/NYC_IMP_1.7.20_FINAL-2.pdf" target="_blank" rel="noopener">NYC Internet Master Plan</a></span>
+            <span class="cite-tag">Government</span>
+          </div>
+          <div class="cite-meta">NYC Office of the Chief Technology Officer &middot; Jan 2020</div>
+          <p class="cite-note">Source of the city's own &ldquo;Internet Deserts&rdquo; intervention-zone map, later shown to closely mirror the districts mandated for Link5G deployment.</p>
+          <div class="cite-sections"><span class="lbl">Cited in:</span> <a href="index.html#equity">Who Pays</a></div>
+        </div>
+      </li>
+      <li class="cite-item">
+        <span class="cite-num" aria-hidden="true"></span>
+        <div class="cite-body">
+          <div class="cite-head">
+            <span class="cite-title"><a href="https://www.nyc.gov/assets/designcommission/downloads/pdf/10-18-2021-pres-DoITT-p-Link-5G.pdf" target="_blank" rel="noopener">Link5G Design Proposal &amp; Briefing</a></span>
+            <span class="cite-tag">Government</span>
+          </div>
+          <div class="cite-meta">NYC Public Design Commission / DoITT &middot; Oct 2021</div>
+          <p class="cite-note">The city's own presentation on Link5G tower design, including the technical rationale for the 32-foot height and the per-district equity-mandate kiosk counts.</p>
+          <div class="cite-sections"><span class="lbl">Cited in:</span> <a href="index.html#inside">The Machine</a> <a href="index.html#equity">Who Pays</a></div>
+        </div>
+      </li>
+      <li class="cite-item">
+        <span class="cite-num" aria-hidden="true"></span>
+        <div class="cite-body">
+          <div class="cite-head">
+            <span class="cite-title"><a href="https://www.nyc.gov/assets/bigappleconnect/" target="_blank" rel="noopener">Big Apple Connect</a></span>
+            <span class="cite-tag">Government</span>
+          </div>
+          <div class="cite-meta">NYC Mayor's Office &middot; program extension announced Sep 2025</div>
+          <p class="cite-note">Documents a sensor-free municipal broadband alternative already serving roughly 330,000 NYCHA residents &mdash; evidence the city has a working model for public Wi-Fi that isn't bundled with ambient data collection.</p>
+          <div class="cite-sections"><span class="lbl">Cited in:</span> <a href="index.html#equity">Who Pays</a></div>
+        </div>
+      </li>
+      <li class="cite-item">
+        <span class="cite-num" aria-hidden="true"></span>
+        <div class="cite-body">
+          <div class="cite-head">
+            <span class="cite-title"><a href="https://data.cityofnewyork.us/Social-Services/LinkNYC-Kiosk-Locations/s4kf-3yrf" target="_blank" rel="noopener">LinkNYC Kiosk Locations (dataset s4kf-3yrf)</a></span>
+            <span class="cite-tag">Data</span>
+          </div>
+          <div class="cite-meta">NYC Open Data &middot; live feed</div>
+          <p class="cite-note">Powers the report's live kiosk count and interactive map. Because this feed updates continuously, its figures will differ from the static counts cited in the surrounding prose.</p>
+          <div class="cite-sections"><span class="lbl">Cited in:</span> <a href="index.html#map">The Map</a></div>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+<!-- ── 02: FRANCHISE, AUDITS & OVERSIGHT ── -->
+<section id="audits">
+  <div class="wrap">
+    <div class="cat-head reveal">
+      <span class="cat-num">§ 02</span>
+      <h2 class="cat-title">Franchise, Audits &amp; Oversight</h2>
+      <span class="cat-count">4 sources</span>
+    </div>
+    <ol class="cite-list reveal">
+      <li class="cite-item">
+        <span class="cite-num" aria-hidden="true"></span>
+        <div class="cite-body">
+          <div class="cite-head">
+            <span class="cite-title"><a href="https://www.link.nyc/privacy-policy.html" target="_blank" rel="noopener">CityBridge / LinkNYC Privacy Policy</a></span>
+            <span class="cite-tag">Corporate &middot; Legal</span>
+          </div>
+          <div class="cite-meta">CityBridge LLC &middot; as published</div>
+          <p class="cite-note">The operative legal document governing kiosk data collection, and the report's most-cited primary source &mdash; the basis for its central comparison to the NYPD's POST Act standard and for the finding that camera footage and passively collected data can be shared with law enforcement without a warrant requirement.</p>
+          <div class="cite-sections"><span class="lbl">Cited in:</span> <a href="index.html#intro">Background</a> <a href="index.html#double-standard">The Finding</a> <a href="index.html#inside">The Machine</a></div>
+        </div>
+      </li>
+      <li class="cite-item">
+        <span class="cite-num" aria-hidden="true"></span>
+        <div class="cite-body">
+          <div class="cite-head">
+            <span class="cite-title"><a href="https://www.nyc.gov/assets/oti/downloads/pdf/reports/LinkNYC-Audit-Report-Privacy-Section-of-March-2022_Redacted.pdf" target="_blank" rel="noopener">LinkNYC Technical Audit Report — Privacy Section</a></span>
+            <span class="cite-tag">Audit</span>
+          </div>
+          <div class="cite-meta">KPMG, commissioned by NYC Office of Technology &amp; Innovation &middot; fieldwork Jul&ndash;Dec 2021 &middot; posted redacted Jan 2023</div>
+          <p class="cite-note">Source of findings PF-01 through PF-04. Downloaded and read directly against this report's claims: PF-01 found MAC addresses were encrypted but not anonymized after a mid-2020/2021 vendor transition, not stored in plaintext as an earlier draft of this report incorrectly stated.</p>
+          <div class="cite-sections"><span class="lbl">Cited in:</span> <a href="index.html#audit">The Audit</a></div>
+        </div>
+      </li>
+      <li class="cite-item">
+        <span class="cite-num" aria-hidden="true"></span>
+        <div class="cite-body">
+          <div class="cite-head">
+            <span class="cite-title"><a href="https://www.nyc.gov/assets/oti/downloads/pdf/reports/12.16.22-OTI-CityBridge-Letter-re-Privacy-Audit-Remediation-Response.pdf" target="_blank" rel="noopener">CityBridge Privacy Audit Remediation Response</a></span>
+            <span class="cite-tag">Corporate</span>
+          </div>
+          <div class="cite-meta">CityBridge LLC, letter to OTI &middot; 12 Dec 2022</div>
+          <p class="cite-note">CityBridge's formal response to the KPMG audit, asserting all four privacy findings had been remediated.</p>
+          <div class="cite-sections"><span class="lbl">Cited in:</span> <a href="index.html#audit">The Audit</a></div>
+        </div>
+      </li>
+      <li class="cite-item">
+        <span class="cite-num" aria-hidden="true"></span>
+        <div class="cite-body">
+          <div class="cite-head">
+            <span class="cite-title"><a href="https://www.osc.ny.gov/state-agencies/audits/2023/09/26/linknyc-program-revenues-and-monitoring-follow" target="_blank" rel="noopener">LinkNYC Program Revenues and Monitoring (Follow-Up)</a></span>
+            <span class="cite-tag">Audit</span>
+          </div>
+          <div class="cite-meta">Office of the New York State Comptroller &middot; Sep 2023</div>
+          <p class="cite-note">State-level financial and oversight audit of the LinkNYC program, cited for franchise-compliance and revenue context surrounding the 2019&ndash;2021 renegotiation.</p>
+          <div class="cite-sections"><span class="lbl">Cited in:</span> <a href="index.html#map">The Map</a></div>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+<!-- ── 03: CIVIL-LIBERTIES & ADVOCACY ── -->
+<section id="advocacy">
+  <div class="wrap">
+    <div class="cat-head reveal">
+      <span class="cat-num">§ 03</span>
+      <h2 class="cat-title">Civil-Liberties &amp; Advocacy</h2>
+      <span class="cat-count">10 sources</span>
+    </div>
+    <ol class="cite-list reveal">
+      <li class="cite-item">
+        <span class="cite-num" aria-hidden="true"></span>
+        <div class="cite-body">
+          <div class="cite-head">
+            <span class="cite-title"><a href="https://www.nyclu.org/resources/policy/testimonies/testimony-regarding-technology-oversight-hearing-linknyc" target="_blank" rel="noopener">Testimony Regarding Technology Oversight Hearing on LinkNYC</a></span>
+            <span class="cite-tag">Advocacy</span>
+          </div>
+          <div class="cite-meta">New York Civil Liberties Union &middot; Nov 18, 2016</div>
+          <p class="cite-note">The NYCLU's earliest formal objection to LinkNYC, filed the same year the network launched. Source for the finding that the original privacy policy permitted data retention &ldquo;essentially indefinitely.&rdquo;</p>
+          <div class="cite-sections"><span class="lbl">Cited in:</span> <a href="index.html#double-standard">The Finding</a></div>
+        </div>
+      </li>
+      <li class="cite-item">
+        <span class="cite-num" aria-hidden="true"></span>
+        <div class="cite-body">
+          <div class="cite-head">
+            <span class="cite-title"><a href="https://www.nyclu.org/resources/policy/testimonies/testimony-regarding-oversight-linknyc" target="_blank" rel="noopener">Testimony Regarding the Oversight of LinkNYC</a></span>
+            <span class="cite-tag">Advocacy</span>
+          </div>
+          <div class="cite-meta">New York Civil Liberties Union (Daniel Schwarz) &middot; Jun 7, 2023</div>
+          <p class="cite-note">Presented the KPMG audit's findings at a City Council hearing, six months after OTI quietly posted the redacted report, and notes it took &ldquo;many months and repeated outside pressure&rdquo; before OTI released it at all. Not to be confused with the NYCLU's 2016 testimony above &mdash; the two share a near-identical URL.</p>
+          <div class="cite-sections"><span class="lbl">Cited in:</span> <a href="index.html#audit">The Audit</a></div>
+        </div>
+      </li>
+      <li class="cite-item">
+        <span class="cite-num" aria-hidden="true"></span>
+        <div class="cite-body">
+          <div class="cite-head">
+            <span class="cite-title"><a href="https://surveillanceresistancelab.org/wp-content/uploads/LinkNYC-Testimony-June-2023.pdf" target="_blank" rel="noopener">Comments of the Surveillance Resistance Lab, NYC Council LinkNYC Hearing</a></span>
+            <span class="cite-tag">Advocacy</span>
+          </div>
+          <div class="cite-meta">Surveillance Resistance Lab &middot; Jun 7, 2023</div>
+          <p class="cite-note">Submitted at the same hearing as the NYCLU's 2023 testimony; provides a detailed policy history of LinkNYC and quotes the KPMG audit's PF-01 finding directly.</p>
+          <div class="cite-sections"><span class="lbl">Cited in:</span> <a href="index.html#audit">The Audit</a></div>
+        </div>
+      </li>
+      <li class="cite-item">
+        <span class="cite-num" aria-hidden="true"></span>
+        <div class="cite-body">
+          <div class="cite-head">
+            <span class="cite-title"><a href="https://www.nyclu.org/commentary/linknyc-privacy-disaster-heres-why" target="_blank" rel="noopener">&ldquo;LinkNYC is a Privacy Disaster. Here's Why.&rdquo;</a></span>
+            <span class="cite-tag">Advocacy</span>
+          </div>
+          <div class="cite-meta">New York Civil Liberties Union &middot; commentary</div>
+          <p class="cite-note">Source of the &ldquo;barely mitigated privacy disaster&rdquo; characterization quoted in the report, and of the NYCLU's review of Intersection's advertiser-facing marketing materials describing audience segments by age, education, and income.</p>
+          <div class="cite-sections"><span class="lbl">Cited in:</span> <a href="index.html#inside">The Machine</a></div>
+        </div>
+      </li>
+      <li class="cite-item">
+        <span class="cite-num" aria-hidden="true"></span>
+        <div class="cite-body">
+          <div class="cite-head">
+            <span class="cite-title"><a href="https://www.nyclu.org/resources/policy/legislations/legislative-memo-digital-fairness-act" target="_blank" rel="noopener">Legislative Memo — Digital Fairness Act</a></span>
+            <span class="cite-tag">Advocacy</span>
+          </div>
+          <div class="cite-meta">New York Civil Liberties Union</div>
+          <p class="cite-note">The organization's formal memo of support for S4276/A3308, cited for the bill's committee status and the case for its passage.</p>
+          <div class="cite-sections"><span class="lbl">Cited in:</span> <a href="index.html#fix">The Fix</a></div>
+        </div>
+      </li>
+      <li class="cite-item">
+        <span class="cite-num" aria-hidden="true"></span>
+        <div class="cite-body">
+          <div class="cite-head">
+            <span class="cite-title"><a href="https://www.stopspying.org/dragnet-city" target="_blank" rel="noopener">&ldquo;Dragnet City: NYPD's Omnipresent Domain Awareness System&rdquo;</a></span>
+            <span class="cite-tag">Advocacy</span>
+          </div>
+          <div class="cite-meta">Surveillance Technology Oversight Project (S.T.O.P.) &middot; Oct 2025</div>
+          <p class="cite-note">Documents how data collected across the city's surveillance apparatus feeds the NYPD's Domain Awareness System and flows onward to federal agencies, including U.S. Immigration and Customs Enforcement.</p>
+          <div class="cite-sections"><span class="lbl">Cited in:</span> <a href="index.html#double-standard">The Finding</a> <a href="index.html#equity">Who Pays</a></div>
+        </div>
+      </li>
+      <li class="cite-item">
+        <span class="cite-num" aria-hidden="true"></span>
+        <div class="cite-body">
+          <div class="cite-head">
+            <span class="cite-title"><a href="https://www.stopspying.org/dear-mamdani" target="_blank" rel="noopener">&ldquo;Dear Mamdani: Dismantle NYC's Surveillance State&rdquo;</a></span>
+            <span class="cite-tag">Advocacy</span>
+          </div>
+          <div class="cite-meta">Surveillance Technology Oversight Project (S.T.O.P.) &middot; Feb 2026</div>
+          <p class="cite-note">Source for the finding that NYCHA security cameras were connected to the Domain Awareness System without resident notification, and for documented ICE access to NYPD data involving sealed records.</p>
+          <div class="cite-sections"><span class="lbl">Cited in:</span> <a href="index.html#equity">Who Pays</a></div>
+        </div>
+      </li>
+      <li class="cite-item">
+        <span class="cite-num" aria-hidden="true"></span>
+        <div class="cite-body">
+          <div class="cite-head">
+            <span class="cite-title"><a href="https://ecbawm.com/news/ecbawm-s-t-o-p-sue-nypd-for-domain-awareness-surveillance-system-which-illegally-collects-surveillance-data-on-every-new-yorker/" target="_blank" rel="noopener">S.T.O.P. v. NYPD — Lawsuit Filing</a></span>
+            <span class="cite-tag">Legal</span>
+          </div>
+          <div class="cite-meta">Emery Celli Brinckerhoff Abady Ward &amp; Maazel LLP, on behalf of S.T.O.P.</div>
+          <p class="cite-note">Litigation challenging the legality of the Domain Awareness System, cited as background on the surveillance architecture that LinkNYC-derived data can ultimately feed into.</p>
+          <div class="cite-sections"><span class="lbl">Cited in:</span> <a href="index.html#double-standard">The Finding</a></div>
+        </div>
+      </li>
+      <li class="cite-item">
+        <span class="cite-num" aria-hidden="true"></span>
+        <div class="cite-body">
+          <div class="cite-head">
+            <span class="cite-title"><a href="https://epic.org/report-black-and-brown-nyc-communities-disproportionately-exposed-to-facial-recognition-surveillance/" target="_blank" rel="noopener">Black and Brown NYC Communities Disproportionately Exposed to Facial Recognition Surveillance</a></span>
+            <span class="cite-tag">Advocacy</span>
+          </div>
+          <div class="cite-meta">Electronic Privacy Information Center (EPIC)</div>
+          <p class="cite-note">Independent research corroborating racial disparities in New York City's camera-based surveillance footprint, cited alongside Amnesty International's findings below.</p>
+          <div class="cite-sections"><span class="lbl">Cited in:</span> <a href="index.html#equity">Who Pays</a></div>
+        </div>
+      </li>
+      <li class="cite-item">
+        <span class="cite-num" aria-hidden="true"></span>
+        <div class="cite-body">
+          <div class="cite-head">
+            <span class="cite-title"><a href="https://www.amnesty.org/en/latest/news/2022/02/usa-facial-recognition-technology-reinforcing-racist-stop-and-frisk-policing-in-new-york-new-research/" target="_blank" rel="noopener">Decode Surveillance NYC: Facial Recognition Technology Reinforcing Racist Stop-and-Frisk Policing</a></span>
+            <span class="cite-tag">Advocacy</span>
+          </div>
+          <div class="cite-meta">Amnesty International &middot; Feb 2022</div>
+          <p class="cite-note">Crowdsourced mapping of more than 25,500 NYC CCTV cameras. Found that in the Bronx, Brooklyn, and Queens, the higher a neighborhood's proportion of non-white residents, the higher its concentration of facial-recognition-compatible cameras &mdash; the source for this report's claim that the Link5G mandate districts also carry histories of intensive policing.</p>
+          <div class="cite-sections"><span class="lbl">Cited in:</span> <a href="index.html#equity">Who Pays</a></div>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+<!-- ── 04: ACADEMIC RESEARCH ── -->
+<section id="academic">
+  <div class="wrap">
+    <div class="cat-head reveal">
+      <span class="cat-num">§ 04</span>
+      <h2 class="cat-title">Academic Research</h2>
+      <span class="cat-count">5 sources</span>
+    </div>
+    <ol class="cite-list reveal">
+      <li class="cite-item">
+        <span class="cite-num" aria-hidden="true"></span>
+        <div class="cite-body">
+          <div class="cite-head">
+            <span class="cite-title"><a href="https://www.nature.com/articles/srep01376" target="_blank" rel="noopener">de Montjoye, Y.-A., et al. — &ldquo;Unique in the Crowd: The Privacy Bounds of Human Mobility&rdquo;</a></span>
+            <span class="cite-tag">Academic</span>
+          </div>
+          <div class="cite-meta"><em>Scientific Reports</em> (2013)</div>
+          <p class="cite-note">Source of the statistic that four spatio-temporal points are sufficient to uniquely re-identify 95% of individuals in a mobility dataset &mdash; used throughout the report to explain the re-identification risk posed by ambient location data.</p>
+          <div class="cite-sections"><span class="lbl">Cited in:</span> <a href="index.html#hero">Hero</a> <a href="index.html#inside">The Machine</a></div>
+        </div>
+      </li>
+      <li class="cite-item">
+        <span class="cite-num" aria-hidden="true"></span>
+        <div class="cite-body">
+          <div class="cite-head">
+            <span class="cite-title"><a href="https://www.sciencedirect.com/science/article/abs/pii/S0040162525002768" target="_blank" rel="noopener">&ldquo;From Phone Booths to Wi-Fi Kiosks: The Spatial Inequality of Public Connectivity in New York City&rdquo;</a></span>
+            <span class="cite-tag">Academic</span>
+          </div>
+          <div class="cite-meta"><em>Technological Forecasting and Social Change</em> (2025)</div>
+          <p class="cite-note">Spatial-statistics analysis of the LinkNYC rollout, concluding that kiosk placement operated independently of broadband need and did not measurably reduce digital inequality.</p>
+          <div class="cite-sections"><span class="lbl">Cited in:</span> <a href="index.html#map">The Map</a></div>
+        </div>
+      </li>
+      <li class="cite-item">
+        <span class="cite-num" aria-hidden="true"></span>
+        <div class="cite-body">
+          <div class="cite-head">
+            <span class="cite-title"><a href="https://sands.edpsciences.org/articles/sands/full_html/2024/01/sands20230017/sands20230017.html" target="_blank" rel="noopener">&ldquo;Radio Frequency Fingerprint Identification for IoT: A Survey&rdquo;</a></span>
+            <span class="cite-tag">Academic</span>
+          </div>
+          <div class="cite-meta"><em>Security and Safety</em> (2024)</div>
+          <p class="cite-note">Documents that MAC-address randomization is an incomplete defense against tracking, because a device's radio hardware emits a distinguishable physical signature that persists across software-level identifier changes.</p>
+          <div class="cite-sections"><span class="lbl">Cited in:</span> <a href="index.html#inside">The Machine</a></div>
+        </div>
+      </li>
+      <li class="cite-item">
+        <span class="cite-num" aria-hidden="true"></span>
+        <div class="cite-body">
+          <div class="cite-head">
+            <span class="cite-title"><a href="https://arxiv.org/abs/2503.02156" target="_blank" rel="noopener">MobRFFI — &ldquo;Non-cooperative Device Re-identification for Mobility Intelligence&rdquo;</a></span>
+            <span class="cite-tag">Academic</span>
+          </div>
+          <div class="cite-meta">arXiv preprint (2025)</div>
+          <p class="cite-note">Applies radio-frequency fingerprinting specifically to non-cooperative re-identification for mobility-intelligence applications &mdash; the category LinkNYC's advertising platform falls into.</p>
+          <div class="cite-sections"><span class="lbl">Cited in:</span> <a href="index.html#inside">The Machine</a></div>
+        </div>
+      </li>
+      <li class="cite-item">
+        <span class="cite-num" aria-hidden="true"></span>
+        <div class="cite-body">
+          <div class="cite-head">
+            <span class="cite-title"><a href="https://www.tandfonline.com/doi/full/10.1080/10439463.2025.2577225" target="_blank" rel="noopener">&ldquo;Digital Policing of Homeless and Other Marginalised Groups in Smart Cities&rdquo;</a></span>
+            <span class="cite-tag">Academic</span>
+          </div>
+          <div class="cite-meta"><em>Policing and Society</em> (2025)</div>
+          <p class="cite-note">Comparative case study tracking InLinkUK smart kiosks in London's Tower Hamlets, cited to show the correlation between kiosk deployment in lower-income neighborhoods and intensified data-driven policing is not unique to New York.</p>
+          <div class="cite-sections"><span class="lbl">Cited in:</span> <a href="index.html#equity">Who Pays</a></div>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+<!-- ── 05: JOURNALISM ── -->
+<section id="journalism">
+  <div class="wrap">
+    <div class="cat-head reveal">
+      <span class="cat-num">§ 05</span>
+      <h2 class="cat-title">Journalism</h2>
+      <span class="cat-count">2 sources</span>
+    </div>
+    <ol class="cite-list reveal">
+      <li class="cite-item">
+        <span class="cite-num" aria-hidden="true"></span>
+        <div class="cite-body">
+          <div class="cite-head">
+            <span class="cite-title"><a href="https://www.thecity.nyc/2022/04/27/link5g-free-wifi-tech-linknyc/" target="_blank" rel="noopener">&ldquo;Big Tech Pays to Supersize LinkNYC&rdquo;</a></span>
+            <span class="cite-tag">Journalism</span>
+          </div>
+          <div class="cite-meta">THE CITY &middot; Apr 2022</div>
+          <p class="cite-note">Reporting on the 2021 franchise renegotiation and the shift to a mixed revenue model that leases pole space to cellular carriers as 5G antenna platforms.</p>
+          <div class="cite-sections"><span class="lbl">Cited in:</span> <a href="index.html#map">The Map</a></div>
+        </div>
+      </li>
+      <li class="cite-item">
+        <span class="cite-num" aria-hidden="true"></span>
+        <div class="cite-body">
+          <div class="cite-head">
+            <span class="cite-title"><a href="https://gothamist.com/news/nycs-massive-link5g-towers-arent-actually-providing-5g-yet" target="_blank" rel="noopener">&ldquo;NYC's Massive Link5G Towers Aren't Actually Providing 5G (Yet)&rdquo;</a></span>
+            <span class="cite-tag">Journalism</span>
+          </div>
+          <div class="cite-meta">Gothamist &middot; Jul 2024</div>
+          <p class="cite-note">Found that only two of roughly 200 installed Link5G towers had carrier equipment fitted at the time of reporting, while the towers' sensor and Wi-Fi functions remained fully active throughout.</p>
+          <div class="cite-sections"><span class="lbl">Cited in:</span> <a href="index.html#map">The Map</a></div>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+<!-- ── 06: INDUSTRY & CORPORATE ── -->
+<section id="corporate">
+  <div class="wrap">
+    <div class="cat-head reveal">
+      <span class="cat-num">§ 06</span>
+      <h2 class="cat-title">Industry &amp; Corporate</h2>
+      <span class="cat-count">3 sources</span>
+    </div>
+    <p class="cat-dek reveal">Sources produced or commissioned by CityBridge or its consortium members. Used to represent the network's own claims about itself, not as independent verification.</p>
+    <ol class="cite-list reveal">
+      <li class="cite-item">
+        <span class="cite-num" aria-hidden="true"></span>
+        <div class="cite-body">
+          <div class="cite-head">
+            <span class="cite-title"><a href="https://www.prnewswire.com/news-releases/linknyc-celebrates-10-years-of-free-public-wi-fi-serving-more-than-20-million-users-302688093.html" target="_blank" rel="noopener">LinkNYC 2025 Impact Report — 10-Year Anniversary</a></span>
+            <span class="cite-tag">Corporate</span>
+          </div>
+          <div class="cite-meta">CityBridge / PR Newswire &middot; 2025</div>
+          <p class="cite-note">CityBridge's own usage figures, including the roughly 473,000 free phone calls facilitated monthly &mdash; cited to illustrate the population's structural reliance on the network for essential services like the EBT helpline.</p>
+          <div class="cite-sections"><span class="lbl">Cited in:</span> <a href="index.html#equity">Who Pays</a></div>
+        </div>
+      </li>
+      <li class="cite-item">
+        <span class="cite-num" aria-hidden="true"></span>
+        <div class="cite-body">
+          <div class="cite-head">
+            <span class="cite-title"><a href="https://www.harrisx.com/posts/link-nyc-new-poll-finds-more-new-yorkers-than-ever-rely-on-free-public-wi-fi-and-say-technology-is-critical-to-the-citys-future" target="_blank" rel="noopener">New Yorkers &amp; Public Wi-Fi Survey</a></span>
+            <span class="cite-tag">Corporate</span>
+          </div>
+          <div class="cite-meta">HarrisX, commissioned by LinkNYC &middot; May 2025</div>
+          <p class="cite-note">Source of the 77%-support statistic for Link5G, cited alongside the survey's own disclosure that support strengthens only after respondents are read a description of the poles' benefits.</p>
+          <div class="cite-sections"><span class="lbl">Cited in:</span> <a href="index.html#equity">Who Pays</a></div>
+        </div>
+      </li>
+      <li class="cite-item">
+        <span class="cite-num" aria-hidden="true"></span>
+        <div class="cite-body">
+          <div class="cite-head">
+            <span class="cite-title"><a href="https://www.palantir.com/foundry-entity-resolution/" target="_blank" rel="noopener">Foundry Entity Resolution</a></span>
+            <span class="cite-tag">Corporate</span>
+          </div>
+          <div class="cite-meta">Palantir Technologies &middot; product page</div>
+          <p class="cite-note">Example of a commercial data-integration service capable of linking pseudonymous identifiers across datasets back to individuals &mdash; cited to explain why hashing a device identifier does not by itself guarantee anonymity.</p>
+          <div class="cite-sections"><span class="lbl">Cited in:</span> <a href="index.html#audit">The Audit</a></div>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+<!-- ── 07: PHOTOGRAPHY CREDITS ── -->
+<section id="photography">
+  <div class="wrap">
+    <div class="cat-head reveal">
+      <span class="cat-num">§ 07</span>
+      <h2 class="cat-title">Photography Credits</h2>
+      <span class="cat-count">4 sources</span>
+    </div>
+    <ul class="photo-credit-list reveal">
+      <li>
+        Chelsea kiosk photograph (23rd St &amp; 8th Ave) by <a href="https://commons.wikimedia.org/wiki/File:LinkNYC_kiosk_at_23rd_and_8th.jpg" target="_blank" rel="noopener">Epicgenius</a>, used under <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a>.
+        <span class="pc-meta">Via Wikimedia Commons &middot; appears in the hero photo break</span>
+      </li>
+      <li>
+        Jamaica Ave &amp; Guy R. Brewer Blvd kiosk photograph by <a href="https://commons.wikimedia.org/wiki/File:LinkNYC;_Jamaica_and_Guy_R_Brewer-2.jpg" target="_blank" rel="noopener">DanTD</a>, used under <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a>.
+        <span class="pc-meta">Via Wikimedia Commons &middot; appears in The Map</span>
+      </li>
+      <li>
+        3rd Avenue, Bronx kiosk photograph by <a href="https://commons.wikimedia.org/wiki/File:LinkNYC_kiosk_3rd_Ave_Bronx_IMG_3239_HLG.jpg" target="_blank" rel="noopener">Hugo L. Gonz&aacute;lez</a>, used under <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a>.
+        <span class="pc-meta">Via Wikimedia Commons &middot; appears in Who Pays</span>
+      </li>
+      <li>
+        Kiosk interface and equity-mandate map photography by NYC DoITT, from the <a href="https://www.nyc.gov/assets/designcommission/downloads/pdf/10-18-2021-pres-DoITT-p-Link-5G.pdf" target="_blank" rel="noopener">&ldquo;Link5G Briefing&rdquo;</a> presentation, Oct 2021.
+        <span class="pc-meta">NYC DoITT &middot; appears in Background and Who Pays</span>
+      </li>
+    </ul>
+  </div>
+</section>
+
+</main>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <h4>About this report</h4>
+      <p>An independent journalistic data project examining the LinkNYC surveillance network, its documented privacy failures, and the pending NY State legislation that would address them.</p>
+      <p style="margin-top:.6rem;"><a href="index.html">&larr; Back to the full report</a></p>
+    </div>
+    <div>
+      <h4>Read next</h4>
+      <ul>
+        <li><a href="index.html#double-standard">The Finding &mdash; NYPD vs. LinkNYC</a></li>
+        <li><a href="index.html#audit">The Audit &mdash; KPMG's findings</a></li>
+        <li><a href="index.html#equity">Who Pays &mdash; the equity gap</a></li>
+        <li><a href="index.html#fix">The Fix &mdash; Digital Fairness Act</a></li>
+        <li><a href="index.html#act">Act Now &mdash; contact your rep</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Get in touch</h4>
+      <form name="contact" data-netlify="true" data-netlify-honeypot="bot-field" id="contactForm" novalidate>
+        <input type="hidden" name="form-name" value="contact">
+        <p style="display:none;" aria-hidden="true">
+          <label>Don't fill this out: <input name="bot-field" tabindex="-1" autocomplete="off"></label>
+        </p>
+        <div class="cf-field">
+          <label for="cf-name">Name</label>
+          <input type="text" id="cf-name" name="name" required autocomplete="name">
+        </div>
+        <div class="cf-field">
+          <label for="cf-email">Email</label>
+          <input type="email" id="cf-email" name="email" required autocomplete="email">
+        </div>
+        <div class="cf-field">
+          <label for="cf-msg">Message</label>
+          <textarea id="cf-msg" name="message" rows="3" required></textarea>
+        </div>
+        <button type="submit" class="cf-submit">Send</button>
+        <div id="cf-status" class="cf-status" aria-live="polite" aria-atomic="true"></div>
+      </form>
+    </div>
+  </div>
+  <div class="footer-credit">
+    <span>This bibliography lists every source cited in the report as of publication. Kiosk counts and legislative status are time-sensitive &mdash; see the report itself for current figures.</span>
+    <span>Published June 10, 2026 &middot; Updated July 12, 2026</span>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+/* ── Theme toggle (shared localStorage key with index.html) ── */
+function applyTheme(theme) {
+  const isInk = theme === 'ink';
+  document.documentElement.classList.toggle('ink-mode', isInk);
+  const btn = document.getElementById('themeToggle');
+  if (btn) {
+    btn.textContent = isInk ? 'Paper' : 'Ink';
+    btn.setAttribute('aria-label', isInk ? 'Switch to paper mode' : 'Switch to ink mode');
+  }
+}
+const savedTheme = localStorage.getItem('nycst-theme') || 'paper';
+applyTheme(savedTheme === 'ink' ? 'ink' : 'paper');
+document.getElementById('themeToggle').addEventListener('click', () => {
+  const next = document.documentElement.classList.contains('ink-mode') ? 'paper' : 'ink';
+  localStorage.setItem('nycst-theme', next);
+  applyTheme(next);
+});
+
+/* ── Motion: enhancements only, matches index.html's reveal pattern ── */
+const motion = gsap.matchMedia();
+motion.add('(prefers-reduced-motion: no-preference)', () => {
+  ScrollTrigger.batch('.reveal', {
+    onEnter: batch => gsap.from(batch, {
+      autoAlpha: 0, y: 18,
+      stagger: 0.05,
+      duration: 0.6,
+      ease: 'power2.out'
+    }),
+    once: true,
+    start: 'top 92%'
+  });
+});
+motion.add('(prefers-reduced-motion: reduce)', () => {
+  /* Nothing to do — the page is already at its natural state. */
+});
+
+/* ── Jump-nav active state as each category scrolls through ── */
+document.querySelectorAll('section[id]').forEach(section => {
+  const link = document.querySelector(`.jump-nav a[href="#${section.id}"]`);
+  if (!link) return;
+  ScrollTrigger.create({
+    trigger: section,
+    start: 'top center',
+    end: 'bottom center',
+    toggleClass: { targets: link, className: 'active' }
+  });
+});
+
+/* ── Marginalia rail stays fixed on "Sources" — single-topic page ── */
+
+/* ── Contact form: AJAX submit to Netlify Forms ── */
+document.getElementById('contactForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const form = e.target;
+  const status = document.getElementById('cf-status');
+  const btn = form.querySelector('.cf-submit');
+  const name = form.querySelector('#cf-name').value.trim();
+  const email = form.querySelector('#cf-email').value.trim();
+  const msg = form.querySelector('#cf-msg').value.trim();
+  if (!name || !email || !msg) {
+    status.textContent = 'Please fill in all fields.';
+    status.className = 'cf-status err';
+    return;
+  }
+  btn.disabled = true;
+  btn.textContent = 'Sending…';
+  status.textContent = '';
+  status.className = 'cf-status';
+  try {
+    const res = await fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams(new FormData(form)).toString()
+    });
+    if (res.ok) {
+      status.textContent = 'Message sent — thank you.';
+      status.className = 'cf-status ok';
+      form.reset();
+    } else {
+      throw new Error();
+    }
+  } catch {
+    status.textContent = 'Something went wrong. Please try again.';
+    status.className = 'cf-status err';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Send';
+  }
+});
+</script>
+</body>
+</html>
